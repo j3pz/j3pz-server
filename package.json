@@ -1,0 +1,39 @@
+{
+  "name": "j3pz-server",
+  "version": "1.0.0",
+  "description": "A modern j3pz server",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run tsc",
+    "coverage": "npm run test-cov && npm run test-remap",
+    "postinstall": "npm run build",
+    "tslint": "tslint ./*.ts ./lib/*.ts",
+    "test": "mocha --reporter spec --check-leaks --bail test/",
+    "tsc": "tsc --project tsconfig.json",
+    "tsc:w": "tsc -w",
+    "start": "nodemon --watch '**/*.ts' --ignore 'node_modules/**/*' --exec ts-node src/index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@tsed/common": "^5.24.1",
+    "@tsed/core": "^5.24.1",
+    "@tsed/di": "^5.24.1",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "method-override": "^3.0.0"
+  }
+}
