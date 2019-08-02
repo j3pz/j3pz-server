@@ -1,9 +1,17 @@
 import { ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware } from '@tsed/common';
+import '@tsed/typeorm';
+import { config } from 'dotenv-flow';
+import { resolve } from 'path';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import compress from 'compression';
+import methodOverride from 'method-override';
 
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const compress = require('compression');
-const methodOverride = require('method-override');
+config({
+    path: resolve(__dirname, '../env'),
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    default_node_env: 'development',
+});
 
 const rootDir = __dirname;
 
@@ -14,12 +22,24 @@ const rootDir = __dirname;
         // eslint-disable-next-line no-template-curly-in-string
         '/api': '${rootDir}/controllers/**/*.ts',
     },
+    typeorm: [
+        {
+            name: 'resources',
+            type: 'mysql',
+            host: process.env.MYSQL_DB_HOST,
+            port: 3306,
+            username: process.env.MYSQL_DB_USER,
+            password: process.env.MYSQL_DB_PASS,
+            database: process.env.MYSQL_DB_NAME,
+        },
+    ],
 })
 export class Server extends ServerLoader {
     /**
      * This method let you configure the express middleware required by your application to works.
      * @returns {Server}
     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public $onMountingMiddlewares(): void|Promise<any> {
         this
             .use(GlobalAcceptMimesMiddleware)
