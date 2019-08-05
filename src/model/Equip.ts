@@ -9,7 +9,7 @@ interface EquipCore {
     icon: number; // 图标 id
 }
 
-interface EquipAttribute extends EquipCore {
+export interface EquipAttribute extends EquipCore {
     // 基础属性
     basicMagicShield?: number;
     basicPhysicsShield?: number;

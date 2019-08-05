@@ -20,12 +20,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/chai": "^4.1.7",
     "@types/express": "^4.17.0",
+    "@types/mocha": "^5.2.7",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
+    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.2",
+    "mocha": "^6.2.0",
     "nodemon": "^1.19.1",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
@@ -41,6 +45,7 @@
     "dotenv-flow": "^3.0.0",
     "express": "^4.17.1",
     "method-override": "^3.0.0",
-    "mysql2": "^1.6.5"
+    "mysql2": "^1.6.5",
+    "typeorm": "^0.2.18"
   }
 }

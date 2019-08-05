@@ -31,6 +31,9 @@ const rootDir = __dirname;
             username: process.env.MYSQL_DB_USER,
             password: process.env.MYSQL_DB_PASS,
             database: process.env.MYSQL_DB_NAME,
+            entities: [
+                `${__dirname}/entities/*.ts`,
+            ],
         },
     ],
 })

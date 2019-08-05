@@ -30,10 +30,15 @@
         "import/prefer-default-export": "off",
         "indent": ["error", 4],
         "no-unused-vars": "off",
+        "no-useless-constructor": "off",
+        "no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": "error",
         "@typescript-eslint/no-unused-vars": [
             "error", {
                 "args": "after-used"
             }
-        ]
+        ],
+        "@typescript-eslint/no-useless-constructor": "error",
+        "@typescript-eslint/no-parameter-properties": "off"
     }
 }

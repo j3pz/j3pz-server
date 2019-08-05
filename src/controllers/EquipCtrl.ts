@@ -1,18 +1,23 @@
 import { Controller, Get, PathParams } from '@tsed/common';
 import { Equip } from '../model/Equip';
 import { ServerResponse } from '../model/Server';
+import { EquipService } from '../services/EquipService';
 
 @Controller('/equip')
 export class EquipCtrl {
+    public constructor(private equipService: EquipService) {}
+
     @Get()
-    private list(): ServerResponse<Equip[]> {
+    public async list(): Promise<ServerResponse<Equip[]>> {
+        const list = await this.equipService.find();
+        console.log(list);
         return {
             data: [],
         };
     }
 
     @Get('/:id')
-    private detail(@PathParams('id') id: string): ServerResponse<Equip> {
+    public detail(@PathParams('id') id: string): ServerResponse<Equip> {
         return {
             data: {
                 id: parseInt(id, 10),
