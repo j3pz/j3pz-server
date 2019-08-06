@@ -1,4 +1,4 @@
-import { MainAttribute, KungFu, School } from './Base';
+import { PrimaryAttribute, KungFu, School } from './Base';
 import { Resource } from './Server';
 
 interface EquipCore {
@@ -45,12 +45,12 @@ export interface EquipAttribute extends EquipCore {
     school?: School;
     embed?: string;
     kungFu?: KungFu;
-    mainAttribute?: MainAttribute;
+    mainAttribute?: PrimaryAttribute;
     dropSource?: string;
 }
 
 
-export interface Equip extends Resource {
+export interface EquipResource extends Resource {
     // id: number; // 装备 id
     // type: 'equip';
     attributes: EquipAttribute;

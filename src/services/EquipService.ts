@@ -1,7 +1,15 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
-import { Connection } from 'typeorm';
+import { Connection, Between } from 'typeorm';
 import { Equip } from '../entities/Equip';
+import { AttributeTag, Category, KungFu } from '../model/Base';
+
+interface EquipListFilter {
+    kungfu: KungFu;
+    category: Category;
+    quality: [number, number];
+    tag?: AttributeTag[];
+}
 
 @Service()
 export class EquipService implements AfterRoutesInit {
@@ -15,8 +23,13 @@ export class EquipService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('resources');
     }
 
-    public async find(): Promise<Equip[]> {
-        const equips = await this.connection.manager.find(Equip);
+    public async find(filter: EquipListFilter): Promise<Equip[]> {
+        const equips = await this.connection.manager.find(Equip, {
+            where: {
+                quality: Between(filter.quality[0], filter.quality[1]),
+                category: filter.category,
+            },
+        });
 
         return equips;
     }
