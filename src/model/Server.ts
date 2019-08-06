@@ -11,7 +11,6 @@ export interface ServerResponse<T> {
     errors?: ServerError[];
 }
 
-export interface Resource {
-    id: number;
-    type: string;
+export class Resource<T> {
+    public constructor(private id: number, private type: string, private attributes: T) {}
 }

@@ -33,4 +33,9 @@ export class EquipService implements AfterRoutesInit {
 
         return equips;
     }
+
+    public async findById(id: number): Promise<Equip> {
+        const equip = await this.connection.manager.findOne(Equip, id);
+        return equip;
+    }
 }

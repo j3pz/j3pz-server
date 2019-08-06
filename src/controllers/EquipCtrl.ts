@@ -1,10 +1,10 @@
 import {
     Controller, Get, PathParams, QueryParams,
 } from '@tsed/common';
-import { EquipResource } from '../model/Equip';
-import { ServerResponse } from '../model/Server';
+import { ServerResponse, Resource } from '../model/Server';
 import { EquipService } from '../services/EquipService';
 import { Category, KungFu } from '../model/Base';
+import { EquipResource } from '../model/Equip';
 
 @Controller('/equip')
 export class EquipCtrl {
@@ -20,26 +20,16 @@ export class EquipCtrl {
             category,
             quality: [1800, 2800],
         });
-        console.log(list);
         return {
-            data: [],
+            data: list.map((equip): EquipResource => new Resource(equip.id, 'equip', equip)),
         };
     }
 
     @Get('/:id')
-    public detail(@PathParams('id') id: string): ServerResponse<EquipResource> {
+    public async detail(@PathParams('id') id: string): Promise<ServerResponse<EquipResource>> {
+        const equip = await this.equipService.findById(parseInt(id, 10));
         return {
-            data: {
-                id: parseInt(id, 10),
-                type: 'equip',
-                attributes: {
-                    category: 'hat',
-                    name: 'test',
-                    tags: [],
-                    quality: 2000,
-                    icon: 5656,
-                },
-            },
+            data: new Resource(equip.id, 'equip', equip),
         };
     }
 }
