@@ -16,4 +16,4 @@ export type AttributeTag =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'toughness' |
     'crit' | 'overcome' | 'hit' | 'strain' | 'haste';
 
-export type Category = '0_hat' | '1_jacket' | '2_belt' | '3_wrist' | '4_bottoms' | '5_shoes' | '6_necklace' | '7_pendant' | '8_ring_1' | '9_ring_2' | 'a_secondaryWeapon' | 'b_primaryWeapon';
+export type Category = '0_hat' | '1_jacket' | '2_belt' | '3_wrist' | '4_bottoms' | '5_shoes' | '6_necklace' | '7_pendant' | '8_ring_1' | '9_ring_2' | 'a_secondaryWeapon' | 'b_primaryWeapon' | 'c_primaryWeapon';
