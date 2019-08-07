@@ -10,7 +10,8 @@
       "esModuleInterop": true,
       "experimentalDecorators":true,
       "emitDecoratorMetadata": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "outDir": "dist"
     },
     "exclude": [
       "node_modules"
