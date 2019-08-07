@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+    Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn,
+} from 'typeorm';
+import { EquipSet } from './EquipSet';
+import { Effect } from './Effect';
+import { Source } from './Source';
 
 @Entity()
 export class Equip {
@@ -87,7 +92,7 @@ export class Equip {
     public overcome: number;
 
     @Column()
-    public acce: number;
+    public haste: number;
 
     @Column()
     public hit: number;
@@ -101,15 +106,22 @@ export class Equip {
     @Column()
     public threat: number;
 
-    @Column()
-    public texiao: number;
+    @ManyToOne(() => Effect, effect => effect.id)
+    public effect: Effect;
+
+    @ManyToOne(() => EquipSet, set => set.id)
+    public set: EquipSet;
 
     @Column()
-    public xiangqian: string;
+    public embed: string;
 
     @Column()
     public strengthen: number;
 
+    @OneToOne(() => Source)
+    @JoinColumn()
+    public source: Source;
+
     @Column()
-    public dropSource: string;
+    public deprecated: boolean;
 }
