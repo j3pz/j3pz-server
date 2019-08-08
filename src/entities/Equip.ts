@@ -1,5 +1,5 @@
 import {
-    Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn,
+    Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable,
 } from 'typeorm';
 import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
@@ -29,7 +29,7 @@ export class Equip {
     public score: number;
 
     @Column()
-    public body: number;
+    public vitality: number;
 
     @Column()
     public spirit: number;
@@ -118,9 +118,9 @@ export class Equip {
     @Column()
     public strengthen: number;
 
-    @OneToOne(() => Source)
-    @JoinColumn()
-    public source: Source;
+    @ManyToMany(() => Source, source => source.id)
+    @JoinTable()
+    public source: Source[];
 
     @Column()
     public deprecated: boolean;
