@@ -1,9 +1,9 @@
 import {
-    Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable,
+    Entity, PrimaryGeneratedColumn, Column, ManyToOne,
 } from 'typeorm';
 import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
-import { Source } from './Source';
+// import { Source } from './Source';
 
 @Entity()
 export class Equip {
@@ -20,7 +20,7 @@ export class Equip {
     public quality: number;
 
     @Column()
-    public school: number;
+    public school: string;
 
     @Column()
     public primaryAttribute: string;
@@ -106,10 +106,14 @@ export class Equip {
     @Column()
     public threat: number;
 
-    @ManyToOne(() => Effect, effect => effect.id)
+    @ManyToOne(() => Effect, effect => effect.id, {
+        nullable: true,
+    })
     public effect: Effect;
 
-    @ManyToOne(() => EquipSet, set => set.id)
+    @ManyToOne(() => EquipSet, set => set.id, {
+        nullable: true,
+    })
     public set: EquipSet;
 
     @Column()
