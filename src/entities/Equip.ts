@@ -118,9 +118,9 @@ export class Equip {
     @Column()
     public strengthen: number;
 
-    @ManyToMany(() => Source, source => source.id)
-    @JoinTable()
-    public source: Source[];
+    // @ManyToMany(() => Source, source => source.id)
+    // @JoinTable()
+    // public source: Source[];
 
     @Column()
     public deprecated: boolean;
