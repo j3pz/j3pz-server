@@ -5,15 +5,15 @@ export class Effect {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
-    public name: string;
-
-    @Column({ type: 'simple-array' })
+    @Column({ type: 'simple-array', default: null, nullable: true })
     public attribute: string[];
 
-    @Column({ type: 'simple-array' })
+    @Column({ type: 'simple-array', default: null, nullable: true })
     public value: number[];
 
     @Column()
     public trigger: 'Usage' | 'Passive';
+
+    @Column()
+    public description: string;
 }

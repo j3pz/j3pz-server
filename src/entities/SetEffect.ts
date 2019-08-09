@@ -2,6 +2,7 @@ import {
     Entity, PrimaryGeneratedColumn, Column, ManyToOne,
 } from 'typeorm';
 import { Effect } from './Effect';
+import { EquipSet } from './EquipSet';
 
 @Entity()
 export class SetEffect {
@@ -13,4 +14,7 @@ export class SetEffect {
 
     @ManyToOne(() => Effect, effect => effect.id)
     public effect: Effect;
+
+    @ManyToOne(() => EquipSet, set => set.id)
+    public set: EquipSet;
 }

@@ -1,5 +1,5 @@
 import {
-    Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn,
+    Entity, PrimaryGeneratedColumn, Column, OneToMany,
 } from 'typeorm';
 import { SetEffect } from './SetEffect';
 
@@ -11,7 +11,6 @@ export class EquipSet {
     @Column()
     public name: string;
 
-    @OneToOne(() => SetEffect)
-    @JoinColumn()
-    public setEffect: SetEffect;
+    @OneToMany(() => SetEffect, setEffect => setEffect.id)
+    public setEffect: SetEffect[];
 }
