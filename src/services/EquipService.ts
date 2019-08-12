@@ -5,7 +5,8 @@ import { Equip } from '../entities/Equip';
 import {
     AttributeTag, Category, KungFu,
 } from '../model/Base';
-import { kungFuMeta, KungFuMeta } from '../utils/KungFus';
+import { kungFuLib } from '../utils/KungFuLib';
+import { KungFuMeta } from '../utils/KungfuMeta';
 
 interface EquipListFilter {
     kungfu: KungFu;
@@ -28,7 +29,7 @@ export class EquipService implements AfterRoutesInit {
 
     private getFilterByKungfu(kungfu: KungFu): KungFuMeta {
         // todo: 报错处理
-        return kungFuMeta[kungfu];
+        return kungFuLib[kungfu];
     }
 
     public async find(filter: EquipListFilter): Promise<Equip[]> {
