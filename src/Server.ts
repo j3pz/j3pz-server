@@ -1,5 +1,6 @@
 import { ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware } from '@tsed/common';
 import '@tsed/typeorm';
+import '@tsed/swagger';
 import { config } from 'dotenv-flow';
 import { resolve } from 'path';
 import cookieParser from 'cookie-parser';
@@ -35,6 +36,11 @@ const rootDir = __dirname;
             entities: [
                 `${__dirname}/entities/*.ts`,
             ],
+        },
+    ],
+    swagger: [
+        {
+            path: '/api-docs',
         },
     ],
 })

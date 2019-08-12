@@ -1,6 +1,7 @@
 import {
     Controller, Get, PathParams, QueryParams,
 } from '@tsed/common';
+import { Summary, Description } from '@tsed/swagger';
 import { ServerResponse, Resource } from '../model/Server';
 import { EquipService } from '../services/EquipService';
 import { Category, KungFu } from '../model/Base';
@@ -11,9 +12,10 @@ export class EquipCtrl {
     public constructor(private equipService: EquipService) {}
 
     @Get()
+    @Summary('获取装备列表')
     public async list(
-        @QueryParams('kungfu') kungfu: KungFu,
-        @QueryParams('category') category: Category,
+        @QueryParams('kungfu') @Description('心法名称') kungfu: KungFu,
+        @QueryParams('category') @Description('装备部位') category: Category,
     ): Promise<ServerResponse<EquipResource[]>> {
         const list = await this.equipService.find({
             kungfu,
