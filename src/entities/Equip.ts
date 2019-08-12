@@ -14,6 +14,9 @@ export class Equip {
     public name: string;
 
     @Column()
+    public icon: number;
+
+    @Column()
     public category: string;
 
     @Column()
@@ -116,7 +119,9 @@ export class Equip {
     })
     public set: EquipSet;
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     public embed: string;
 
     @Column()
