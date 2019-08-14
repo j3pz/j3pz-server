@@ -35,12 +35,14 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@tsed/common": "^5.24.1",
-    "@tsed/core": "^5.24.1",
-    "@tsed/di": "^5.24.1",
+    "@tsed/ajv": "^5.25.1",
+    "@tsed/common": "^5.25.1",
+    "@tsed/core": "^5.25.1",
+    "@tsed/di": "^5.25.1",
     "@tsed/swagger": "^5.25.1",
-    "@tsed/typeorm": "^5.24.1",
+    "@tsed/typeorm": "^5.25.1",
     "@types/swagger-schema-official": "^2.0.18",
+    "ajv": "^6.10.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
@@ -48,6 +50,7 @@
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "mysql2": "^1.6.5",
+    "ts-httpexceptions": "^4.1.0",
     "typeorm": "^0.2.18"
   }
 }

@@ -1,6 +1,7 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { Connection, Between, In } from 'typeorm';
+import { BadRequest } from 'ts-httpexceptions';
 import { Equip } from '../entities/Equip';
 import {
     AttributeTag, Category, KungFu,
@@ -28,8 +29,11 @@ export class EquipService implements AfterRoutesInit {
     }
 
     private getFilterByKungfu(kungfu: KungFu): KungFuMeta {
-        // todo: 报错处理
-        return kungFuLib[kungfu];
+        const meta = kungFuLib[kungfu];
+        if (meta === undefined) {
+            throw new BadRequest('心法不存在');
+        }
+        return meta;
     }
 
     public async find(filter: EquipListFilter): Promise<Equip[]> {

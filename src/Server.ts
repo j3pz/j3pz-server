@@ -1,6 +1,8 @@
+/* eslint-disable no-template-curly-in-string */
 import { ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware } from '@tsed/common';
 import '@tsed/typeorm';
 import '@tsed/swagger';
+import '@tsed/ajv';
 import { config } from 'dotenv-flow';
 import { resolve } from 'path';
 import cookieParser from 'cookie-parser';
@@ -20,9 +22,13 @@ const rootDir = __dirname;
     rootDir,
     acceptMimes: ['application/json'],
     mount: {
-        // eslint-disable-next-line no-template-curly-in-string
         '/api': '${rootDir}/controllers/**/*.ts',
     },
+    componentsScan: [
+        '${rootDir}/middlewares/**/*.ts',
+        '${rootDir}/services/**/*.ts',
+        '${rootDir}/converters/**/*.ts',
+    ],
     typeorm: [
         {
             name: 'resources',
