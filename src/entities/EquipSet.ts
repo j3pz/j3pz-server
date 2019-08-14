@@ -11,6 +11,6 @@ export class EquipSet {
     @Column()
     public name: string;
 
-    @OneToMany(() => SetEffect, setEffect => setEffect.id)
+    @OneToMany(() => SetEffect, setEffect => setEffect.set)
     public setEffect: SetEffect[];
 }

@@ -15,6 +15,6 @@ export class SetEffect {
     @ManyToOne(() => Effect, effect => effect.id)
     public effect: Effect;
 
-    @ManyToOne(() => EquipSet, set => set.id)
+    @ManyToOne(() => EquipSet, set => set.setEffect)
     public set: EquipSet;
 }
