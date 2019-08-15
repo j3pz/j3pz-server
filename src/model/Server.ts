@@ -1,8 +1,7 @@
-interface ServerError {
+export interface ServerError {
     id: string;
-    status: string;
-    code?: string;
-    title?: string;
+    code: number;
+    title: string;
     detail?: string;
 }
 

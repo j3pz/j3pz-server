@@ -1,5 +1,5 @@
 import {
-    Err, Req, Res, OverrideProvider, GlobalErrorHandlerMiddleware, IResponseError,
+    Err, Req, Res, OverrideProvider, GlobalErrorHandlerMiddleware, IResponseError, Response,
 } from '@tsed/common';
 import { HTTPException } from 'ts-httpexceptions';
 
@@ -9,8 +9,8 @@ export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
         @Err() error: HTTPException & IResponseError,
         @Req() request: Req,
         @Res() response: Res,
-    ): void {
-        response.status(error.status).json({
+    ): Response {
+        return response.status(error.status).json({
             errors: error.errors,
         });
     }

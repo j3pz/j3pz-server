@@ -1,13 +1,13 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { Connection, Between, In } from 'typeorm';
-import { BadRequest } from 'ts-httpexceptions';
 import { Equip } from '../entities/Equip';
 import {
     AttributeTag, Category, KungFu,
 } from '../model/Base';
 import { kungFuLib } from '../utils/KungFuLib';
 import { KungFuMeta } from '../utils/KungfuMeta';
+import { KungFuNotExistError } from '../utils/errors/BadRequests';
 
 interface EquipListFilter {
     kungfu: KungFu;
@@ -31,7 +31,7 @@ export class EquipService implements AfterRoutesInit {
     private getFilterByKungfu(kungfu: KungFu): KungFuMeta {
         const meta = kungFuLib[kungfu];
         if (meta === undefined) {
-            throw new BadRequest('心法不存在');
+            throw new KungFuNotExistError(kungfu);
         }
         return meta;
     }
