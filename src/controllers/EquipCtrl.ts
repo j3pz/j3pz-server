@@ -10,6 +10,7 @@ import { Category, KungFu } from '../model/Base';
 import { EquipResource, EquipCoreResource, EquipCore } from '../model/Equip';
 import { Equip } from '../entities/Equip';
 import { KungFuNotExistError, CategoryNotExistError } from '../utils/errors/BadRequests';
+import { EquipNotFound } from '../utils/errors/NotFound';
 
 @Controller('/equip')
 export class EquipCtrl {
@@ -18,6 +19,7 @@ export class EquipCtrl {
     @Get()
     @Summary('获取装备列表')
     @ReturnsArray(200, { description: 'OK', type: EquipCore })
+    @ReturnsArray(400, { description: 'Bad Request' })
     public async list(
         @QueryParams('kungfu') @Description('心法名称') kungfu: KungFu,
         @QueryParams('category') @Description('装备部位') category: Category,
@@ -41,6 +43,9 @@ export class EquipCtrl {
     @Returns(200, { description: 'OK', type: Equip })
     public async detail(@PathParams('id') id: string): Promise<EquipResource> {
         const equip = await this.equipService.findById(parseInt(id, 10));
+        if (equip === undefined) {
+            throw new EquipNotFound(id);
+        }
         return new Resource(equip.id, 'equip', equip);
     }
 }
