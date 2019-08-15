@@ -157,7 +157,7 @@ export class Equip {
     @Title('特效')
     public effect: Effect;
 
-    @ManyToOne(() => EquipSet, set => set.id, {
+    @ManyToOne(() => EquipSet, set => set.equip, {
         nullable: true,
     })
     @Title('套装')

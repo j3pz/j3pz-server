@@ -10,8 +10,11 @@ export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
         @Req() request: Req,
         @Res() response: Res,
     ): Response {
-        return response.status(error.status).json({
-            errors: error.errors,
-        });
+        if (error instanceof HTTPException) {
+            return response.status(error.status).json({
+                errors: error.errors,
+            });
+        }
+        return super.use(error, request, response);
     }
 }

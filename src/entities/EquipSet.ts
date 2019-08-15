@@ -3,6 +3,7 @@ import {
 } from 'typeorm';
 import { Title } from '@tsed/swagger';
 import { SetEffect } from './SetEffect';
+import { Equip } from './Equip';
 
 @Entity()
 export class EquipSet {
@@ -17,4 +18,7 @@ export class EquipSet {
     @OneToMany(() => SetEffect, setEffect => setEffect.set)
     @Title('套装特效')
     public setEffect: SetEffect[];
+
+    @OneToMany(() => Equip, equip => equip.set)
+    public equip: Equip[];
 }
