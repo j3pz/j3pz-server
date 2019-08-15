@@ -4,6 +4,7 @@ import {
 import { Title } from '@tsed/swagger';
 import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
+import { Category, School } from '../model/Base';
 // import { Source } from './Source';
 
 @Entity()
@@ -20,17 +21,23 @@ export class Equip {
     @Title('图标')
     public icon: number;
 
-    @Column()
+    @Column({
+        type: 'enum',
+        enum: Category,
+    })
     @Title('部位')
-    public category: string;
+    public category: Category;
 
     @Column()
     @Title('品质')
     public quality: number;
 
-    @Column()
+    @Column({
+        type: 'enum',
+        enum: School,
+    })
     @Title('门派')
-    public school: string;
+    public school: School;
 
     @Column()
     @Title('主属性')

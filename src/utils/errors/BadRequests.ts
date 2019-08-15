@@ -7,6 +7,7 @@ import { generateReqId } from '../RequestId';
 enum BadRequestErrorCode {
     // 1 表示装备模块错误
     KungFuNotExistError = 400101,
+    CategoryNotExistError = 400102,
 }
 
 export class KungFuNotExistError extends BadRequest implements IResponseError {
@@ -22,6 +23,23 @@ export class KungFuNotExistError extends BadRequest implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `"${failedKungfu}" 不是一个正确的心法名`,
+        });
+    }
+}
+
+export class CategoryNotExistError extends BadRequest implements IResponseError {
+    public code: BadRequestErrorCode.CategoryNotExistError;
+
+    public errors: ServerError[] = [];
+
+    public constructor(failedCategory: string) {
+        super('装备类型不存在');
+        const id = generateReqId();
+        this.errors.push({
+            id,
+            code: this.code,
+            title: this.message,
+            detail: `"${failedCategory}" 不是一个正确的装备类型`,
         });
     }
 }
