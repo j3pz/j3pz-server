@@ -1,5 +1,4 @@
 export interface ServerError {
-    id: string;
     code: number;
     title: string;
     detail?: string;

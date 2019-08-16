@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import methodOverride from 'method-override';
+import { generateReqId } from './utils/RequestId';
 
 config({
     path: resolve(__dirname, '../env'),
@@ -49,6 +50,10 @@ const rootDir = __dirname;
             path: '/api-docs',
         },
     ],
+    logger: {
+        // @ts-ignore
+        reqIdBuilder: generateReqId,
+    },
 })
 export class Server extends ServerLoader {
     /**

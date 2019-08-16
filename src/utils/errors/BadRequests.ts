@@ -1,7 +1,6 @@
 import { BadRequest } from 'ts-httpexceptions';
 import { IResponseError } from '@tsed/common';
 import { ServerError } from '../../model/Server';
-import { generateReqId } from '../RequestId';
 
 // 六位错误码，前三位为 HTTP Status Code，第四位表示模块，第五位和第六位表示错误
 enum BadRequestErrorCode {
@@ -17,9 +16,7 @@ export class KungFuNotExistError extends BadRequest implements IResponseError {
 
     public constructor(failedKungfu: string) {
         super('心法不存在');
-        const id = generateReqId();
         this.errors.push({
-            id,
             code: this.code,
             title: this.message,
             detail: `"${failedKungfu}" 不是一个正确的心法名`,
@@ -34,9 +31,7 @@ export class CategoryNotExistError extends BadRequest implements IResponseError 
 
     public constructor(failedCategory: string) {
         super('装备类型不存在');
-        const id = generateReqId();
         this.errors.push({
-            id,
             code: this.code,
             title: this.message,
             detail: `"${failedCategory}" 不是一个正确的装备类型`,
