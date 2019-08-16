@@ -11,11 +11,10 @@
     "build": "npm run tsc",
     "coverage": "npm run test-cov && npm run test-remap",
     "postinstall": "npm run build",
-    "tslint": "tslint ./*.ts ./lib/*.ts",
     "test": "mocha --reporter spec --check-leaks --bail test/",
     "tsc": "tsc --project tsconfig.json",
     "tsc:w": "tsc -w",
-    "start": "nodemon --watch '**/*.ts' --ignore 'node_modules/**/*' --exec ts-node src/index.ts"
+    "start": "nodemon --watch **/*.ts --ignore node_modules/**/* --exec ts-node src/index.ts"
   },
   "author": "",
   "license": "ISC",
