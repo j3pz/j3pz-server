@@ -4,6 +4,12 @@ import {
 import { Title } from '@tsed/swagger';
 import { SetEffect } from './SetEffect';
 import { Equip } from './Equip';
+import { Category } from '../model/Base';
+import { EquipCore } from '../model/Equip';
+
+type SetEquipInfo = {
+    [key in Category]?: EquipCore[];
+}
 
 @Entity()
 export class EquipSet {
@@ -21,4 +27,7 @@ export class EquipSet {
 
     @OneToMany(() => Equip, equip => equip.set)
     public equip: Equip[];
+
+    // 实际返回给前端的过滤后的值
+    public equips: SetEquipInfo;
 }

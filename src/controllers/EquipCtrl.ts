@@ -46,6 +46,24 @@ export class EquipCtrl {
         if (equip === undefined) {
             throw new EquipNotFound(id);
         }
+        if (equip.set) {
+            const collection = equip.set.equip.map((e: Equip): EquipCore => ({
+                id: e.id,
+                name: e.name,
+                icon: e.icon,
+                quality: e.quality,
+                category: e.category,
+            })).reduce((acc, cur) => {
+                if (acc[cur.category]) {
+                    acc[cur.category].push(cur);
+                } else {
+                    acc[cur.category] = [cur];
+                }
+                return acc;
+            }, {});
+            delete equip.set.equip;
+            equip.set.equips = collection;
+        }
         return new Resource(equip.id, 'equip', equip);
     }
 }

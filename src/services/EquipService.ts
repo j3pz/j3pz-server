@@ -35,7 +35,7 @@ export class EquipService implements AfterRoutesInit {
     public async find(filter: EquipListFilter): Promise<Equip[]> {
         const kungfuFilter = this.getFilterByKungfu(filter.kungfu);
         const equips = await this.connection.manager.find(Equip, {
-            select: ['id', 'icon', 'name', 'quality'],
+            select: ['id', 'icon', 'name', 'quality', 'category'],
             where: {
                 quality: Between(filter.quality[0], filter.quality[1]),
                 category: filter.category,
@@ -49,7 +49,7 @@ export class EquipService implements AfterRoutesInit {
 
     public async findById(id: number): Promise<Equip> {
         const equip = await this.connection.manager.findOne(Equip, id, {
-            relations: ['effect', 'set', 'set.setEffect', 'set.setEffect.effect', 'set.equip'],
+            relations: ['effect', 'set', 'set.equip', 'set.setEffect', 'set.setEffect.effect'],
         });
         return equip;
     }
