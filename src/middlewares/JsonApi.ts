@@ -12,13 +12,13 @@ export class JsonApiResponseMiddleware extends SendResponseMiddleware {
         @Req() request: Req,
     ): Response {
         if (data instanceof Array || data instanceof Resource) {
-            return super.use({
+            return response.json({
                 data,
                 meta: {
                     id: request.log.id,
                     time: request.log.startDate,
                 },
-            }, response);
+            });
         }
         return super.use(data, response);
     }
