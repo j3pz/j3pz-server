@@ -23,12 +23,12 @@ const rootDir = __dirname;
     rootDir,
     acceptMimes: ['application/json'],
     mount: {
-        '/api': '${rootDir}/controllers/**/*.ts',
+        '/api': '${rootDir}/controllers/**/*.{ts,js}',
     },
     componentsScan: [
-        '${rootDir}/middlewares/**/*.ts',
-        '${rootDir}/services/**/*.ts',
-        '${rootDir}/converters/**/*.ts',
+        '${rootDir}/middlewares/**/*.{ts,js}',
+        '${rootDir}/services/**/*.{ts,js}',
+        '${rootDir}/converters/**/*.{ts,js}',
     ],
     typeorm: [
         {
@@ -41,7 +41,7 @@ const rootDir = __dirname;
             password: process.env.MYSQL_DB_PASS,
             database: process.env.MYSQL_DB_NAME,
             entities: [
-                `${__dirname}/entities/*.ts`,
+                `${__dirname}/entities/*.{ts,js}`,
             ],
         },
     ],

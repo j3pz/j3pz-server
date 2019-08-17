@@ -11,7 +11,8 @@
       "experimentalDecorators":true,
       "emitDecoratorMetadata": true,
       "allowSyntheticDefaultImports": true,
-      "outDir": "dist"
+      "outDir": "dist",
+      "sourceMap": true
     },
     "exclude": [
       "node_modules"
