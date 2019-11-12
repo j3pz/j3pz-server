@@ -17,6 +17,7 @@ export const School = {
     长歌: lit('长歌'),
     霸刀: lit('霸刀'),
     蓬莱: lit('蓬莱'),
+    凌雪: lit('凌雪'),
 };
 export type School = (typeof School)[keyof typeof School];
 
@@ -46,6 +47,7 @@ export const KungFu = {
     洗髓经: lit('洗髓经'),
     明尊琉璃体: lit('明尊琉璃体'),
     铁骨衣: lit('铁骨衣'),
+    隐龙诀: lit('隐龙诀'),
 };
 export type KungFu = (typeof KungFu)[keyof typeof KungFu];
 
