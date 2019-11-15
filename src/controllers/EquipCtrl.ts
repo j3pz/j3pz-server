@@ -33,7 +33,7 @@ export class EquipCtrl {
         const list = await this.equipService.find({
             kungfu,
             category,
-            quality: [1800, 2800],
+            quality: [1800, 3000],
         }) as EquipCore[];
         return list.map((equip): EquipCoreResource => new Resource(equip.id, 'equip', equip));
     }
@@ -46,6 +46,7 @@ export class EquipCtrl {
         if (equip === undefined) {
             throw new EquipNotFound(id);
         }
+        console.log(equip.source);
         if (equip.set) {
             const collection = equip.set.equip.map((e: Equip): EquipCore => ({
                 id: e.id,

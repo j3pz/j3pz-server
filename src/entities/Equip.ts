@@ -1,11 +1,11 @@
 import {
-    Entity, PrimaryGeneratedColumn, Column, ManyToOne,
+    Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable,
 } from 'typeorm';
 import { Title } from '@tsed/swagger';
 import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
 import { Category, School } from '../model/Base';
-// import { Source } from './Source';
+import { Source } from './Source';
 
 @Entity()
 export class Equip {
@@ -173,10 +173,10 @@ export class Equip {
     @Title('最大精炼等级')
     public strengthen: number;
 
-    // @ManyToMany(() => Source, source => source.id)
-    // @JoinTable()
-    // @Title('装备来源')
-    // public source: Source[];
+    @ManyToMany(() => Source, source => source.id)
+    @JoinTable()
+    @Title('装备来源')
+    public source: Source[];
 
     @Column()
     @Title('过时装备')

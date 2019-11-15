@@ -8,7 +8,9 @@ export class Boss {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     public name: string;
 
     @ManyToOne(() => GameMap, map => map.id)

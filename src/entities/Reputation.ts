@@ -7,4 +7,9 @@ export class Reputation {
 
     @Column()
     public name: string;
+
+    @Column({
+        nullable: true,
+    })
+    public level: string;
 }

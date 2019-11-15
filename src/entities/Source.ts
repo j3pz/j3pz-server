@@ -9,6 +9,7 @@ enum SourceType {
     REPUTATION = 'reputation', // 声望
     REDEEM = 'redeem', // 道具兑换（威望、名剑）
     ACTIVITY = 'activity', // 常规活动
+    OTHER = 'other', // 其他类型
 }
 
 enum RedeemType {
@@ -17,6 +18,7 @@ enum RedeemType {
     PRESTIGE_FIEND = 'prestige_fiend', // 恶人谷威望
     PRESTIGE_VIRTUE = 'prestige_virtue', // 浩气盟威望
     ARENA = 'arena', // 名剑竞技场
+    STORE = 'store', // 其他商店
 }
 
 @Entity()
@@ -24,6 +26,11 @@ enum RedeemType {
 export class Source {
     @PrimaryGeneratedColumn()
     public id: number;
+
+    @Column({
+        nullable: true,
+    })
+    public comment?: string;
 }
 
 @ChildEntity()
@@ -36,9 +43,6 @@ export class RaidSource extends Source {
 export class ReputationSource extends Source {
     @ManyToOne(() => Reputation, reputation => reputation.id)
     public reputation: Reputation;
-
-    @Column()
-    public reputationLevel: string;
 }
 
 @ChildEntity()
@@ -57,4 +61,9 @@ export class ActivitySource extends Source {
 
     @Column()
     public limitedTime?: boolean;
+}
+
+@ChildEntity()
+export class OtherSource extends Source {
+
 }

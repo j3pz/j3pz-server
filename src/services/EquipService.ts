@@ -49,7 +49,17 @@ export class EquipService implements AfterRoutesInit {
 
     public async findById(id: number): Promise<Equip> {
         const equip = await this.connection.manager.findOne(Equip, id, {
-            relations: ['effect', 'set', 'set.equip', 'set.setEffect', 'set.setEffect.effect'],
+            relations: [
+                'effect',
+                'set',
+                'set.equip',
+                'set.setEffect',
+                'set.setEffect.effect',
+                'source',
+                'source.boss',
+                'source.boss.map',
+                'source.reputation',
+            ],
         });
         return equip;
     }

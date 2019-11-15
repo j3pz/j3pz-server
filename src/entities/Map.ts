@@ -7,7 +7,4 @@ export class GameMap {
 
     @Column()
     public name: string;
-
-    @Column()
-    public deprecated: boolean;
 }
