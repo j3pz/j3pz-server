@@ -57,9 +57,19 @@ export type SecondaryAttribute =
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
     'hit' | 'strain' | 'haste' | 'threat' | 'huajing'
 export type MinorAttribute = 'basicMagicShield' | 'basicPhysicsShield' | 'attackSpeed' | 'damageBase' | 'damageRange';
+export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover';
+
+export type Attribute = PrimaryAttribute | SecondaryAttribute | MinorAttribute | ExtraAttribute;
 export type AttributeTag =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'toughness' |
     'crit' | 'overcome' | 'hit' | 'strain' | 'haste';
+
+export const AttributeDecorator = {
+    PHYSICS: lit('PHYSICS'),
+    MAGIC: lit('MAGIC'),
+    ALL: lit('ALL'),
+};
+export type AttributeDecorator = (typeof AttributeDecorator)[keyof typeof AttributeDecorator];
 
 export const Category = {
     HAT: lit('hat'),

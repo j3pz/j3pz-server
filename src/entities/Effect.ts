@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Title } from '@tsed/swagger';
+import { Attribute } from '../model/Base';
 
 @Entity()
 export class Effect {
@@ -9,7 +10,7 @@ export class Effect {
 
     @Column({ type: 'simple-array', default: null, nullable: true })
     @Title('属性 key')
-    public attribute: string[];
+    public attribute: Attribute[];
 
     @Column({ type: 'simple-array', default: null, nullable: true })
     @Title('属性值')
