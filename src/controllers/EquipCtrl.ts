@@ -46,7 +46,7 @@ export class EquipCtrl {
         if (equip === undefined) {
             throw new EquipNotFound(id);
         }
-        console.log(equip.source);
+
         if (equip.set) {
             const collection = equip.set.equip.map((e: Equip): EquipCore => ({
                 id: e.id,
