@@ -42,6 +42,9 @@ export class EquipService implements AfterRoutesInit {
                 school: In([kungfuFilter.school, '通用', '精简']),
                 primaryAttribute: In([kungfuFilter.primaryAttribute, 'magic']),
             },
+            order: {
+                quality: 'ASC',
+            },
         });
 
         return equips;

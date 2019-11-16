@@ -11,10 +11,11 @@ import { EquipResource, EquipCoreResource, EquipCore } from '../model/Equip';
 import { Equip } from '../entities/Equip';
 import { KungFuNotExistError, CategoryNotExistError } from '../utils/errors/BadRequests';
 import { EquipNotFound } from '../utils/errors/NotFound';
+import { ConfigService } from '../services/ConfigService';
 
 @Controller('/equip')
 export class EquipCtrl {
-    public constructor(private equipService: EquipService) {}
+    public constructor(private equipService: EquipService, private configService: ConfigService) {}
 
     @Get()
     @Summary('获取装备列表')
@@ -33,7 +34,10 @@ export class EquipCtrl {
         const list = await this.equipService.find({
             kungfu,
             category,
-            quality: [1800, 3000],
+            quality: [
+                this.configService.getConfig().minQuality,
+                this.configService.getConfig().maxQaulity,
+            ],
         }) as EquipCore[];
         return list.map((equip): EquipCoreResource => new Resource(equip.id, 'equip', equip));
     }
