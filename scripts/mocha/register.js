@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires import/no-extraneous-dependencies */
 const Chai = require('chai');
 const ChaiAsPromised = require('chai-as-promised');
 const SinonChai = require('sinon-chai');
