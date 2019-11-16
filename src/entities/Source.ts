@@ -5,17 +5,18 @@ import { Boss } from './Boss';
 import { Reputation } from './Reputation';
 
 enum SourceType {
-    RAID = 'raid',
-    REPUTATION = 'reputation',
-    REDEEM = 'redeem',
+    RAID = 'raid', // 副本、掉落
+    REPUTATION = 'reputation', // 声望
+    REDEEM = 'redeem', // 道具兑换（威望、名剑）
+    ACTIVITY = 'activity', // 常规活动
 }
 
 enum RedeemType {
-    CONTRIBUTION = 'contribution',
-    CHIVALRY = 'chivalry',
-    PRESTIGE_FIEND = 'prestige_fiend',
-    PRESTIGE_VIRTUE = 'prestige_virtue',
-    ARENA = 'arena',
+    CONTRIBUTION = 'contribution', // 帮贡
+    CHIVALRY = 'chivalry', // 侠义
+    PRESTIGE_FIEND = 'prestige_fiend', // 恶人谷威望
+    PRESTIGE_VIRTUE = 'prestige_virtue', // 浩气盟威望
+    ARENA = 'arena', // 名剑竞技场
 }
 
 @Entity()
@@ -47,4 +48,13 @@ export class RedeemSource extends Source {
         enum: RedeemType,
     })
     public redeem: RedeemType;
+}
+
+@ChildEntity()
+export class ActivitySource extends Source {
+    @Column()
+    public activity: string;
+
+    @Column()
+    public limitedTime?: boolean;
 }
