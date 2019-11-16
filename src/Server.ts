@@ -51,8 +51,8 @@ const rootDir = __dirname;
         },
     ],
     logger: {
-        // @ts-ignore
         reqIdBuilder: generateReqId,
+        level: process.env.LOG_LEVEL as ('debug' | 'info' | 'warn' | 'error' | 'off'),
     },
 })
 export class Server extends ServerLoader {
