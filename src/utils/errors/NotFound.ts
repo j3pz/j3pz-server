@@ -6,6 +6,8 @@ import { ServerError } from '../../model/Server';
 enum BadRequestErrorCode {
     // 1 表示装备模块错误
     EquipNotFound = 404101,
+    // 2 表示附魔模块错误
+    EnhanceNotFound = 404201,
 }
 
 export class EquipNotFound extends NotFound implements IResponseError {
@@ -19,6 +21,20 @@ export class EquipNotFound extends NotFound implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `数据库中未找到 ID:${equipId} 对应的装备`,
+        });
+    }
+}
+export class EnhanceNotFound extends NotFound implements IResponseError {
+    public code: BadRequestErrorCode.EnhanceNotFound;
+
+    public errors: ServerError[] = [];
+
+    public constructor(enhanceId: string) {
+        super('附魔未找到');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `数据库中未找到 ID:${enhanceId} 对应的附魔`,
         });
     }
 }

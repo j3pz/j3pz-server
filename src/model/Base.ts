@@ -68,8 +68,10 @@ export const AttributeDecorator = {
     PHYSICS: lit('PHYSICS'),
     MAGIC: lit('MAGIC'),
     ALL: lit('ALL'),
+    NONE: lit('NONE'),
 };
 export type AttributeDecorator = (typeof AttributeDecorator)[keyof typeof AttributeDecorator];
+export type DecoratorTuple = [Attribute, AttributeDecorator];
 
 export const Category = {
     HAT: lit('hat'),
