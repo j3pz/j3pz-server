@@ -4,7 +4,7 @@ import { IConfigCatClient } from 'configcat-common/lib/ConfigCatClient';
 import { User } from 'configcat-common/lib/RolloutEvaluator';
 import { GlobalConfig } from '../model/GlobalConfig';
 
-const { CONFIG_CAT_KEY } = process.env;
+const { CONFIG_CAT_KEY, CONFIG_CAT_PROXY } = process.env;
 
 @Service()
 export class ConfigService {
@@ -15,12 +15,14 @@ export class ConfigService {
     public constructor() {
         this.config = new GlobalConfig();
         this.configCatClient = createClientWithAutoPoll(CONFIG_CAT_KEY, {
+            pollIntervalSeconds: 3600,
             configChanged: async () => {
                 const rawConfig = await this.configCatClient.forceRefreshAsync();
                 this.config.update(rawConfig.ConfigJSON);
                 $log.info('Global Config Updated');
                 $log.debug('Global Config Updated to:', rawConfig.ConfigJSON);
             },
+            proxy: CONFIG_CAT_PROXY,
         });
     }
 

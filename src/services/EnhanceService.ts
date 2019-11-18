@@ -23,13 +23,13 @@ export class EnhanceService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('resources');
     }
 
-    private getFilterByKungfu(kungfu: KungFu): KungFuMeta {
-        const meta = kungFuLib[kungfu];
-        return meta;
+    private getFilterByKungfu(kungfu: KungFu): Partial<KungFuMeta> {
+        const { decorator, primaryAttribute } = kungFuLib[kungfu];
+        return { decorator, primaryAttribute };
     }
 
     public async find(filter: EnhanceListFilter): Promise<Enhance[]> {
-        const kungfuFilter = this.getFilterByKungfu(filter.kungfu);
+        // const kungfuFilter = this.getFilterByKungfu(filter.kungfu);
         const enhances = await this.connection.manager.find(Enhance, {
             select: ['id', 'name', 'category'],
             where: {
