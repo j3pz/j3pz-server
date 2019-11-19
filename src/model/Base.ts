@@ -52,10 +52,11 @@ export const KungFu = {
 export type KungFu = (typeof KungFu)[keyof typeof KungFu];
 
 export type PrimaryAttribute = 'vitality' | 'spunk' | 'spirit' | 'strength' | 'agility';
+export const PrimaryAttribute: PrimaryAttribute[] = ['vitality', 'spunk', 'spirit', 'strength', 'agility'];
 export type SecondaryAttribute =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'parryValue' | 'toughness' |
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
-    'hit' | 'strain' | 'haste' | 'threat' | 'huajing'
+    'hit' | 'strain' | 'haste' | 'threat' | 'huajing';
 export type MinorAttribute = 'basicMagicShield' | 'basicPhysicsShield' | 'attackSpeed' | 'damageBase' | 'damageRange';
 export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover';
 
