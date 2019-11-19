@@ -51,11 +51,12 @@ export const KungFu = {
 };
 export type KungFu = (typeof KungFu)[keyof typeof KungFu];
 
-export type PrimaryAttribute = 'vitality' | 'spunk' | 'spirit' | 'strength' | 'agility' | 'heal';
+export type PrimaryAttribute = 'vitality' | 'spunk' | 'spirit' | 'strength' | 'agility';
+export const PrimaryAttribute: PrimaryAttribute[] = ['vitality', 'spunk', 'spirit', 'strength', 'agility'];
 export type SecondaryAttribute =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'parryValue' | 'toughness' |
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
-    'hit' | 'strain' | 'haste' | 'threat' | 'huajing'
+    'hit' | 'strain' | 'haste' | 'threat' | 'huajing';
 export type MinorAttribute = 'basicMagicShield' | 'basicPhysicsShield' | 'attackSpeed' | 'damageBase' | 'damageRange';
 export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover';
 
@@ -68,8 +69,10 @@ export const AttributeDecorator = {
     PHYSICS: lit('PHYSICS'),
     MAGIC: lit('MAGIC'),
     ALL: lit('ALL'),
+    NONE: lit('NONE'),
 };
 export type AttributeDecorator = (typeof AttributeDecorator)[keyof typeof AttributeDecorator];
+export type DecoratorTuple = [Attribute, AttributeDecorator];
 
 export const Category = {
     HAT: lit('hat'),
@@ -86,3 +89,10 @@ export const Category = {
     TERTIARY_WEAPON: lit('tertiaryWeapon'),
 };
 export type Category = (typeof Category)[keyof typeof Category];
+
+export const GamingRole = {
+    DAMAGE_DEALER: lit('DAMAGE_DEALER'),
+    HEALER: lit('HEALER'),
+    TANK: lit('TANK'),
+};
+export type GamingRole = (typeof GamingRole)[keyof typeof GamingRole];
