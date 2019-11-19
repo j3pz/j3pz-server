@@ -1,9 +1,10 @@
 import { KungFuMeta } from '../KungfuMeta';
-import { AttributeDecorator } from '../../model/Base';
+import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 毒经: KungFuMeta = {
     primaryAttribute: 'spirit',
     school: '五毒',
+    role: GamingRole.DAMAGE_DEALER,
     decorator: [
         ['attack', AttributeDecorator.MAGIC],
         ['hit', AttributeDecorator.MAGIC],
@@ -28,8 +29,9 @@ export const 毒经: KungFuMeta = {
 };
 
 export const 补天诀: KungFuMeta = {
-    primaryAttribute: 'heal',
+    primaryAttribute: 'spirit',
     school: '五毒',
+    role: GamingRole.HEALER,
     decorator: [
         ['crit', AttributeDecorator.MAGIC],
         ['critEffect', AttributeDecorator.MAGIC],

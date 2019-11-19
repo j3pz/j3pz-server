@@ -1,5 +1,5 @@
 import {
-    PrimaryAttribute, School, DecoratorTuple, ExtraAttribute, SecondaryAttribute,
+    PrimaryAttribute, School, DecoratorTuple, ExtraAttribute, SecondaryAttribute, GamingRole,
 } from '../model/Base';
 
 type AttributeBaseValue = Partial<Record<PrimaryAttribute | SecondaryAttribute | ExtraAttribute, number>>;
@@ -10,6 +10,8 @@ export interface KungFuMeta {
     primaryAttribute: PrimaryAttribute;
     // 门派
     school: School;
+    // 心法类型
+    role: GamingRole;
     // 属性修饰
     decorator: DecoratorTuple[];
     // 属性基础数值

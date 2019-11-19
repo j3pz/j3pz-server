@@ -1,9 +1,10 @@
 import { KungFuMeta } from '../KungfuMeta';
-import { AttributeDecorator } from '../../model/Base';
+import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 分山劲: KungFuMeta = {
     primaryAttribute: 'agility',
     school: '苍云',
+    role: GamingRole.DAMAGE_DEALER,
     decorator: [
         ['attack', AttributeDecorator.PHYSICS],
         ['hit', AttributeDecorator.PHYSICS],
@@ -32,6 +33,7 @@ export const 分山劲: KungFuMeta = {
 export const 铁骨衣: KungFuMeta = {
     primaryAttribute: 'vitality',
     school: '苍云',
+    role: GamingRole.TANK,
     decorator: [],
     base: {
         parryBase: 414,

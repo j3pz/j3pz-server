@@ -51,7 +51,7 @@ export const KungFu = {
 };
 export type KungFu = (typeof KungFu)[keyof typeof KungFu];
 
-export type PrimaryAttribute = 'vitality' | 'spunk' | 'spirit' | 'strength' | 'agility' | 'heal';
+export type PrimaryAttribute = 'vitality' | 'spunk' | 'spirit' | 'strength' | 'agility';
 export type SecondaryAttribute =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'parryValue' | 'toughness' |
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
@@ -88,3 +88,10 @@ export const Category = {
     TERTIARY_WEAPON: lit('tertiaryWeapon'),
 };
 export type Category = (typeof Category)[keyof typeof Category];
+
+export const GamingRole = {
+    DAMAGE_DEALER: lit('DAMAGE_DEALER'),
+    HEALER: lit('HEALER'),
+    TANK: lit('TANK'),
+};
+export type GamingRole = (typeof GamingRole)[keyof typeof GamingRole];
