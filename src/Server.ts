@@ -52,6 +52,7 @@ const rootDir = __dirname;
     ],
     logger: {
         reqIdBuilder: generateReqId,
+        logRequest: false,
         level: process.env.LOG_LEVEL as ('debug' | 'info' | 'warn' | 'error' | 'off'),
     },
 })
