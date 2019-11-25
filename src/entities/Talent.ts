@@ -1,6 +1,9 @@
-import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
+import {
+    Column, PrimaryGeneratedColumn, Entity, ManyToOne,
+} from 'typeorm';
 import { Title } from '@tsed/swagger';
 import { KungFu } from '../model/Base';
+import { Effect } from './Effect';
 
 @Entity()
 export class Talent {
@@ -30,4 +33,10 @@ export class Talent {
     @Column()
     @Title('对应游戏版本')
     public version: string;
+
+    @ManyToOne(() => Effect, effect => effect.id, {
+        nullable: true,
+    })
+    @Title('激活效果')
+    public effect?: Effect;
 }

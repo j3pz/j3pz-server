@@ -23,6 +23,7 @@ export class TalentService implements AfterRoutesInit {
 
     public async find(filter: TalentListFilter): Promise<Talent[]> {
         const Talents = await this.connection.manager.find(Talent, {
+            select: ['id', 'index', 'name', 'description', 'icon'],
             where: {
                 kungfu: filter.kungfu,
                 version: filter.version,
@@ -33,7 +34,9 @@ export class TalentService implements AfterRoutesInit {
     }
 
     public async findById(id: number): Promise<Talent> {
-        const talent = await this.connection.manager.findOne(Talent, id);
+        const talent = await this.connection.manager.findOne(Talent, id, {
+            relations: ['effect'],
+        });
         return talent;
     }
 }
