@@ -27,9 +27,9 @@ export class EquipService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('resources');
     }
 
-    private getFilterByKungfu(kungfu: KungFu): KungFuMeta {
-        const meta = kungFuLib[kungfu];
-        return meta;
+    private getFilterByKungfu(kungfu: KungFu): Partial<KungFuMeta> {
+        const { school, primaryAttribute } = kungFuLib[kungfu];
+        return { school, primaryAttribute };
     }
 
     public async find(filter: EquipListFilter): Promise<Equip[]> {
@@ -41,6 +41,9 @@ export class EquipService implements AfterRoutesInit {
                 category: filter.category,
                 school: In([kungfuFilter.school, '通用', '精简']),
                 primaryAttribute: In([kungfuFilter.primaryAttribute, 'magic']),
+            },
+            order: {
+                quality: 'ASC',
             },
         });
 

@@ -35,7 +35,7 @@ const rootDir = __dirname;
             name: 'resources',
             type: 'mysql',
             host: process.env.MYSQL_DB_HOST,
-            port: 3306,
+            port: +process.env.MYSQL_DB_PORT,
             synchronize: true,
             username: process.env.MYSQL_DB_USER,
             password: process.env.MYSQL_DB_PASS,
@@ -51,8 +51,9 @@ const rootDir = __dirname;
         },
     ],
     logger: {
-        // @ts-ignore
         reqIdBuilder: generateReqId,
+        logRequest: false,
+        level: process.env.LOG_LEVEL as ('debug' | 'info' | 'warn' | 'error' | 'off'),
     },
 })
 export class Server extends ServerLoader {
