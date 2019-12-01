@@ -6,12 +6,12 @@ import {
 } from '@tsed/swagger';
 import { Resource } from '../model/Server';
 import { StoneService } from '../services/StoneService';
-import { KungFu, Attribute, AttributeDecorator } from '../model/Base';
-import { StoneResource, StoneAttributeCoreResource, StoneAttributeCore } from '../model/Stone';
+import { Attribute, AttributeDecorator } from '../model/Base';
+import { StoneResource } from '../model/Stone';
 import { Stone } from '../entities/Stone';
-import { KungFuNotExistError } from '../utils/errors/BadRequests';
 import { StoneNotFound } from '../utils/errors/NotFound';
 import { ConfigService } from '../services/ConfigService';
+import { AttributeRequiredError, DecoratorRequiredError, AttributeDecoratorNotMatchError } from '../utils/errors/BadRequests';
 
 @Controller('/stone')
 export class StoneCtrl {
@@ -22,23 +22,21 @@ export class StoneCtrl {
     @ReturnsArray(200, { description: 'OK', type: Stone })
     @ReturnsArray(400, { description: 'Bad Request' })
     public async list(
-        @QueryParams('kungfu') @Description('心法名称') kungfu: KungFu,
         @QueryParams('attribute') @Description('包含属性') attributes: Attribute[],
         @QueryParams('decorator') @Description('包含属性') decorators: AttributeDecorator[],
-    ): Promise<StoneResource[] | StoneAttributeCoreResource[]> {
-        if (attributes && attributes.length > 0 && decorators && decorators.length > 0) {
-            // 基于属性查找五彩石列表
-            console.log(attributes, decorators);
-            return [];
+    ): Promise<StoneResource[]> {
+        if (attributes === undefined) {
+            throw new AttributeRequiredError();
         }
-        // 基于心法查找五彩石属性列表
-        if (!Object.values(KungFu).includes(kungfu)) {
-            throw new KungFuNotExistError(kungfu);
+        if (decorators === undefined) {
+            throw new DecoratorRequiredError();
         }
-        const list = await this.stoneService.findAttributes({
-            kungfu,
-        }) as StoneAttributeCore[];
-        return list.map((attribute): StoneAttributeCoreResource => new Resource(attribute.id, 'StoneAttribute', attribute));
+        if (decorators.length !== attributes.length) {
+            throw new AttributeDecoratorNotMatchError();
+        }
+        // 基于属性查找五彩石列表
+        const stones = await this.stoneService.find(attributes, decorators);
+        return stones.map(stone => new Resource(stone.id, 'Stone', stone));
     }
 
     @Get('/:id')

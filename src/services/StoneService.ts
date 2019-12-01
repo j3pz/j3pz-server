@@ -58,14 +58,18 @@ export class StoneService implements AfterRoutesInit {
         }];
     }
 
-    // public async find(filter: StoneListFilter): Promise<Stone[]> {
-    //     const kungfuFilter = this.getFilterByKungfu(filter.kungfu);
-    //     const stones = await this.connection.manager.find(Stone, {
-    //         select: ['id', 'name'],
-    //     });
+    public async find(attributes: Attribute[], decorators: AttributeDecorator[]): Promise<Stone[]> {
+        const stones = await this.connection.manager.find(Stone, {
+            select: ['id', 'name'],
+            relations: ['attributes'],
+            where: {
+                'attributes.key': In(attributes),
+                'attributes.decorator': In(decorators),
+            },
+        });
 
-    //     return stones;
-    // }
+        return stones;
+    }
 
     public async findAttributes(filter: AttributeListFilter): Promise<StoneAttributeCore[]> {
         const kungfuFilter = this.getAttributeFilterByKungfu(filter.kungfu);
@@ -83,9 +87,7 @@ export class StoneService implements AfterRoutesInit {
 
     public async findById(id: number): Promise<Stone> {
         const stone = await this.connection.manager.findOne(Stone, id, {
-            relations: [
-                'attributes',
-            ],
+            relations: ['attributes'],
         });
         return stone;
     }
