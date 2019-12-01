@@ -6,11 +6,11 @@ export const 天罗诡道: KungFuMeta = {
     school: '唐门',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.POISON],
         ['hit', AttributeDecorator.PHYSICS],
         ['crit', AttributeDecorator.PHYSICS],
         ['critEffect', AttributeDecorator.PHYSICS],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['overcome', AttributeDecorator.POISON],
     ],
     base: {
         attack: 664,

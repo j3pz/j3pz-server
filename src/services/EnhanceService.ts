@@ -5,20 +5,16 @@ import {
 } from 'typeorm';
 import { Enhance } from '../entities/Enhance';
 import {
-    Category, KungFu, GamingRole, Attribute, PrimaryAttribute, AttributeDecorator,
+    Category, KungFu, Attribute, PrimaryAttribute, AttributeDecorator,
 } from '../model/Base';
 import { kungFuLib } from '../utils/KungFuLib';
+import { getDecoratorList } from '../utils/decorator';
+import { BANNED_ATTRIBUTES_BY_ROLE } from '../utils/KungfuMeta';
 
 interface EnhanceListFilter {
     kungfu: KungFu;
     category: Category;
 }
-
-const BANNED_ATTRIBUTES_BY_ROLE: { [key in GamingRole]: Attribute[] } = {
-    [GamingRole.DAMAGE_DEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'heal', 'threat'],
-    [GamingRole.HEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'attack', 'overcome', 'threat'],
-    [GamingRole.TANK]: ['attack', 'crit', 'critEffect', 'damageBase', 'damageRange', 'heal', 'huajing', 'overcome'],
-};
 
 @Service()
 export class EnhanceService implements AfterRoutesInit {
@@ -46,7 +42,7 @@ export class EnhanceService implements AfterRoutesInit {
                 queriedAttributes.push(...decoratorEntry[1]);
                 return {
                     attribute: In(decoratorEntry[1]),
-                    decorator: In([decoratorEntry[0], AttributeDecorator.ALL]),
+                    decorator: In(getDecoratorList(decoratorEntry[0] as AttributeDecorator)),
                 };
             });
         // 基于心法类型去除一些属性

@@ -1,5 +1,5 @@
 import {
-    PrimaryAttribute, School, DecoratorTuple, ExtraAttribute, SecondaryAttribute, GamingRole,
+    PrimaryAttribute, School, DecoratorTuple, ExtraAttribute, SecondaryAttribute, GamingRole, Attribute,
 } from '../model/Base';
 
 type AttributeBaseValue = Partial<Record<PrimaryAttribute | SecondaryAttribute | ExtraAttribute, number>>;
@@ -21,3 +21,9 @@ export interface KungFuMeta {
     // 覆盖默认提升比例
     override: AttributeFactor;
 }
+
+export const BANNED_ATTRIBUTES_BY_ROLE: { [key in GamingRole]: Attribute[] } = {
+    [GamingRole.DAMAGE_DEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'heal', 'threat'],
+    [GamingRole.HEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'attack', 'overcome', 'threat'],
+    [GamingRole.TANK]: ['attack', 'crit', 'critEffect', 'damageBase', 'damageRange', 'heal', 'huajing', 'overcome'],
+};

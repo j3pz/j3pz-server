@@ -6,11 +6,11 @@ export const 相知: KungFuMeta = {
     school: '长歌',
     role: GamingRole.HEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.LUNAR],
+        ['hit', AttributeDecorator.LUNAR],
+        ['crit', AttributeDecorator.LUNAR],
+        ['critEffect', AttributeDecorator.LUNAR],
+        ['overcome', AttributeDecorator.LUNAR],
     ],
     base: {
         heal: 2215,
@@ -32,11 +32,11 @@ export const 莫问: KungFuMeta = {
     school: '长歌',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.LUNAR],
+        ['hit', AttributeDecorator.LUNAR],
+        ['crit', AttributeDecorator.LUNAR],
+        ['critEffect', AttributeDecorator.LUNAR],
+        ['overcome', AttributeDecorator.LUNAR],
     ],
     base: {
         attack: 664,

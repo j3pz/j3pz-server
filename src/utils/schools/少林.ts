@@ -6,11 +6,11 @@ export const 易筋经: KungFuMeta = {
     school: '少林',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.SOLAR],
+        ['hit', AttributeDecorator.SOLAR],
+        ['crit', AttributeDecorator.SOLAR],
+        ['critEffect', AttributeDecorator.SOLAR],
+        ['overcome', AttributeDecorator.SOLAR],
     ],
     base: {
         attack: 738,

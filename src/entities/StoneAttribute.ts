@@ -3,6 +3,7 @@ import {
 } from 'typeorm';
 import { Title } from '@tsed/swagger';
 import { Attribute, AttributeDecorator } from '../model/Base';
+import { ColumnNumericTransformer } from '../utils/transformers';
 
 @Entity()
 export class StoneAttribute {
@@ -21,7 +22,12 @@ export class StoneAttribute {
     @Title('属性标识')
     public key: string;
 
-    @Column()
+    @Column({
+        type: 'decimal',
+        precision: 5,
+        scale: 2,
+        transformer: new ColumnNumericTransformer(),
+    })
     @Title('属性值')
     public value: number;
 

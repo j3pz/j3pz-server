@@ -6,11 +6,11 @@ export const 焚影圣诀: KungFuMeta = {
     school: '明教',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.SOLAR_LUNAR],
+        ['hit', AttributeDecorator.SOLAR_LUNAR],
+        ['crit', AttributeDecorator.SOLAR_LUNAR],
+        ['critEffect', AttributeDecorator.SOLAR_LUNAR],
+        ['overcome', AttributeDecorator.SOLAR_LUNAR],
     ],
     base: {
         attack: 775,

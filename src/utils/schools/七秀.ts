@@ -6,11 +6,11 @@ export const 冰心诀: KungFuMeta = {
     school: '七秀',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.LUNAR],
+        ['hit', AttributeDecorator.LUNAR],
+        ['crit', AttributeDecorator.LUNAR],
+        ['critEffect', AttributeDecorator.LUNAR],
+        ['overcome', AttributeDecorator.LUNAR],
     ],
     base: {
         attack: 738,
@@ -34,8 +34,8 @@ export const 云裳心经: KungFuMeta = {
     school: '七秀',
     role: GamingRole.HEALER,
     decorator: [
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
+        ['crit', AttributeDecorator.LUNAR],
+        ['critEffect', AttributeDecorator.LUNAR],
     ],
     base: {
         heal: 2144,
