@@ -6,11 +6,11 @@ export const 紫霞功: KungFuMeta = {
     school: '纯阳',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.NEUTRAL],
+        ['hit', AttributeDecorator.NEUTRAL],
+        ['crit', AttributeDecorator.NEUTRAL],
+        ['critEffect', AttributeDecorator.NEUTRAL],
+        ['overcome', AttributeDecorator.NEUTRAL],
     ],
     base: {
         attack: 664,

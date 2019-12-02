@@ -58,7 +58,7 @@ export type SecondaryAttribute =
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
     'hit' | 'strain' | 'haste' | 'threat' | 'huajing';
 export type MinorAttribute = 'basicMagicShield' | 'basicPhysicsShield' | 'attackSpeed' | 'damageBase' | 'damageRange';
-export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover';
+export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover' | 'damageOffset';
 
 export type Attribute = PrimaryAttribute | SecondaryAttribute | MinorAttribute | ExtraAttribute;
 export type AttributeTag =
@@ -70,6 +70,11 @@ export const AttributeDecorator = {
     MAGIC: lit('MAGIC'),
     ALL: lit('ALL'),
     NONE: lit('NONE'),
+    NEUTRAL: lit('NEUTRAL'),
+    SOLAR: lit('SOLAR'),
+    LUNAR: lit('LUNAR'),
+    POISON: lit('POISON'),
+    SOLAR_LUNAR: lit('SOLAR_LUNAR'),
 };
 export type AttributeDecorator = (typeof AttributeDecorator)[keyof typeof AttributeDecorator];
 export type DecoratorTuple = [Attribute, AttributeDecorator];

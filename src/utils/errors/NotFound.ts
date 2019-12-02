@@ -8,8 +8,10 @@ enum BadRequestErrorCode {
     EquipNotFound = 404101,
     // 2 表示附魔模块错误
     EnhanceNotFound = 404201,
-    // 4 表示附魔模块错误
+    // 4 表示奇穴模块错误
     TalentNotFound = 404401,
+    // 5 表示五彩石模块错误
+    StoneNotFound = 404501,
 }
 
 export class EquipNotFound extends NotFound implements IResponseError {
@@ -53,6 +55,21 @@ export class TalentNotFound extends NotFound implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `数据库中未找到 ID:${talentId} 对应的奇穴`,
+        });
+    }
+}
+
+export class StoneNotFound extends NotFound implements IResponseError {
+    public code: BadRequestErrorCode.StoneNotFound;
+
+    public errors: ServerError[] = [];
+
+    public constructor(stoneId: string) {
+        super('五彩石未找到');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `数据库中未找到 ID:${stoneId} 对应的五彩石`,
         });
     }
 }

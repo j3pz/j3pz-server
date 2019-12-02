@@ -6,11 +6,11 @@ export const 花间游: KungFuMeta = {
     school: '万花',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.NEUTRAL],
+        ['hit', AttributeDecorator.NEUTRAL],
+        ['crit', AttributeDecorator.NEUTRAL],
+        ['critEffect', AttributeDecorator.NEUTRAL],
+        ['overcome', AttributeDecorator.NEUTRAL],
     ],
     base: {
         attack: 738,
@@ -33,8 +33,8 @@ export const 离经易道: KungFuMeta = {
     school: '万花',
     role: GamingRole.HEALER,
     decorator: [
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
+        ['crit', AttributeDecorator.NEUTRAL],
+        ['critEffect', AttributeDecorator.NEUTRAL],
     ],
     base: {
         heal: 2001,
