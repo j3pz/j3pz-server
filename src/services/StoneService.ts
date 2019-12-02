@@ -5,7 +5,7 @@ import {
 } from 'typeorm';
 import { Stone } from '../entities/Stone';
 import {
-    KungFu, Attribute, AttributeDecorator, PrimaryAttribute,
+    KungFu, Attribute, AttributeDecorator, PrimaryAttribute, DecoratorTuple,
 } from '../model/Base';
 import { kungFuLib } from '../utils/KungFuLib';
 import { BANNED_ATTRIBUTES_BY_ROLE } from '../utils/KungfuMeta';
@@ -58,15 +58,26 @@ export class StoneService implements AfterRoutesInit {
         }];
     }
 
-    public async find(attributes: Attribute[], decorators: AttributeDecorator[]): Promise<Stone[]> {
-        const stones = await this.connection.manager.find(Stone, {
-            select: ['id', 'name'],
-            relations: ['attributes'],
-            where: {
-                'attributes.key': In(attributes),
-                'attributes.decorator': In(decorators),
-            },
-        });
+    public async find(tuples: DecoratorTuple[]): Promise<Stone[]> {
+        const stones = await this.connection.getRepository(Stone)
+            .createQueryBuilder('stone')
+            .innerJoin('stone.attributes', 'attribute')
+            .where((qb) => {
+                let subQuery = qb.subQuery()
+                    .select('attribute.id')
+                    .from(StoneAttribute, 'attribute')
+                    .where('1 = 0');
+                tuples.forEach(([attribute, decorator], i) => {
+                    subQuery = subQuery.orWhere(`(attribute.key = :key${i} AND attribute.decorator = :decorator${i})`, {
+                        [`key${i}`]: attribute,
+                        [`decorator${i}`]: decorator,
+                    });
+                });
+                return `attribute.id IN ${subQuery.getQuery()}`;
+            })
+            .groupBy('stone.id')
+            .having('count(*) >= :count', { count: tuples.length })
+            .getMany();
 
         return stones;
     }

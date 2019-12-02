@@ -6,7 +6,7 @@ import {
 } from '@tsed/swagger';
 import { Resource } from '../model/Server';
 import { StoneService } from '../services/StoneService';
-import { Attribute, AttributeDecorator } from '../model/Base';
+import { Attribute, AttributeDecorator, DecoratorTuple } from '../model/Base';
 import { StoneResource } from '../model/Stone';
 import { Stone } from '../entities/Stone';
 import { StoneNotFound } from '../utils/errors/NotFound';
@@ -34,8 +34,9 @@ export class StoneCtrl {
         if (decorators.length !== attributes.length) {
             throw new AttributeDecoratorNotMatchError();
         }
+        const decoratorTuple: DecoratorTuple[] = attributes.map((attribute, i) => [attribute, decorators[i]]);
         // 基于属性查找五彩石列表
-        const stones = await this.stoneService.find(attributes, decorators);
+        const stones = await this.stoneService.find(decoratorTuple);
         return stones.map(stone => new Resource(stone.id, 'Stone', stone));
     }
 
