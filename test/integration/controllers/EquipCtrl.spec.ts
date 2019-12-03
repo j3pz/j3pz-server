@@ -14,9 +14,9 @@ describe('Equip', () => {
     after(TestContext.reset);
 
     // then run your test
-    describe('GET /rest/calendars', () => {
-        it('should return all calendars', async () => {
-            const response = await request.get('/rest/calendars').expect(200);
+    describe('GET /api/equip', () => {
+        it('should return all equip', async () => {
+            const response = await request.get('/api/equip').expect(200);
 
             expect(response.body.data).to.be.an('array');
         });
