@@ -6,11 +6,11 @@ export const 毒经: KungFuMeta = {
     school: '五毒',
     role: GamingRole.DAMAGE_DEALER,
     decorator: [
-        ['attack', AttributeDecorator.MAGIC],
-        ['hit', AttributeDecorator.MAGIC],
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
-        ['overcome', AttributeDecorator.MAGIC],
+        ['attack', AttributeDecorator.POISON],
+        ['hit', AttributeDecorator.POISON],
+        ['crit', AttributeDecorator.POISON],
+        ['critEffect', AttributeDecorator.POISON],
+        ['overcome', AttributeDecorator.POISON],
     ],
     base: {
         attack: 775,
@@ -33,8 +33,8 @@ export const 补天诀: KungFuMeta = {
     school: '五毒',
     role: GamingRole.HEALER,
     decorator: [
-        ['crit', AttributeDecorator.MAGIC],
-        ['critEffect', AttributeDecorator.MAGIC],
+        ['crit', AttributeDecorator.POISON],
+        ['critEffect', AttributeDecorator.POISON],
     ],
     base: {
         heal: 2072,
