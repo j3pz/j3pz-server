@@ -62,7 +62,7 @@ export class Server extends ServerLoader {
      * @returns {Server}
     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public $onMountingMiddlewares(): void|Promise<any> {
+    public $beforeRoutesInit(): void | Promise<any> {
         this
             .use(GlobalAcceptMimesMiddleware)
             .use(cookieParser())
@@ -74,5 +74,13 @@ export class Server extends ServerLoader {
             }));
 
         return null;
+    }
+
+    public $onReady(): void {
+        console.log('Server started...');
+    }
+
+    public $onServerInitError(err): void {
+        console.error(err);
     }
 }

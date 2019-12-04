@@ -15,6 +15,17 @@ export interface RawGlobalConfig {
     talent: ConfigObject<boolean>;
 }
 
+export const defaultConfig: RawGlobalConfig = {
+    qualityRange: {
+        Value: '1080|2000|3000',
+        SettingType: SettingType.TEXT,
+    },
+    talent: {
+        Value: true,
+        SettingType: SettingType.ON_OFF_TOGGLE,
+    },
+};
+
 export class GlobalConfig {
     public minQuality: number;
 
