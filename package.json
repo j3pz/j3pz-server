@@ -13,7 +13,7 @@
     "postinstall": "npm run build",
     "test": "cross-env NODE_ENV=test nyc mocha test/**/*.spec.ts",
     "test:unit": "cross-env NODE_ENV=test nyc mocha test/unit/**/*.spec.ts",
-    "test:integration": "cross-env NODE_ENV=test nyc mocha --timeout 10000 test/integration/**/*.spec.ts",
+    "test:integration": "cross-env NODE_ENV=test nyc mocha --timeout 999999 test/integration/**/*.spec.ts",
     "tsc": "tsc --project tsconfig.json",
     "tsc:w": "tsc -w",
     "start": "nodemon --watch '**/*.ts' --ignore 'node_modules/**/*' --exec ts-node src/index.ts"
