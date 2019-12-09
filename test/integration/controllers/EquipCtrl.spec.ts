@@ -16,7 +16,7 @@ describe('Equip', () => {
         it('should return 400001 error if no kunfu provided', async () => {
             const response = await request.get('/api/equip').expect(400);
             expect(response.body.errors).to.be.an('array');
-            expect(response.body.errors[0].code).equals(400000);
+            expect(response.body.errors[0].code).equals(400001);
         });
         it('should return 400001 error if no valid kunfu provided', async () => {
             // %E8%8A%B1%E9%97%B4 = 花间
