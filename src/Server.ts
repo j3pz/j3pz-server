@@ -38,7 +38,7 @@ const rootDir = __dirname;
             type: 'mysql',
             host: process.env.MYSQL_DB_HOST,
             port: +process.env.MYSQL_DB_PORT,
-            synchronize: true,
+            synchronize: false,
             username: process.env.MYSQL_DB_USER,
             password: process.env.MYSQL_DB_PASS,
             database: process.env.MYSQL_DB_NAME,
