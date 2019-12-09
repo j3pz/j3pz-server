@@ -21,12 +21,6 @@ config({
 
 const rootDir = __dirname;
 
-console.log(process.env.MYSQL_DB_HOST);
-console.log(process.env.MYSQL_DB_PORT);
-console.log(process.env.MYSQL_DB_USER);
-console.log(process.env.MYSQL_DB_PASS);
-console.log(process.env.MYSQL_DB_NAME);
-
 @ServerSettings({
     rootDir,
     acceptMimes: ['application/json'],
