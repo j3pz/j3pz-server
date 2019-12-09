@@ -1,12 +1,9 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
+USE j3pz_test;
 START TRANSACTION;
-SET time_zone = "+00:00";
 
 --
 -- 数据库： `j3pz_test`
 --
-USE 'j3pz_test';
 -- --------------------------------------------------------
 
 --
