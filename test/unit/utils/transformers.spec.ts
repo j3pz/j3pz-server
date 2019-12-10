@@ -1,10 +1,7 @@
-import { TestContext } from '@tsed/testing';
 import { expect } from 'chai';
 import { ColumnNumericTransformer } from '../../../src/utils/transformers';
 
 describe('transformers', () => {
-    before(TestContext.create);
-    after(TestContext.reset);
     describe('ColumnNumericTransformer', () => {
         it('should be able to turn number to number', () => {
             const transformer = new ColumnNumericTransformer();
