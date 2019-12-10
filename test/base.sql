@@ -1,27 +1,25 @@
-USE j3pz_test;
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
+SET time_zone = "+00:00";
 
---
--- 数据库： `j3pz_test`
---
--- --------------------------------------------------------
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
---
--- 表的结构 `boss`
---
+CREATE DATABASE IF NOT EXISTS `j3pz_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `j3pz_test`;
 
+DROP TABLE IF EXISTS `boss`;
 CREATE TABLE `boss` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `mapId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `effect`
---
-
+DROP TABLE IF EXISTS `effect`;
 CREATE TABLE `effect` (
   `id` int(11) NOT NULL,
   `attribute` text,
@@ -29,10 +27,6 @@ CREATE TABLE `effect` (
   `description` varchar(255) NOT NULL,
   `trigger` enum('Usage','Passive','Condition') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 转存表中的数据 `effect`
---
 
 INSERT INTO `effect` (`id`, `attribute`, `value`, `description`, `trigger`) VALUES
 (269, NULL, NULL, '使用：获得风特效', 'Usage'),
@@ -53,12 +47,7 @@ INSERT INTO `effect` (`id`, `attribute`, `value`, `description`, `trigger`) VALU
 (610, NULL, NULL, '在寻宝时，遭遇特殊事件概率提升5%', 'Passive'),
 (626, 'strain', '190', '无双等级提高190', 'Passive');
 
--- --------------------------------------------------------
-
---
--- 表的结构 `enhance`
---
-
+DROP TABLE IF EXISTS `enhance`;
 CREATE TABLE `enhance` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -70,12 +59,7 @@ CREATE TABLE `enhance` (
   `deprecated` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `equip`
---
-
+DROP TABLE IF EXISTS `equip`;
 CREATE TABLE `equip` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -117,10 +101,6 @@ CREATE TABLE `equip` (
   `effectId` int(11) DEFAULT NULL,
   `setId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 转存表中的数据 `equip`
---
 
 INSERT INTO `equip` (`id`, `name`, `icon`, `category`, `quality`, `school`, `primaryAttribute`, `score`, `vitality`, `spirit`, `strength`, `agility`, `spunk`, `basicPhysicsShield`, `basicMagicShield`, `damageBase`, `damageRange`, `attackSpeed`, `physicsShield`, `magicShield`, `dodge`, `parryBase`, `parryValue`, `toughness`, `attack`, `heal`, `crit`, `critEffect`, `overcome`, `haste`, `hit`, `strain`, `huajing`, `threat`, `embed`, `strengthen`, `deprecated`, `effectId`, `setId`) VALUES
 (32824, '游绛护手', 1981, 'wrist', 2100, '通用', 'spunk', 2646, 366, 0, 0, 0, 134, 48, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 292, 0, 570, 0, 0, 0, 0, 271, 0, 0, '2D37D05', 6, 0, NULL, NULL),
@@ -266,20 +246,11 @@ INSERT INTO `equip` (`id`, `name`, `icon`, `category`, `quality`, `school`, `pri
 (41573, '逢采帽', 11598, 'hat', 2600, '通用', 'spunk', 4212, 583, 0, 0, 0, 213, 68, 85, 0, 0, 0, 0, 0, 0, 0, 0, 0, 464, 0, 0, 0, 907, 0, 0, 432, 0, 0, '2D01D39', 6, 0, NULL, NULL),
 (41574, '临歧帽', 11598, 'hat', 2600, '通用', 'strength', 4212, 583, 0, 213, 0, 0, 85, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 387, 0, 0, 0, 907, 0, 0, 432, 0, 0, '2D02D39', 6, 0, NULL, NULL);
 
--- --------------------------------------------------------
-
---
--- 表的结构 `equip_set`
---
-
+DROP TABLE IF EXISTS `equip_set`;
 CREATE TABLE `equip_set` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 转存表中的数据 `equip_set`
---
 
 INSERT INTO `equip_set` (`id`, `name`) VALUES
 (1675, '鹤梦·凝清'),
@@ -300,56 +271,32 @@ INSERT INTO `equip_set` (`id`, `name`) VALUES
 (2019, '兹杨'),
 (2020, '兹松');
 
--- --------------------------------------------------------
-
---
--- 表的结构 `equip_source_source`
---
-
+DROP TABLE IF EXISTS `equip_source_source`;
 CREATE TABLE `equip_source_source` (
   `equipId` int(11) NOT NULL,
   `sourceId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `game_map`
---
-
+DROP TABLE IF EXISTS `game_map`;
 CREATE TABLE `game_map` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `reputation`
---
-
+DROP TABLE IF EXISTS `reputation`;
 CREATE TABLE `reputation` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `level` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `set_effect`
---
-
+DROP TABLE IF EXISTS `set_effect`;
 CREATE TABLE `set_effect` (
   `id` int(11) NOT NULL,
   `requirement` int(11) NOT NULL,
   `effectId` int(11) DEFAULT NULL,
   `setId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 转存表中的数据 `set_effect`
---
 
 INSERT INTO `set_effect` (`id`, `requirement`, `effectId`, `setId`) VALUES
 (1652, 2, 453, 1675),
@@ -389,12 +336,7 @@ INSERT INTO `set_effect` (`id`, `requirement`, `effectId`, `setId`) VALUES
 (4092, 4, 626, 2019),
 (4093, 4, 626, 2020);
 
--- --------------------------------------------------------
-
---
--- 表的结构 `source`
---
-
+DROP TABLE IF EXISTS `source`;
 CREATE TABLE `source` (
   `id` int(11) NOT NULL,
   `redeem` enum('contribution','chivalry','prestige_fiend','prestige_virtue','arena','store') DEFAULT NULL,
@@ -406,23 +348,13 @@ CREATE TABLE `source` (
   `comment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `stone`
---
-
+DROP TABLE IF EXISTS `stone`;
 CREATE TABLE `stone` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `stone_attribute`
---
-
+DROP TABLE IF EXISTS `stone_attribute`;
 CREATE TABLE `stone_attribute` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -433,23 +365,13 @@ CREATE TABLE `stone_attribute` (
   `requiredLevel` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `stone_attributes_stone_attribute`
---
-
+DROP TABLE IF EXISTS `stone_attributes_stone_attribute`;
 CREATE TABLE `stone_attributes_stone_attribute` (
   `stoneId` int(11) NOT NULL,
   `stoneAttributeId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `talent`
---
-
+DROP TABLE IF EXISTS `talent`;
 CREATE TABLE `talent` (
   `id` int(11) NOT NULL,
   `kungfu` varchar(255) NOT NULL,
@@ -461,231 +383,128 @@ CREATE TABLE `talent` (
   `effectId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- 转储表的索引
---
 
---
--- 表的索引 `boss`
---
 ALTER TABLE `boss`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_832d386064fe561a4e90c3e6adf` (`mapId`);
 
---
--- 表的索引 `effect`
---
 ALTER TABLE `effect`
   ADD PRIMARY KEY (`id`);
 
---
--- 表的索引 `enhance`
---
 ALTER TABLE `enhance`
   ADD PRIMARY KEY (`id`);
 
---
--- 表的索引 `equip`
---
 ALTER TABLE `equip`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_b43fdc7007a3c98b236fe4466c0` (`effectId`),
   ADD KEY `FK_ca1eb506505133942504af5ede7` (`setId`);
 
---
--- 表的索引 `equip_set`
---
 ALTER TABLE `equip_set`
   ADD PRIMARY KEY (`id`);
 
---
--- 表的索引 `equip_source_source`
---
 ALTER TABLE `equip_source_source`
   ADD PRIMARY KEY (`equipId`,`sourceId`),
   ADD KEY `IDX_2276f78612fbb92aa4973bb8a9` (`equipId`),
   ADD KEY `IDX_427a357c70fc9feb9108307486` (`sourceId`);
 
---
--- 表的索引 `game_map`
---
 ALTER TABLE `game_map`
   ADD PRIMARY KEY (`id`);
 
---
--- 表的索引 `reputation`
---
 ALTER TABLE `reputation`
   ADD PRIMARY KEY (`id`);
 
---
--- 表的索引 `set_effect`
---
 ALTER TABLE `set_effect`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_cbedb5eaa9ac2d186bf17aa7353` (`effectId`),
   ADD KEY `FK_f44573805de88c3ee1f14fc1237` (`setId`);
 
---
--- 表的索引 `source`
---
 ALTER TABLE `source`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_c531f31e06cfbdf6d42d5eb30b` (`type`),
   ADD KEY `FK_18da894412dc024daa62456e18d` (`bossId`),
   ADD KEY `FK_ddd622b27403c5dac3969f4c894` (`reputationId`);
 
---
--- 表的索引 `stone`
---
 ALTER TABLE `stone`
   ADD PRIMARY KEY (`id`);
 
---
--- 表的索引 `stone_attribute`
---
 ALTER TABLE `stone_attribute`
   ADD PRIMARY KEY (`id`);
 
---
--- 表的索引 `stone_attributes_stone_attribute`
---
 ALTER TABLE `stone_attributes_stone_attribute`
   ADD PRIMARY KEY (`stoneId`,`stoneAttributeId`),
   ADD KEY `IDX_78555566b61a44435ac96aec3b` (`stoneId`),
   ADD KEY `IDX_7e44cd16d37c1700e4946b3afa` (`stoneAttributeId`);
 
---
--- 表的索引 `talent`
---
 ALTER TABLE `talent`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_ee902383f6629b0b3e2a27c5fd6` (`effectId`);
 
---
--- 在导出的表使用AUTO_INCREMENT
---
 
---
--- 使用表AUTO_INCREMENT `boss`
---
 ALTER TABLE `boss`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 使用表AUTO_INCREMENT `effect`
---
 ALTER TABLE `effect`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=627;
 
---
--- 使用表AUTO_INCREMENT `enhance`
---
 ALTER TABLE `enhance`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 使用表AUTO_INCREMENT `equip`
---
 ALTER TABLE `equip`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41575;
 
---
--- 使用表AUTO_INCREMENT `equip_set`
---
 ALTER TABLE `equip_set`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2021;
 
---
--- 使用表AUTO_INCREMENT `game_map`
---
 ALTER TABLE `game_map`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 使用表AUTO_INCREMENT `reputation`
---
 ALTER TABLE `reputation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 使用表AUTO_INCREMENT `set_effect`
---
 ALTER TABLE `set_effect`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4094;
 
---
--- 使用表AUTO_INCREMENT `source`
---
 ALTER TABLE `source`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 使用表AUTO_INCREMENT `stone`
---
 ALTER TABLE `stone`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 使用表AUTO_INCREMENT `stone_attribute`
---
 ALTER TABLE `stone_attribute`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 使用表AUTO_INCREMENT `talent`
---
 ALTER TABLE `talent`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- 限制导出的表
---
 
---
--- 限制表 `boss`
---
 ALTER TABLE `boss`
   ADD CONSTRAINT `FK_832d386064fe561a4e90c3e6adf` FOREIGN KEY (`mapId`) REFERENCES `game_map` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- 限制表 `equip`
---
 ALTER TABLE `equip`
   ADD CONSTRAINT `FK_b43fdc7007a3c98b236fe4466c0` FOREIGN KEY (`effectId`) REFERENCES `effect` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_ca1eb506505133942504af5ede7` FOREIGN KEY (`setId`) REFERENCES `equip_set` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- 限制表 `equip_source_source`
---
 ALTER TABLE `equip_source_source`
   ADD CONSTRAINT `FK_2276f78612fbb92aa4973bb8a90` FOREIGN KEY (`equipId`) REFERENCES `equip` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_427a357c70fc9feb9108307486e` FOREIGN KEY (`sourceId`) REFERENCES `source` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
---
--- 限制表 `set_effect`
---
 ALTER TABLE `set_effect`
   ADD CONSTRAINT `FK_cbedb5eaa9ac2d186bf17aa7353` FOREIGN KEY (`effectId`) REFERENCES `effect` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_f44573805de88c3ee1f14fc1237` FOREIGN KEY (`setId`) REFERENCES `equip_set` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- 限制表 `source`
---
 ALTER TABLE `source`
   ADD CONSTRAINT `FK_18da894412dc024daa62456e18d` FOREIGN KEY (`bossId`) REFERENCES `boss` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_ddd622b27403c5dac3969f4c894` FOREIGN KEY (`reputationId`) REFERENCES `reputation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- 限制表 `stone_attributes_stone_attribute`
---
 ALTER TABLE `stone_attributes_stone_attribute`
   ADD CONSTRAINT `FK_78555566b61a44435ac96aec3bf` FOREIGN KEY (`stoneId`) REFERENCES `stone` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_7e44cd16d37c1700e4946b3afa0` FOREIGN KEY (`stoneAttributeId`) REFERENCES `stone_attribute` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
---
--- 限制表 `talent`
---
 ALTER TABLE `talent`
   ADD CONSTRAINT `FK_ee902383f6629b0b3e2a27c5fd6` FOREIGN KEY (`effectId`) REFERENCES `effect` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
