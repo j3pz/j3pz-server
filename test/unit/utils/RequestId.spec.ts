@@ -1,10 +1,7 @@
-import { TestContext } from '@tsed/testing';
 import { expect } from 'chai';
 import { generateReqId } from '../../../src/utils/RequestId';
 
 describe('Request ids', () => {
-    before(TestContext.create);
-    after(TestContext.reset);
     it('should be a string and have length of at least 10', () => {
         Array.from({ length: 50 }).map(() => generateReqId()).forEach((id) => {
             expect(id).to.be.a('string').and.satisfy((_: string) => _.startsWith('_'));

@@ -1,11 +1,8 @@
-import { TestContext } from '@tsed/testing';
 import { expect } from 'chai';
 import { AttributeDecorator } from '../../../src/model/Base';
 import { getDecoratorList } from '../../../src/utils/decorator';
 
 describe('decorator', () => {
-    before(TestContext.create);
-    after(TestContext.reset);
     it('should get parent decorator correctly', () => {
         const inputs = [
             AttributeDecorator.NONE,
