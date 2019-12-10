@@ -1,5 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
-import { ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware } from '@tsed/common';
+import {
+    ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware, $log,
+} from '@tsed/common';
 import '@tsed/typeorm';
 import '@tsed/swagger';
 import '@tsed/ajv';
@@ -36,7 +38,7 @@ const rootDir = __dirname;
             type: 'mysql',
             host: process.env.MYSQL_DB_HOST,
             port: +process.env.MYSQL_DB_PORT,
-            synchronize: true,
+            synchronize: false,
             username: process.env.MYSQL_DB_USER,
             password: process.env.MYSQL_DB_PASS,
             database: process.env.MYSQL_DB_NAME,
@@ -77,10 +79,10 @@ export class Server extends ServerLoader {
     }
 
     public $onReady(): void {
-        console.log('Server started...');
+        $log.info('Server started...');
     }
 
     public $onServerInitError(err): void {
-        console.error(err);
+        $log.error(err);
     }
 }

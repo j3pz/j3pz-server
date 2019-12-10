@@ -15,7 +15,7 @@ enum BadRequestErrorCode {
 }
 
 export class EquipNotFound extends NotFound implements IResponseError {
-    public code: BadRequestErrorCode.EquipNotFound;
+    public code: BadRequestErrorCode = BadRequestErrorCode.EquipNotFound;
 
     public errors: ServerError[] = [];
 
@@ -30,7 +30,7 @@ export class EquipNotFound extends NotFound implements IResponseError {
 }
 
 export class EnhanceNotFound extends NotFound implements IResponseError {
-    public code: BadRequestErrorCode.EnhanceNotFound;
+    public code: BadRequestErrorCode = BadRequestErrorCode.EnhanceNotFound;
 
     public errors: ServerError[] = [];
 
@@ -45,7 +45,7 @@ export class EnhanceNotFound extends NotFound implements IResponseError {
 }
 
 export class TalentNotFound extends NotFound implements IResponseError {
-    public code: BadRequestErrorCode.TalentNotFound;
+    public code: BadRequestErrorCode = BadRequestErrorCode.TalentNotFound;
 
     public errors: ServerError[] = [];
 
@@ -60,7 +60,7 @@ export class TalentNotFound extends NotFound implements IResponseError {
 }
 
 export class StoneNotFound extends NotFound implements IResponseError {
-    public code: BadRequestErrorCode.StoneNotFound;
+    public code: BadRequestErrorCode = BadRequestErrorCode.StoneNotFound;
 
     public errors: ServerError[] = [];
 
