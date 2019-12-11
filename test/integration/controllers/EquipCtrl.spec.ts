@@ -191,6 +191,7 @@ describe('Equip', () => {
             expect(response.body.data.attributes.effect).to.deep.equals({
                 id: 269,
                 attribute: null,
+                decorator: null,
                 value: null,
                 trigger: 'Usage',
                 description: '使用：获得风特效',
@@ -210,6 +211,7 @@ describe('Equip', () => {
                         effect: {
                             id: 453,
                             attribute: null,
+                            decorator: null,
                             value: null,
                             trigger: 'Passive',
                             description: '“阳明指”伤害提高10%, “快雪时晴”伤害提高10%',
@@ -221,6 +223,7 @@ describe('Equip', () => {
                         effect: {
                             id: 281,
                             attribute: null,
+                            decorator: null,
                             value: null,
                             trigger: 'Passive',
                             description: '施展混元性伤害招式，一定几率提高自身混元性内功基础攻击力10%，持续6秒',
