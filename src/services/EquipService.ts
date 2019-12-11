@@ -38,6 +38,7 @@ export class EquipService implements AfterRoutesInit {
         const whereCondition: FindConditions<Equip> = {
             quality: Between(filter.quality[0], filter.quality[1]),
             category: filter.category,
+            deprecated: false,
         };
         if (filter.name) {
             whereCondition.name = Like(`%${filter.name}%`);
