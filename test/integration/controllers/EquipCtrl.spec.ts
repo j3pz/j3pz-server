@@ -101,7 +101,86 @@ describe('Equip', () => {
                     deprecated: false,
                     effect: null,
                     set: null,
-                    source: [],
+                    source: [
+                        {
+                            id: 160,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 24,
+                                name: '沙叱博',
+                                map: {
+                                    id: 100,
+                                    name: '血战天策',
+                                },
+                            },
+                        },
+                        {
+                            id: 173,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 37,
+                                name: '固守天策府',
+                                map: {
+                                    id: 100,
+                                    name: '血战天策',
+                                },
+                            },
+                        },
+                        {
+                            id: 392,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 256,
+                                name: '哥舒翰',
+                                map: {
+                                    id: 70,
+                                    name: '上阳宫·双曜亭',
+                                },
+                            },
+                        },
+                        {
+                            id: 877,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 741,
+                                name: '提坦德亚罗',
+                                map: {
+                                    id: 36,
+                                    name: '荻花宫后山',
+                                },
+                            },
+                        },
+                        {
+                            id: 883,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 747,
+                                name: '伊玛目',
+                                map: {
+                                    id: 42,
+                                    name: '风雷刀谷·千雷殿',
+                                },
+                            },
+                        },
+                        {
+                            id: 884,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 748,
+                                name: '慕容野狐、殷青丝',
+                                map: {
+                                    id: 58,
+                                    name: '龙渊泽',
+                                },
+                            },
+                        },
+                    ],
                 },
             });
         });
