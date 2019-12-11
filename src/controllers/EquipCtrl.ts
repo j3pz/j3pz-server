@@ -24,6 +24,7 @@ export class EquipCtrl {
     public async list(
         @QueryParams('kungfu') @Description('心法名称') kungfu: KungFu,
         @QueryParams('category') @Description('装备部位') category: Category,
+        @QueryParams('name') @Description('名称筛选') name?: string,
     ): Promise<EquipCoreResource[]> {
         if (!Object.values(KungFu).includes(kungfu)) {
             throw new KungFuNotExistError(kungfu);
@@ -34,6 +35,7 @@ export class EquipCtrl {
         const list = await this.equipService.find({
             kungfu,
             category,
+            name,
             quality: [
                 this.configService.getConfig().minQuality,
                 this.configService.getConfig().maxQaulity,

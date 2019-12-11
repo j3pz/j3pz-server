@@ -1,10 +1,10 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
-import { Connection, Between, In } from 'typeorm';
-import { Equip } from '../entities/Equip';
 import {
-    AttributeTag, Category, KungFu,
-} from '../model/Base';
+    Connection, Between, In, Like, FindConditions,
+} from 'typeorm';
+import { Equip } from '../entities/Equip';
+import { AttributeTag, Category, KungFu } from '../model/Base';
 import { kungFuLib } from '../utils/KungFuLib';
 import { KungFuMeta } from '../utils/KungfuMeta';
 
@@ -12,6 +12,7 @@ interface EquipListFilter {
     kungfu: KungFu;
     category: Category;
     quality: [number, number];
+    name?: string;
     tag?: AttributeTag[];
 }
 
@@ -34,14 +35,20 @@ export class EquipService implements AfterRoutesInit {
 
     public async find(filter: EquipListFilter): Promise<Equip[]> {
         const kungfuFilter = this.getFilterByKungfu(filter.kungfu);
+        const whereCondition: FindConditions<Equip> = {
+            quality: Between(filter.quality[0], filter.quality[1]),
+            category: filter.category,
+            deprecated: false,
+        };
+        if (filter.name) {
+            whereCondition.name = Like(`%${filter.name}%`);
+        } else {
+            whereCondition.school = In([kungfuFilter.school, '通用', '精简']);
+            whereCondition.primaryAttribute = In([kungfuFilter.primaryAttribute, 'magic']);
+        }
         const equips = await this.connection.manager.find(Equip, {
             select: ['id', 'icon', 'name', 'quality', 'category'],
-            where: {
-                quality: Between(filter.quality[0], filter.quality[1]),
-                category: filter.category,
-                school: In([kungfuFilter.school, '通用', '精简']),
-                primaryAttribute: In([kungfuFilter.primaryAttribute, 'magic']),
-            },
+            where: whereCondition,
             order: {
                 quality: 'ASC',
             },

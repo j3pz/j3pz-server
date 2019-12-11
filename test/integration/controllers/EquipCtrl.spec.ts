@@ -13,34 +13,40 @@ describe('Equip', () => {
     after(TestContext.reset);
 
     describe('GET /api/equip', () => {
-        it('should return 400001 error if no kunfu provided', async () => {
+        it('should return 400001 error if no kungfu provided', async () => {
             const response = await request.get('/api/equip').expect(400);
             expect(response.body.errors).to.be.an('array');
             expect(response.body.errors[0].code).equals(400001);
         });
-        it('should return 400001 error if no valid kunfu provided', async () => {
-            // %E8%8A%B1%E9%97%B4 = 花间
-            const response = await request.get('/api/equip?kungfu=%E8%8A%B1%E9%97%B4').expect(400);
+        it('should return 400001 error if no valid kungfu provided', async () => {
+            const kungfu = encodeURIComponent('花间');
+            const response = await request.get(`/api/equip?kungfu=${kungfu}`).expect(400);
             expect(response.body.errors).to.be.an('array');
             expect(response.body.errors[0].code).equals(400001);
         });
         it('should return 400002 error if no category provided', async () => {
-            // %E8%8A%B1%E9%97%B4%E6%B8%B8 = 花间游
-            const response = await request.get('/api/equip?kungfu=%E8%8A%B1%E9%97%B4%E6%B8%B8').expect(400);
+            const kungfu = encodeURIComponent('花间游');
+            const response = await request.get(`/api/equip?kungfu=${kungfu}`).expect(400);
             expect(response.body.errors).to.be.an('array');
             expect(response.body.errors[0].code).equals(400002);
         });
         it('should return 400002 error if valid category provided', async () => {
-            // %E8%8A%B1%E9%97%B4%E6%B8%B8 = 花间游
-            const response = await request.get('/api/equip?kungfu=%E8%8A%B1%E9%97%B4%E6%B8%B8&category=ha').expect(400);
+            const kungfu = encodeURIComponent('花间游');
+            const response = await request.get(`/api/equip?kungfu=${kungfu}&category=ha`).expect(400);
             expect(response.body.errors).to.be.an('array');
             expect(response.body.errors[0].code).equals(400002);
         });
         it('should return all equips', async () => {
-            // %E8%8A%B1%E9%97%B4%E6%B8%B8 = 花间游
-            const response = await request.get('/api/equip?kungfu=%E8%8A%B1%E9%97%B4%E6%B8%B8&category=hat').expect(200);
+            const kungfu = encodeURIComponent('花间游');
+            const response = await request.get(`/api/equip?kungfu=${kungfu}&category=hat`).expect(200);
             expect(response.body.data).to.be.an('array');
             expect(response.body.data.length).equals(34);
+        });
+        it('should return all equip match "房"', async () => {
+            const kungfu = encodeURIComponent('花间游');
+            const name = encodeURIComponent('房');
+            const response = await request.get(`/api/equip?kungfu=${kungfu}&category=hat&name=${name}`).expect(200);
+            expect(response.body.data).to.be.an('array').has.lengthOf(2);
         });
     });
 
@@ -95,7 +101,86 @@ describe('Equip', () => {
                     deprecated: false,
                     effect: null,
                     set: null,
-                    source: [],
+                    source: [
+                        {
+                            id: 160,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 24,
+                                name: '沙叱博',
+                                map: {
+                                    id: 100,
+                                    name: '血战天策',
+                                },
+                            },
+                        },
+                        {
+                            id: 173,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 37,
+                                name: '固守天策府',
+                                map: {
+                                    id: 100,
+                                    name: '血战天策',
+                                },
+                            },
+                        },
+                        {
+                            id: 392,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 256,
+                                name: '哥舒翰',
+                                map: {
+                                    id: 70,
+                                    name: '上阳宫·双曜亭',
+                                },
+                            },
+                        },
+                        {
+                            id: 877,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 741,
+                                name: '提坦德亚罗',
+                                map: {
+                                    id: 36,
+                                    name: '荻花宫后山',
+                                },
+                            },
+                        },
+                        {
+                            id: 883,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 747,
+                                name: '伊玛目',
+                                map: {
+                                    id: 42,
+                                    name: '风雷刀谷·千雷殿',
+                                },
+                            },
+                        },
+                        {
+                            id: 884,
+                            comment: null,
+                            type: 'raid',
+                            boss: {
+                                id: 748,
+                                name: '慕容野狐、殷青丝',
+                                map: {
+                                    id: 58,
+                                    name: '龙渊泽',
+                                },
+                            },
+                        },
+                    ],
                 },
             });
         });
