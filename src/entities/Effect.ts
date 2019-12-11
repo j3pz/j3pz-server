@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Title } from '@tsed/swagger';
-import { Attribute } from '../model/Base';
+import { Attribute, AttributeDecorator } from '../model/Base';
 
 type EffectTrigger = 'Usage' | 'Passive' | 'Condition';
 
@@ -13,6 +13,10 @@ export class Effect {
     @Column({ type: 'simple-array', default: null, nullable: true })
     @Title('属性 key')
     public attribute: Attribute[];
+
+    @Column({ type: 'simple-array', default: null, nullable: true })
+    @Title('属性装饰')
+    public decorator: AttributeDecorator[];
 
     @Column({ type: 'simple-array', default: null, nullable: true })
     @Title('属性值')
