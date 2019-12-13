@@ -5,7 +5,7 @@ import { Title } from '@tsed/swagger';
 import { Effect } from './Effect';
 import { KungFu } from '../model/Base';
 
-type BuffType = 'Formation' | 'LongTerm' | 'OnFight' | 'Potion';
+export type BuffType = 'Formation' | 'LongTerm' | 'OnFight' | 'Potion';
 
 @Entity()
 export class Buff {
