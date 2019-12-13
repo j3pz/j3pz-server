@@ -33,6 +33,10 @@ export class Buff {
     @Title('激活效果')
     public effect?: Effect;
 
+    @Column()
+    @Title('对应游戏版本')
+    public version: string;
+
     @Column({ type: 'simple-array', default: null, nullable: true })
     @Title('限定心法')
     public kungfuLimit: KungFu[];
