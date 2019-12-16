@@ -1,4 +1,4 @@
-enum SettingType {
+export const enum SettingType {
     ON_OFF_TOGGLE,
     TEXT,
     WHOLE_NUMBER,
