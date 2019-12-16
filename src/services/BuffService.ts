@@ -1,6 +1,6 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
-import { Connection, In, Like } from 'typeorm';
+import { Connection, Like } from 'typeorm';
 import { Buff } from '../entities/Buff';
 import {
     KungFu, Attribute, AttributeDecorator, PrimaryAttribute,
@@ -12,6 +12,10 @@ import { BANNED_ATTRIBUTES_BY_ROLE } from '../utils/KungfuMeta';
 
 interface BuffListFilter {
     kungfu: KungFu;
+}
+
+type BuffCondition = {
+    [key in Attribute]?: AttributeDecorator[];
 }
 
 @Service()
@@ -42,24 +46,33 @@ export class BuffService implements AfterRoutesInit {
                     attribute: decoratorEntry[1],
                     decorator: getDecoratorList(decoratorEntry[0] as AttributeDecorator),
                 };
-            }).reduce((condition, entry) => {
+            }).reduce((acc: BuffCondition, entry) => {
                 entry.attribute.forEach((attr) => {
-                    if (condition[attr]) {
-                        condition[attr].push(...entry.decorator);
+                    if (acc[attr]) {
+                        acc[attr].push(...entry.decorator);
                     } else {
-                        condition[attr] = entry.decorator;
+                        acc[attr] = entry.decorator;
                     }
                 });
-                return condition;
+                return acc;
             }, {});
         // 基于心法类型去除一些属性
         const bannedAttributes = BANNED_ATTRIBUTES_BY_ROLE[role]
             .concat(PrimaryAttribute.filter(_ => _ !== primaryAttribute));
         return (buff: Buff) => {
-            const bannedLength = buff.effect.attribute.filter(attr => bannedAttributes.includes(attr)).length;
-            if (bannedLength === buff.effect.attribute.length) return false;
-            console.log(buff.effect, bannedLength);
-            return true;
+            const valid = buff.effect.attribute.filter((attr, i) => {
+                if (bannedAttributes.includes(attr)) {
+                    return false;
+                }
+                const attrDecorator = buff.effect.decorator[i] || buff.effect.decorator[0];
+                const nomalizedAttributeName = attr.replace('Percent', '');
+                if (conditions[nomalizedAttributeName] && !conditions[nomalizedAttributeName].includes(attrDecorator)) {
+                    return false;
+                }
+                return true;
+            });
+            if (valid.length > 0) return true;
+            return false;
         };
     }
 
