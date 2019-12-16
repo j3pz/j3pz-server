@@ -56,7 +56,11 @@ export const PrimaryAttribute: PrimaryAttribute[] = ['vitality', 'spunk', 'spiri
 export type SecondaryAttribute =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'parryValue' | 'toughness' |
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
-    'hit' | 'strain' | 'haste' | 'threat' | 'huajing';
+    'hit' | 'strain' | 'haste' | 'threat' | 'huajing' |
+    // 直接增加百分比的属性
+    'dodgePercentage' | 'toughnessPercentage' |
+    'critPercentage' | 'critEffectPercentage' | 'overcomePercentage' |
+    'hitPercentage' | 'strainPercentage' | 'huajingPercentage';
 export type MinorAttribute = 'basicMagicShield' | 'basicPhysicsShield' | 'attackSpeed' | 'damageBase' | 'damageRange';
 export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover' | 'damageOffset';
 

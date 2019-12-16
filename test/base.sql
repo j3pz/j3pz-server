@@ -88,27 +88,28 @@ CREATE TABLE `effect` (
   `attribute` text,
   `value` text,
   `description` varchar(255) NOT NULL,
-  `trigger` enum('Usage','Passive','Condition') NOT NULL
+  `trigger` enum('Usage','Passive','Condition') NOT NULL,
+  `decorator` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `effect` (`id`, `attribute`, `value`, `description`, `trigger`) VALUES
-(269, NULL, NULL, '使用：获得风特效', 'Usage'),
-(270, NULL, NULL, '使用：获得风特效', 'Usage'),
-(281, NULL, NULL, '施展混元性伤害招式，一定几率提高自身混元性内功基础攻击力10%，持续6秒', 'Passive'),
-(285, NULL, NULL, '施展外功伤害招式，一定几率提高自身毒性内功基础攻击力10%，持续6秒', 'Passive'),
-(287, NULL, NULL, '施展外功伤害招式，一定几率提高自身外功基础攻击力10%，持续6秒', 'Passive'),
-(315, NULL, NULL, '气力值上限提高100点', 'Passive'),
-(453, NULL, NULL, '“阳明指”伤害提高10%, “快雪时晴”伤害提高10%', 'Passive'),
-(455, NULL, NULL, '“蚀肌弹”伤害提高10%, “暴雨梨花针”伤害提高10%', 'Passive'),
-(456, NULL, NULL, '“夺魄箭”伤害提高10%, “暴雨梨花针”伤害提高10%', 'Passive'),
-(471, 'crit', '160', '全会心等级提高160点', 'Passive'),
-(501, 'sprint', '100', '气力值上限提高100', 'Passive'),
-(526, 'crit', '190', '全会心等级提高190', 'Passive'),
-(536, NULL, NULL, '马术气力值上限提高100点', 'Passive'),
-(556, NULL, NULL, '在寻宝时，遭遇特殊事件概率提高5%', 'Passive'),
-(605, 'strain', '160', '无双等级提高160点', 'Passive'),
-(610, NULL, NULL, '在寻宝时，遭遇特殊事件概率提升5%', 'Passive'),
-(626, 'strain', '190', '无双等级提高190', 'Passive');
+INSERT INTO `effect` (`id`, `attribute`, `value`, `description`, `trigger`, `decorator`) VALUES
+(269, NULL, NULL, '使用：获得风特效', 'Usage', NULL),
+(270, NULL, NULL, '使用：获得风特效', 'Usage', NULL),
+(281, NULL, NULL, '施展混元性伤害招式，一定几率提高自身混元性内功基础攻击力10%，持续6秒', 'Passive', NULL),
+(285, NULL, NULL, '施展外功伤害招式，一定几率提高自身毒性内功基础攻击力10%，持续6秒', 'Passive', NULL),
+(287, NULL, NULL, '施展外功伤害招式，一定几率提高自身外功基础攻击力10%，持续6秒', 'Passive', NULL),
+(315, NULL, NULL, '气力值上限提高100点', 'Passive', NULL),
+(453, NULL, NULL, '“阳明指”伤害提高10%, “快雪时晴”伤害提高10%', 'Passive', NULL),
+(455, NULL, NULL, '“蚀肌弹”伤害提高10%, “暴雨梨花针”伤害提高10%', 'Passive', NULL),
+(456, NULL, NULL, '“夺魄箭”伤害提高10%, “暴雨梨花针”伤害提高10%', 'Passive', NULL),
+(471, 'crit', '160', '全会心等级提高160点', 'Passive', 'ALL'),
+(501, 'sprint', '100', '气力值上限提高100', 'Passive', 'NONE'),
+(526, 'crit', '190', '全会心等级提高190', 'Passive', 'ALL'),
+(536, NULL, NULL, '马术气力值上限提高100点', 'Passive', NULL),
+(556, NULL, NULL, '在寻宝时，遭遇特殊事件概率提高5%', 'Passive', NULL),
+(605, 'strain', '160', '无双等级提高160点', 'Passive', 'NONE'),
+(610, NULL, NULL, '在寻宝时，遭遇特殊事件概率提升5%', 'Passive', NULL),
+(626, 'strain', '190', '无双等级提高190', 'Passive', 'NONE');
 
 DROP TABLE IF EXISTS `enhance`;
 CREATE TABLE `enhance` (
