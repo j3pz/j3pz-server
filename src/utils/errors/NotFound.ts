@@ -12,6 +12,8 @@ enum BadRequestErrorCode {
     TalentNotFound = 404401,
     // 5 表示五彩石模块错误
     StoneNotFound = 404501,
+    // 6 表示增益气劲模块错误
+    BuffNotFound = 404601,
 }
 
 export class EquipNotFound extends NotFound implements IResponseError {
@@ -70,6 +72,21 @@ export class StoneNotFound extends NotFound implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `数据库中未找到 ID:${stoneId} 对应的五彩石`,
+        });
+    }
+}
+
+export class BuffNotFound extends NotFound implements IResponseError {
+    public code: BadRequestErrorCode = BadRequestErrorCode.BuffNotFound;
+
+    public errors: ServerError[] = [];
+
+    public constructor(stoneId: string) {
+        super('增益气劲未找到');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `数据库中未找到 ID:${stoneId} 对应的增益气劲`,
         });
     }
 }

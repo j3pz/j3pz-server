@@ -5,7 +5,7 @@ import { Title } from '@tsed/swagger';
 import { Effect } from './Effect';
 import { KungFu } from '../model/Base';
 
-type BuffType = 'Formation' | 'LongTerm' | 'OnFight' | 'Potion';
+export type BuffType = 'Formation' | 'LongTerm' | 'OnFight' | 'Potion';
 
 @Entity()
 export class Buff {
@@ -32,6 +32,10 @@ export class Buff {
     @ManyToOne(() => Effect, effect => effect.id, { nullable: true })
     @Title('激活效果')
     public effect?: Effect;
+
+    @Column()
+    @Title('对应游戏版本')
+    public version: string;
 
     @Column({ type: 'simple-array', default: null, nullable: true })
     @Title('限定心法')
