@@ -6,6 +6,7 @@ import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
 import { Category, School } from '../model/Base';
 import { Source } from './Source';
+import { Represent } from './Represent';
 
 @Entity()
 export class Equip {
@@ -177,6 +178,11 @@ export class Equip {
     @JoinTable()
     @Title('装备来源')
     public source: Source[];
+
+    @ManyToOne(() => Represent, represent => represent.id)
+    @JoinTable()
+    @Title('装备外观')
+    public represent: Represent;
 
     @Column()
     @Title('过时装备')

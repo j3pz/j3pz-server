@@ -69,6 +69,7 @@ export class EquipService implements AfterRoutesInit {
                 'source.boss',
                 'source.boss.map',
                 'source.reputation',
+                'represent',
             ],
         });
         return equip;
