@@ -181,6 +181,10 @@ describe('Equip', () => {
                             },
                         },
                     ],
+                    represent: {
+                        id: 10,
+                        name: '不落云·二',
+                    },
                 },
             });
         });
