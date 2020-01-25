@@ -1,7 +1,7 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { Connection } from 'typeorm';
-import { Talent } from '../entities/Talent';
+import { Talent } from '../entities/resources/Talent';
 import { KungFu } from '../model/Base';
 
 interface TalentListFilter {

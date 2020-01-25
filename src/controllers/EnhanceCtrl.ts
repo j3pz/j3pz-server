@@ -8,7 +8,7 @@ import { Resource } from '../model/Server';
 import { EnhanceService } from '../services/EnhanceService';
 import { Category, KungFu } from '../model/Base';
 import { EnhanceCore, EnhanceResource, EnhanceCoreResource } from '../model/Enhance';
-import { Enhance } from '../entities/Enhance';
+import { Enhance } from '../entities/resources/Enhance';
 import { KungFuNotExistError, CategoryNotExistError } from '../utils/errors/BadRequests';
 import { EnhanceNotFound } from '../utils/errors/NotFound';
 import { ConfigService } from '../services/ConfigService';

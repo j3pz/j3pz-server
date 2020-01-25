@@ -8,7 +8,7 @@ import { Resource } from '../model/Server';
 import { StoneService } from '../services/StoneService';
 import { Attribute, AttributeDecorator, DecoratorTuple } from '../model/Base';
 import { StoneResource } from '../model/Stone';
-import { Stone } from '../entities/Stone';
+import { Stone } from '../entities/resources/Stone';
 import { StoneNotFound } from '../utils/errors/NotFound';
 import { ConfigService } from '../services/ConfigService';
 import { AttributeRequiredError, DecoratorRequiredError, AttributeDecoratorNotMatchError } from '../utils/errors/BadRequests';

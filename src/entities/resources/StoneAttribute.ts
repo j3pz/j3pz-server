@@ -2,8 +2,8 @@ import {
     Column, PrimaryGeneratedColumn, Entity,
 } from 'typeorm';
 import { Title } from '@tsed/swagger';
-import { Attribute, AttributeDecorator } from '../model/Base';
-import { ColumnNumericTransformer } from '../utils/transformers';
+import { Attribute, AttributeDecorator } from '../../model/Base';
+import { ColumnNumericTransformer } from '../../utils/transformers';
 
 @Entity()
 export class StoneAttribute {

@@ -20,6 +20,7 @@ export class JsonApiResponseMiddleware extends SendResponseMiddleware {
                 },
             });
         }
-        return super.use(data, response);
+        request.ctx.data = data;
+        return super.use(request, response);
     }
 }

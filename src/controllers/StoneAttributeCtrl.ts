@@ -4,7 +4,7 @@ import { Resource } from '../model/Server';
 import { StoneService } from '../services/StoneService';
 import { KungFu } from '../model/Base';
 import { StoneAttributeCoreResource, StoneAttributeCore } from '../model/Stone';
-import { Stone } from '../entities/Stone';
+import { Stone } from '../entities/resources/Stone';
 import { KungFuNotExistError } from '../utils/errors/BadRequests';
 import { ConfigService } from '../services/ConfigService';
 

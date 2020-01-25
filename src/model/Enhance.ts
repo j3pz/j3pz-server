@@ -1,7 +1,7 @@
 import { Title } from '@tsed/swagger';
 import { Category } from './Base';
 import { Resource } from './Server';
-import { Enhance } from '../entities/Enhance';
+import { Enhance } from '../entities/resources/Enhance';
 
 export class EnhanceCore {
     @Title('ID')

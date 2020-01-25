@@ -1,7 +1,7 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { Connection, Like } from 'typeorm';
-import { Buff } from '../entities/Buff';
+import { Buff } from '../entities/resources/Buff';
 import {
     KungFu, Attribute, AttributeDecorator, PrimaryAttribute,
 } from '../model/Base';

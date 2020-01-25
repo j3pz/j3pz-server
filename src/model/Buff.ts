@@ -1,6 +1,6 @@
 import { Title } from '@tsed/swagger';
 import { Resource } from './Server';
-import { Buff, BuffType } from '../entities/Buff';
+import { Buff, BuffType } from '../entities/resources/Buff';
 
 export class BuffCore {
     @Title('ID')

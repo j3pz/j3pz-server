@@ -43,8 +43,18 @@ const rootDir = __dirname;
             password: process.env.MYSQL_DB_PASS,
             database: process.env.MYSQL_DB_NAME,
             entities: [
-                `${__dirname}/entities/*.{ts,js}`,
+                `${__dirname}/entities/resources/*.{ts,js}`,
             ],
+        },
+        {
+            name: 'users',
+            type: 'mongodb',
+            // eslint-disable-next-line max-len
+            url: `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`,
+            entities: [
+                `${__dirname}/entities/users/*.{ts,js}`,
+            ],
+            synchronize: true,
         },
     ],
     swagger: [

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Title } from '@tsed/swagger';
-import { Attribute, AttributeDecorator } from '../model/Base';
+import { Attribute, AttributeDecorator } from '../../model/Base';
 
 type EffectTrigger = 'Usage' | 'Passive' | 'Condition';
 

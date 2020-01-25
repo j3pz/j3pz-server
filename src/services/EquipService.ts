@@ -3,7 +3,7 @@ import { TypeORMService } from '@tsed/typeorm';
 import {
     Connection, Between, In, Like, FindConditions,
 } from 'typeorm';
-import { Equip } from '../entities/Equip';
+import { Equip } from '../entities/resources/Equip';
 import { AttributeTag, Category, KungFu } from '../model/Base';
 import { kungFuLib } from '../utils/KungFuLib';
 import { KungFuMeta } from '../utils/KungfuMeta';

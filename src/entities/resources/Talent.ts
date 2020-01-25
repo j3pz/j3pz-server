@@ -2,7 +2,7 @@ import {
     Column, PrimaryGeneratedColumn, Entity, ManyToOne,
 } from 'typeorm';
 import { Title } from '@tsed/swagger';
-import { KungFu } from '../model/Base';
+import { KungFu } from '../../model/Base';
 import { Effect } from './Effect';
 
 @Entity()
