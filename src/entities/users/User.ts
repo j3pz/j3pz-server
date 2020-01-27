@@ -7,7 +7,9 @@ export class User {
     @ObjectIdColumn()
     private _id: ObjectID;
 
-    @Column()
+    @Column({
+        unique: true,
+    })
     public email: string;
 
     @Column()
@@ -25,6 +27,8 @@ export class User {
     @CreateDateColumn()
     public createAt: Date;
 
-    @Column()
-    public lastSeenAt: Date;
+    public constructor() {
+        this.syncLimit = 3;
+        this.activate = false;
+    }
 }
