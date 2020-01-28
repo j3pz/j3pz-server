@@ -2,6 +2,7 @@
 import {
     ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware, $log,
 } from '@tsed/common';
+import '@tsed/passport';
 import '@tsed/typeorm';
 import '@tsed/swagger';
 import '@tsed/ajv';
@@ -11,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import methodOverride from 'method-override';
+import session from 'express-session';
 import { generateReqId } from './utils/RequestId';
 
 config({
@@ -28,9 +30,10 @@ const rootDir = __dirname;
         '/api': '${rootDir}/controllers/**/*.{ts,js}',
     },
     componentsScan: [
-        '${rootDir}/middlewares/**/*.{ts,js}',
-        '${rootDir}/services/**/*.{ts,js}',
-        '${rootDir}/converters/**/*.{ts,js}',
+        `${rootDir}/middlewares/**/*.{ts,js}`,
+        `${rootDir}/services/**/*.{ts,js}`,
+        `${rootDir}/converters/**/*.{ts,js}`,
+        `${rootDir}/protocols/**/*.{ts,js}`,
     ],
     typeorm: [
         {
@@ -67,6 +70,7 @@ const rootDir = __dirname;
         logRequest: false,
         level: process.env.LOG_LEVEL as ('debug' | 'info' | 'warn' | 'error' | 'off'),
     },
+    passport: {},
 })
 export class Server extends ServerLoader {
     /**
@@ -83,6 +87,18 @@ export class Server extends ServerLoader {
             .use(bodyParser.json())
             .use(bodyParser.urlencoded({
                 extended: true,
+            }))
+            .use(session({
+                secret: 'mysecretkey',
+                resave: true,
+                saveUninitialized: true,
+                // maxAge: 36000,
+                cookie: {
+                    path: '/',
+                    httpOnly: true,
+                    secure: false,
+                    maxAge: null,
+                },
             }));
 
         return null;

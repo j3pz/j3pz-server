@@ -1,19 +1,27 @@
-import { Controller, Post, BodyParams } from '@tsed/common';
+import { Controller, Post, Req } from '@tsed/common';
 import { Summary, Returns } from '@tsed/swagger';
+import { Authenticate } from '@tsed/passport';
 import { ConfigService } from '../services/ConfigService';
 import { UserService } from '../services/UserService';
 import { User } from '../entities/users/User';
-import { UserModel } from '../model/User';
+import { UserInfo } from '../model/Credentials';
 
-@Controller('/user')
+@Controller('/auth')
 export class UserCtrl {
     public constructor(private userService: UserService, private configService: ConfigService) {}
 
-    @Post()
+    @Post('/signup')
     @Summary('注册用户')
+    @Authenticate('signup')
     @Returns(200, { description: 'OK', type: User })
-    public async create(@BodyParams() registerInfo: UserModel): Promise<User> {
-        const user = await this.userService.create(registerInfo);
-        return user;
+    public async create(@Req() req: Req): Promise<UserInfo> {
+        return req.user;
+    }
+
+    @Post('/login')
+    @Summary('登录')
+    @Authenticate('login', { failWithError: false })
+    public async login(@Req() req: Req): Promise<UserInfo> {
+        return req.user;
     }
 }

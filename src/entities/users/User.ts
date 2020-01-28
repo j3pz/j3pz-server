@@ -1,6 +1,7 @@
 import {
     Entity, ObjectID, ObjectIdColumn, Column, CreateDateColumn,
 } from 'typeorm';
+import { createHash } from 'crypto';
 
 @Entity()
 export class User {
@@ -12,8 +13,10 @@ export class User {
     })
     public email: string;
 
-    @Column()
-    public password: string;
+    @Column({
+        name: 'password',
+    })
+    private hashedPassword: string;
 
     @Column()
     public name: string;
@@ -30,5 +33,15 @@ export class User {
     public constructor() {
         this.syncLimit = 3;
         this.activate = false;
+    }
+
+    public set password(password: string) {
+        const hashedPassword = createHash('md5').update(password).digest('hex');
+        this.hashedPassword = hashedPassword;
+    }
+
+    public verifyPassword(password: string): boolean {
+        const hashedPassword = createHash('md5').update(password).digest('hex');
+        return hashedPassword === this.hashedPassword;
     }
 }

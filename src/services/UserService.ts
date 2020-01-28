@@ -1,9 +1,8 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { Connection } from 'typeorm';
-import { createHash } from 'crypto';
 import { User } from '../entities/users/User';
-import { UserModel } from '../model/User';
+import { RegisterModel, UserInfo } from '../model/Credentials';
 
 @Service()
 export class UserService implements AfterRoutesInit {
@@ -17,13 +16,28 @@ export class UserService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('users');
     }
 
-    public async create(userModel: UserModel): Promise<User> {
+    public redact(user: User): UserInfo {
+        const info = {
+            syncLimit: user.syncLimit,
+            activate: user.activate,
+            email: user.email,
+            name: user.name,
+        };
+        return info;
+    }
+
+    public async findOne(email: string): Promise<User> {
+        const user = await this.connection.manager.findOne(User, {
+            where: { email },
+        });
+        return user;
+    }
+
+    public async create(register: RegisterModel): Promise<User> {
         const user = new User();
-        // TODO: 处理用户注册信息
-        user.name = userModel.name;
-        user.email = userModel.email;
-        const cipheredPassword = createHash('md5').update(userModel.password).digest('hex');
-        user.password = cipheredPassword;
+        user.name = register.name;
+        user.email = register.email;
+        user.password = register.password;
         await this.connection.manager.save(user);
         return user;
     }

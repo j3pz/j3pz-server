@@ -4,6 +4,7 @@ import {
 import {
     Summary, Description, ReturnsArray, Returns,
 } from '@tsed/swagger';
+import { Authorize } from '@tsed/passport';
 import { Resource } from '../model/Server';
 import { EquipService } from '../services/EquipService';
 import { Category, KungFu } from '../model/Base';
@@ -21,6 +22,7 @@ export class EquipCtrl {
     @Summary('获取装备列表')
     @ReturnsArray(200, { description: 'OK', type: EquipCore })
     @ReturnsArray(400, { description: 'Bad Request' })
+    @Authorize()
     public async list(
         @QueryParams('kungfu') @Description('心法名称') kungfu: KungFu,
         @QueryParams('category') @Description('装备部位') category: Category,
