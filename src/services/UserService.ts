@@ -1,6 +1,7 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { Connection } from 'typeorm';
+import { sign } from 'jsonwebtoken';
 import { User } from '../entities/users/User';
 import { RegisterModel, UserInfo } from '../model/Credentials';
 
@@ -16,14 +17,23 @@ export class UserService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('users');
     }
 
-    public redact(user: User): UserInfo {
+    public redact(user: User, token: string): UserInfo {
         const info = {
             syncLimit: user.syncLimit,
             activate: user.activate,
             email: user.email,
             name: user.name,
+            token,
         };
         return info;
+    }
+
+    public sign(user: User): string {
+        const token = sign({
+            eml: user.email,
+            nam: user.name,
+        }, process.env.JWT_SECRET);
+        return token;
     }
 
     public async findOne(email: string): Promise<User> {

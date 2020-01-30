@@ -25,6 +25,7 @@ export class SignupLocalProtocol implements OnVerify {
         }
 
         const user = await this.userService.create(register);
-        return this.userService.redact(user);
+        const token = this.userService.sign(user);
+        return this.userService.redact(user, token);
     }
 }

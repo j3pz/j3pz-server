@@ -44,4 +44,6 @@ export class User {
         const hashedPassword = createHash('md5').update(password).digest('hex');
         return hashedPassword === this.hashedPassword;
     }
+
+    public token?: string;
 }

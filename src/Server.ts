@@ -12,7 +12,6 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import methodOverride from 'method-override';
-import session from 'express-session';
 import { generateReqId } from './utils/RequestId';
 
 config({
@@ -87,18 +86,6 @@ export class Server extends ServerLoader {
             .use(bodyParser.json())
             .use(bodyParser.urlencoded({
                 extended: true,
-            }))
-            .use(session({
-                secret: 'mysecretkey',
-                resave: true,
-                saveUninitialized: true,
-                // maxAge: 36000,
-                cookie: {
-                    path: '/',
-                    httpOnly: true,
-                    secure: false,
-                    maxAge: null,
-                },
             }));
 
         return null;

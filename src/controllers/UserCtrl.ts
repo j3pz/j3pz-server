@@ -20,7 +20,7 @@ export class UserCtrl {
 
     @Post('/login')
     @Summary('登录')
-    @Authenticate('login', { failWithError: false })
+    @Authenticate('login', { failWithError: true })
     public async login(@Req() req: Req): Promise<UserInfo> {
         return req.user;
     }

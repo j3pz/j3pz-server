@@ -4,9 +4,25 @@ import { ServerError } from '../../model/Server';
 
 // 六位错误码，前三位为 HTTP Status Code，第四位表示模块，第五位和第六位表示错误
 enum UnauthorizedErrorCode {
+    NotLoggedIn = 401000,
     NoSuchUser = 401001,
     PasswordNotCorrect = 401002,
     PrivilegeNotCorrect = 401003,
+}
+
+export class NotLoggedInError extends Unauthorized implements IResponseError {
+    public code: UnauthorizedErrorCode = UnauthorizedErrorCode.NotLoggedIn;
+
+    public errors: ServerError[] = [];
+
+    public constructor() {
+        super('未登录');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: '该操作需要登录',
+        });
+    }
 }
 
 export class NoSuchUserError extends Unauthorized implements IResponseError {

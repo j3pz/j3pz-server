@@ -11,6 +11,7 @@ import { NoSuchUserError, PasswordVerifyError } from '../utils/errors/Unauthoriz
     settings: {
         usernameField: 'email',
         passwordField: 'password',
+        session: false,
     },
 })
 export class LoginLocalProtocol implements OnVerify {
@@ -27,7 +28,7 @@ export class LoginLocalProtocol implements OnVerify {
         if (!user.verifyPassword(password)) {
             throw new PasswordVerifyError();
         }
-
-        return this.userService.redact(user);
+        const token = this.userService.sign(user);
+        return this.userService.redact(user, token);
     }
 }
