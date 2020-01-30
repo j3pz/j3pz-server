@@ -7,7 +7,7 @@ import { User } from '../entities/users/User';
 import { UserInfo } from '../model/Credentials';
 
 @Controller('/auth')
-export class UserCtrl {
+export class AuthCtrl {
     public constructor(private userService: UserService, private configService: ConfigService) {}
 
     @Post('/signup')
