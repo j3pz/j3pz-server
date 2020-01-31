@@ -5,5 +5,5 @@ export interface ServerError {
 }
 
 export class Resource<T> {
-    public constructor(private id: number, private type: string, private attributes: T) {}
+    public constructor(private id: number | string, private type: string, private attributes: T) {}
 }

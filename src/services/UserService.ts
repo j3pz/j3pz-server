@@ -19,10 +19,11 @@ export class UserService implements AfterRoutesInit {
 
     public redact(user: User, token: string): UserInfo {
         const info = {
-            syncLimit: user.syncLimit,
-            activate: user.activate,
+            uid: user.uid,
             email: user.email,
             name: user.name,
+            syncLimit: user.syncLimit,
+            activate: user.activate,
             token,
         };
         return info;

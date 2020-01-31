@@ -46,4 +46,9 @@ export class User {
     }
 
     public token?: string;
+
+    public get uid(): string {
+        // eslint-disable-next-line no-underscore-dangle
+        return this._id.toHexString();
+    }
 }

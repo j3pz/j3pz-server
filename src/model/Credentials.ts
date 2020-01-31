@@ -1,5 +1,6 @@
 import { Email, MinLength, Required } from '@tsed/common';
 import { User } from '../entities/users/User';
+import { Resource } from './Server';
 
 export class RegisterModel {
     @Email()
@@ -19,5 +20,18 @@ export class CredentialsModel {
 
     public password: string;
 }
-
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace Express {
+        interface User {
+            uid: string;
+            email: string;
+            name: string;
+            syncLimit: number;
+            activate: boolean;
+            token: string;
+        }
+    }
+}
 export type UserInfo = Partial<User>;
+export type UserInfoResource = Resource<UserInfo>;
