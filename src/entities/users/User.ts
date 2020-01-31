@@ -2,6 +2,7 @@ import {
     Entity, ObjectID, ObjectIdColumn, Column, CreateDateColumn,
 } from 'typeorm';
 import { createHash } from 'crypto';
+import { UserActivation } from './UserActivation';
 
 @Entity()
 export class User {
@@ -24,15 +25,15 @@ export class User {
     @Column()
     public syncLimit: number;
 
-    @Column()
-    public activate: boolean;
+    @Column(() => UserActivation)
+    public activation: UserActivation;
 
     @CreateDateColumn()
     public createAt: Date;
 
     public constructor() {
         this.syncLimit = 3;
-        this.activate = false;
+        this.activation = new UserActivation();
     }
 
     public set password(password: string) {
