@@ -7,12 +7,13 @@ import { isAfter } from 'date-fns';
 import { User } from '../entities/users/User';
 import { RegisterModel, UserInfo } from '../model/Credentials';
 import { IncorrectTokenError, ExpiredTokenError } from '../utils/errors/Forbidden';
+import { MailService } from './MailService';
 
 @Service()
 export class UserService implements AfterRoutesInit {
     private connection: Connection;
 
-    public constructor(private typeORMService: TypeORMService) {
+    public constructor(private typeORMService: TypeORMService, private mailService: MailService) {
         // nothing
     }
 
@@ -53,6 +54,7 @@ export class UserService implements AfterRoutesInit {
         user.email = register.email.trim();
         user.password = register.password;
         await this.connection.manager.save(user);
+        this.mailService.sendWelcomeMail(user);
         return user;
     }
 
