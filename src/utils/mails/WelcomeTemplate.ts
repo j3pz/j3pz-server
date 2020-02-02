@@ -241,7 +241,7 @@ font-size: 18px !important;
 <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:600px;">
 <![endif]--><div class='dys-column-per-100 outlook-group-fix' style='direction:ltr;display:inline-block;font-size:13px;text-align:left;vertical-align:top;width:100%;'><table border='0' cellpadding='0' cellspacing='0' role='presentation' style='vertical-align:top;' width='100%'>
 <tr><td align='center' style='font-size:0px;padding:5px 25px;word-break:break-word;'><div style='color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-style:bold;font-weight:700;line-height:21px;text-align:center;'>剑网3配装器 by 胖叔叔@幽月轮</div></td></tr>
-<tr><td align='center' style='font-size:0px;padding:5px 25px;word-break:break-word;'><div style='color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-style:bold;line-height:1;text-align:center;'>2013 - 2020. All rights reserved.</div></td></tr>
+<tr><td align='center' style='font-size:0px;padding:5px 25px;word-break:break-word;'><div style='color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-style:bold;line-height:1;text-align:center;'>2013 - ${(new Date()).getFullYear()}. All rights reserved.</div></td></tr>
 </table></div><!--[if mso | IE]>
 </td></tr></table>
 <![endif]--></td></tr></tbody></table></div></td></tr></tbody></table>
