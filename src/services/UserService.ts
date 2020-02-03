@@ -5,7 +5,7 @@ import { ObjectID } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { isAfter } from 'date-fns';
 import { User } from '../entities/users/User';
-import { RegisterModel, UserInfo } from '../model/Credentials';
+import { RegisterModel, UserInfo, JWTSignPayload } from '../model/Credentials';
 import { IncorrectTokenError, ExpiredTokenError } from '../utils/errors/Forbidden';
 import { MailService } from './MailService';
 
@@ -34,10 +34,13 @@ export class UserService implements AfterRoutesInit {
     }
 
     public sign(user: User): string {
-        const token = sign({
+        const payload: JWTSignPayload = {
             eml: user.email,
             nam: user.name,
-        }, process.env.JWT_SECRET);
+            lim: user.syncLimit,
+            act: user.activation.activate,
+        };
+        const token = sign(payload, process.env.JWT_SECRET);
         return token;
     }
 

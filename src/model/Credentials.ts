@@ -35,3 +35,13 @@ declare global {
 }
 export type UserInfo = Partial<User>;
 export type UserInfoResource = Resource<UserInfo>;
+
+export interface JWTSignPayload {
+    eml: string;
+    nam: string;
+    act: boolean;
+    lim: number;
+}
+export interface JWTPayload extends JWTSignPayload {
+    iat: number;
+}

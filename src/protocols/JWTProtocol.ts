@@ -1,8 +1,9 @@
 import { Req } from '@tsed/common';
-import { OnVerify, Protocol } from '@tsed/passport';
+import { OnVerify, Protocol, Arg } from '@tsed/passport';
 import { StrategyOptions, Strategy, ExtractJwt } from 'passport-jwt';
 import { UserService } from '../services/UserService';
-import { UserInfo } from '../model/Credentials';
+import { UserInfo, JWTPayload } from '../model/Credentials';
+import { NoSuchUserError } from '../utils/errors/Unauthorized';
 
 @Protocol<StrategyOptions>({
     name: 'jwt',
@@ -15,8 +16,13 @@ import { UserInfo } from '../model/Credentials';
 export class JWTLocalProtocol implements OnVerify {
     public constructor(private userService: UserService) {}
 
-    public async $onVerify(@Req() request: Req, payload): Promise<UserInfo> {
-        console.log(payload); // TODO: do more verify here and get user object
-        return {};
+    public async $onVerify(@Req() request: Req, @Arg(0) payload: JWTPayload): Promise<UserInfo> {
+        const email = payload.eml;
+        const user = await this.userService.findOne(email);
+        if (!user) {
+            throw new NoSuchUserError(email);
+        }
+        const token = this.userService.sign(user);
+        return this.userService.redact(user, token);
     }
 }
