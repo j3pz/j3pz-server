@@ -73,10 +73,15 @@ export class UserService implements AfterRoutesInit {
         if (user.activation.verifyToken !== token) {
             throw new IncorrectTokenError('token', token);
         }
-        if (isAfter(Date.now(), user.activation.expireAt)) {
+        if (isAfter(Date.now(), user.activation.verifyExpireAt)) {
             throw new ExpiredTokenError(`${permalink}/${token}`);
         }
         user.activation.activate = true;
+        await this.connection.manager.save(user);
+        return user;
+    }
+
+    public async update(user: User): Promise<User> {
         await this.connection.manager.save(user);
         return user;
     }

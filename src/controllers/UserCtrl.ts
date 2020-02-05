@@ -1,13 +1,14 @@
 import {
-    Controller, Get, Req, PathParams, Post,
+    Controller, Get, Req, PathParams, Post, QueryParams,
 } from '@tsed/common';
-import { Summary } from '@tsed/swagger';
+import { Summary, Description } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
 import { UserService } from '../services/UserService';
 import { UserInfoResource } from '../model/Credentials';
 import { Resource, Status } from '../model/Server';
 import { ActivatedError } from '../utils/errors/Forbidden';
 import { MailService } from '../services/MailService';
+import { NoSuchUserError } from '../utils/errors/Unauthorized';
 
 @Controller('/user')
 export class UserCtrl {
@@ -47,6 +48,19 @@ export class UserCtrl {
             throw new ActivatedError(req.user.email);
         }
         this.mailService.sendWelcomeMail(req.user);
+        return new Status(true);
+    }
+
+    @Get('/reset')
+    @Summary('请求重设密码')
+    public async requestReset(@QueryParams('email') @Description('注册邮箱') email: string): Promise<Status> {
+        const user = await this.userService.findOne(email);
+        if (!user) {
+            throw new NoSuchUserError(email);
+        }
+        user.activation.updateResetToken();
+        await this.userService.update(user);
+        this.mailService.sendResetMail(user);
         return new Status(true);
     }
 }
