@@ -18,7 +18,7 @@ export class JWTLocalProtocol implements OnVerify {
     public constructor(private userService: UserService) {}
 
     public async $onVerify(@Req() request: Req, @Arg(0) payload: JWTPayload): Promise<UserInfo> {
-        const email = payload.eml;
+        const email = payload.sub;
         const user = await this.userService.findOne(email);
         if (!user) {
             throw new NoSuchUserError(email);

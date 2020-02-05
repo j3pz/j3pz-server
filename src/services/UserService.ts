@@ -35,12 +35,14 @@ export class UserService implements AfterRoutesInit {
 
     public sign(user: UserInfo): string {
         const payload: JWTSignPayload = {
-            eml: user.email,
             nam: user.name,
             lim: user.syncLimit,
             act: user.activation.activate,
         };
-        const token = sign(payload, process.env.JWT_SECRET);
+        const token = sign(payload, process.env.JWT_SECRET, {
+            expiresIn: '7d',
+            subject: user.email,
+        });
         return token;
     }
 

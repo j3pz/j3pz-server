@@ -41,11 +41,11 @@ export interface SimpleUserInfo {
 export type UserInfoResource = Resource<SimpleUserInfo>;
 
 export interface JWTSignPayload {
-    eml: string;
     nam: string;
     act: boolean;
     lim: number;
 }
 export interface JWTPayload extends JWTSignPayload {
     iat: number;
+    sub: string;
 }
