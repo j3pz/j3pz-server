@@ -1,7 +1,7 @@
 import { Service } from '@tsed/common';
 import { Transporter, createTransport } from 'nodemailer';
 import { WelcomeTemplate } from '../utils/mails/WelcomeTemplate';
-import { User } from '../entities/users/User';
+import { UserInfo } from '../entities/users/User';
 
 @Service()
 export class MailService {
@@ -20,7 +20,7 @@ export class MailService {
         this.transporter = createTransport(connect);
     }
 
-    public sendWelcomeMail(user: User): void {
+    public sendWelcomeMail(user: UserInfo): void {
         const template = new WelcomeTemplate({
             title: '欢迎注册剑网3配装器',
             name: user.name,

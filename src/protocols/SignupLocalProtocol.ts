@@ -1,9 +1,10 @@
-import { BodyParams, Req } from '@tsed/common';
+import { BodyParams } from '@tsed/common';
 import { OnVerify, Protocol } from '@tsed/passport';
 import { Strategy } from 'passport-local';
 import { UserService } from '../services/UserService';
-import { RegisterModel, UserInfo } from '../model/Credentials';
+import { RegisterModel } from '../model/Credentials';
 import { DuplicateUserError } from '../utils/errors/Forbidden';
+import { UserInfo } from '../entities/users/User';
 
 @Protocol({
     name: 'signup',
@@ -16,7 +17,7 @@ import { DuplicateUserError } from '../utils/errors/Forbidden';
 export class SignupLocalProtocol implements OnVerify {
     public constructor(private userService: UserService) {}
 
-    public async $onVerify(@Req() request: Req, @BodyParams() register: RegisterModel): Promise<UserInfo> {
+    public async $onVerify(@BodyParams() register: RegisterModel): Promise<UserInfo> {
         const { email } = register;
         const found = await this.userService.findOne(email);
 
@@ -25,7 +26,6 @@ export class SignupLocalProtocol implements OnVerify {
         }
 
         const user = await this.userService.create(register);
-        const token = this.userService.sign(user);
-        return this.userService.redact(user, token);
+        return user;
     }
 }

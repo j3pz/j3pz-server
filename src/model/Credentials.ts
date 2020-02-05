@@ -1,5 +1,6 @@
 import { Email, MinLength, Required } from '@tsed/common';
-import { User } from '../entities/users/User';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { UserInfo } from '../entities/users/User';
 import { Resource } from './Server';
 
 export class RegisterModel {
@@ -23,18 +24,21 @@ export class CredentialsModel {
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Express {
-        interface User {
-            uid: string;
-            email: string;
-            name: string;
-            syncLimit: number;
-            activate: boolean;
-            token: string;
+        // eslint-disable-next-line @typescript-eslint/no-empty-interface
+        interface User extends UserInfo {
+            token?: string;
         }
     }
 }
-export type UserInfo = Partial<User>;
-export type UserInfoResource = Resource<UserInfo>;
+export interface SimpleUserInfo {
+    uid: string;
+    email: string;
+    name: string;
+    syncLimit: number;
+    activate: boolean;
+    token: string;
+}
+export type UserInfoResource = Resource<SimpleUserInfo>;
 
 export interface JWTSignPayload {
     eml: string;

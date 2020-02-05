@@ -4,8 +4,16 @@ import {
 import { createHash } from 'crypto';
 import { UserActivation } from './UserActivation';
 
+export interface UserInfo {
+    uid: string;
+    email: string;
+    name: string;
+    syncLimit: number;
+    activation: UserActivation;
+}
+
 @Entity()
-export class User {
+export class User implements UserInfo {
     @ObjectIdColumn()
     private _id: ObjectID;
 

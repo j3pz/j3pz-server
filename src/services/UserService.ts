@@ -4,8 +4,8 @@ import { Connection } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { isAfter } from 'date-fns';
-import { User } from '../entities/users/User';
-import { RegisterModel, UserInfo, JWTSignPayload } from '../model/Credentials';
+import { User, UserInfo } from '../entities/users/User';
+import { RegisterModel, JWTSignPayload, SimpleUserInfo } from '../model/Credentials';
 import { IncorrectTokenError, ExpiredTokenError } from '../utils/errors/Forbidden';
 import { MailService } from './MailService';
 
@@ -21,7 +21,7 @@ export class UserService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('users');
     }
 
-    public redact(user: User, token: string): UserInfo {
+    public redact(user: UserInfo, token: string): SimpleUserInfo {
         const info = {
             uid: user.uid,
             email: user.email,
@@ -33,7 +33,7 @@ export class UserService implements AfterRoutesInit {
         return info;
     }
 
-    public sign(user: User): string {
+    public sign(user: UserInfo): string {
         const payload: JWTSignPayload = {
             eml: user.email,
             nam: user.name,

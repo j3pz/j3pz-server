@@ -16,13 +16,17 @@ export class AuthCtrl {
     @Authenticate('signup')
     @Returns(200, { description: 'OK', type: User })
     public async create(@Req() req: Req): Promise<UserInfoResource> {
-        return new Resource(req.user.uid, 'User', req.user);
+        const token = this.userService.sign(req.user);
+        const info = this.userService.redact(req.user, token);
+        return new Resource(info.uid, 'User', info);
     }
 
     @Post('/login')
     @Summary('登录')
     @Authenticate('login', { failWithError: true })
     public async login(@Req() req: Req): Promise<UserInfoResource> {
-        return new Resource(req.user.uid, 'User', req.user);
+        const token = this.userService.sign(req.user);
+        const info = this.userService.redact(req.user, token);
+        return new Resource(info.uid, 'User', info);
     }
 }

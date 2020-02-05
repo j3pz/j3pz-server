@@ -7,6 +7,7 @@ enum ForbiddenErrorCode {
     DuplicateUser = 403001,
     IncorrectToken = 403002,
     ExpiredToken = 403003,
+    AlreadyActivated = 403004,
 }
 
 export class DuplicateUserError extends Forbidden implements IResponseError {
@@ -50,6 +51,21 @@ export class ExpiredTokenError extends Forbidden implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `该链接: ${link} 已过期`,
+        });
+    }
+}
+
+export class ActivatedError extends Forbidden implements IResponseError {
+    public code: ForbiddenErrorCode = ForbiddenErrorCode.AlreadyActivated;
+
+    public errors: ServerError[] = [];
+
+    public constructor(email: string) {
+        super('用户已经验证过邮箱');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `用户: ${email} 已激活，无需重发激活邮件`,
         });
     }
 }

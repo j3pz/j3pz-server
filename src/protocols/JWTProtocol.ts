@@ -2,8 +2,9 @@ import { Req } from '@tsed/common';
 import { OnVerify, Protocol, Arg } from '@tsed/passport';
 import { StrategyOptions, Strategy, ExtractJwt } from 'passport-jwt';
 import { UserService } from '../services/UserService';
-import { UserInfo, JWTPayload } from '../model/Credentials';
+import { JWTPayload } from '../model/Credentials';
 import { NoSuchUserError } from '../utils/errors/Unauthorized';
+import { UserInfo } from '../entities/users/User';
 
 @Protocol<StrategyOptions>({
     name: 'jwt',
@@ -22,7 +23,6 @@ export class JWTLocalProtocol implements OnVerify {
         if (!user) {
             throw new NoSuchUserError(email);
         }
-        const token = this.userService.sign(user);
-        return this.userService.redact(user, token);
+        return user;
     }
 }

@@ -2,8 +2,9 @@ import { BodyParams, Req } from '@tsed/common';
 import { OnVerify, Protocol } from '@tsed/passport';
 import { IStrategyOptions, Strategy } from 'passport-local';
 import { UserService } from '../services/UserService';
-import { CredentialsModel, UserInfo } from '../model/Credentials';
+import { CredentialsModel } from '../model/Credentials';
 import { NoSuchUserError, PasswordVerifyError } from '../utils/errors/Unauthorized';
+import { UserInfo } from '../entities/users/User';
 
 @Protocol<IStrategyOptions>({
     name: 'login',
@@ -28,7 +29,6 @@ export class LoginLocalProtocol implements OnVerify {
         if (!user.verifyPassword(password)) {
             throw new PasswordVerifyError();
         }
-        const token = this.userService.sign(user);
-        return this.userService.redact(user, token);
+        return user;
     }
 }
