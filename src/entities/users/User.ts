@@ -22,9 +22,7 @@ export class User implements UserInfo {
     })
     public email: string;
 
-    @Column({
-        name: 'password',
-    })
+    @Column()
     private hashedPassword: string;
 
     @Column()
