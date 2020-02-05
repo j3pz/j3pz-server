@@ -5,7 +5,9 @@ import { ObjectID } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { isAfter } from 'date-fns';
 import { User, UserInfo } from '../entities/users/User';
-import { RegisterModel, JWTSignPayload, SimpleUserInfo } from '../model/Credentials';
+import {
+    RegisterModel, JWTSignPayload, SimpleUserInfo, ResetModel,
+} from '../model/Credentials';
 import { IncorrectTokenError, ExpiredTokenError } from '../utils/errors/Forbidden';
 import { MailService } from './MailService';
 
@@ -68,16 +70,35 @@ export class UserService implements AfterRoutesInit {
             where: { _id: ObjectID.createFromHexString(permalink) },
         });
         if (!user) {
-            throw new IncorrectTokenError('permalink', permalink);
+            throw new IncorrectTokenError('permalink', permalink, 'activation');
         }
         if (user.activation.verifyToken !== token) {
-            throw new IncorrectTokenError('token', token);
+            throw new IncorrectTokenError('token', token, 'activation');
         }
         if (isAfter(Date.now(), user.activation.verifyExpireAt)) {
-            throw new ExpiredTokenError(`${permalink}/${token}`);
+            throw new ExpiredTokenError(`${permalink}/${token}`, 'activation');
         }
         user.activation.activate = true;
         await this.connection.manager.save(user);
+        return user;
+    }
+
+    public async resetPassword(resetInfo: ResetModel): Promise<User> {
+        const { password, permalink, token } = resetInfo;
+        const user = await this.connection.manager.findOne(User, {
+            where: { _id: ObjectID.createFromHexString(permalink) },
+        });
+        if (!user) {
+            throw new IncorrectTokenError('permalink', permalink, 'reset');
+        }
+        if (user.activation.resetToken !== token) {
+            throw new IncorrectTokenError('token', token, 'reset');
+        }
+        if (isAfter(Date.now(), user.activation.resetExpireAt)) {
+            throw new ExpiredTokenError(`${permalink}/${token}`, 'reset');
+        }
+        user.password = password;
+        await this.update(user);
         return user;
     }
 

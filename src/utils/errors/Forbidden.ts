@@ -30,12 +30,12 @@ export class IncorrectTokenError extends Forbidden implements IResponseError {
 
     public errors: ServerError[] = [];
 
-    public constructor(type: 'token' | 'permalink', token: string) {
+    public constructor(type: 'token' | 'permalink', token: string, category: 'activation' | 'reset') {
         super('验证链接不正确');
         this.errors.push({
             code: this.code,
             title: this.message,
-            detail: `${type}: ${token} is not correct`,
+            detail: `${type}: ${token} is not correct for ${category}`,
         });
     }
 }
@@ -45,12 +45,12 @@ export class ExpiredTokenError extends Forbidden implements IResponseError {
 
     public errors: ServerError[] = [];
 
-    public constructor(link: string) {
+    public constructor(link: string, category: 'activation' | 'reset') {
         super('验证链接不正确');
         this.errors.push({
             code: this.code,
             title: this.message,
-            detail: `该链接: ${link} 已过期`,
+            detail: `${category} link: ${link} is expired`,
         });
     }
 }

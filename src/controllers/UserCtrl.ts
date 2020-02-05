@@ -1,10 +1,10 @@
 import {
-    Controller, Get, Req, PathParams, Post, QueryParams,
+    Controller, Get, Req, PathParams, Post, QueryParams, BodyParams,
 } from '@tsed/common';
 import { Summary, Description } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
 import { UserService } from '../services/UserService';
-import { UserInfoResource } from '../model/Credentials';
+import { UserInfoResource, ResetModel } from '../model/Credentials';
 import { Resource, Status } from '../model/Server';
 import { ActivatedError } from '../utils/errors/Forbidden';
 import { MailService } from '../services/MailService';
@@ -61,6 +61,13 @@ export class UserCtrl {
         user.activation.updateResetToken();
         await this.userService.update(user);
         this.mailService.sendResetMail(user);
+        return new Status(true);
+    }
+
+    @Post('/reset')
+    @Summary('重置密码')
+    public async reset(@BodyParams() resetInfo: ResetModel): Promise<Status> {
+        await this.userService.resetPassword(resetInfo);
         return new Status(true);
     }
 }

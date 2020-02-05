@@ -16,11 +16,17 @@ export class RegisterModel {
     public name: string;
 }
 
-export class CredentialsModel {
-    public email: string;
-
-    public password: string;
+export interface CredentialsModel {
+    email: string;
+    password: string;
 }
+
+export interface ResetModel {
+    permalink: string;
+    token: string;
+    password: string;
+}
+
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Express {
