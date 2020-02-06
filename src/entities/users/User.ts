@@ -3,6 +3,7 @@ import {
 } from 'typeorm';
 import { createHash } from 'crypto';
 import { UserActivation } from './UserActivation';
+import { Preference } from './Preference';
 
 export interface UserInfo {
     uid: string;
@@ -10,6 +11,7 @@ export interface UserInfo {
     name: string;
     syncLimit: number;
     activation: UserActivation;
+    preference: Preference;
 }
 
 @Entity()
@@ -37,9 +39,13 @@ export class User implements UserInfo {
     @CreateDateColumn()
     public createAt: Date;
 
+    @Column(() => Preference)
+    public preference: Preference;
+
     public constructor() {
         this.syncLimit = 3;
         this.activation = new UserActivation();
+        this.preference = new Preference();
     }
 
     public set password(password: string) {
