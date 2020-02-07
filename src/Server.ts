@@ -52,7 +52,7 @@ const rootDir = __dirname;
             name: 'users',
             type: 'mongodb',
             // eslint-disable-next-line max-len
-            url: `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`,
+            url: `${process.env.MONGO_DB_PROTOCOL}://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB_NAME}?${process.env.MONGO_DB_PARAMETERS}`,
             entities: [
                 `${__dirname}/entities/users/*.{ts,js}`,
             ],
