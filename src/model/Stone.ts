@@ -1,6 +1,6 @@
 import { Title } from '@tsed/swagger';
 import { Resource } from './Server';
-import { Stone } from '../entities/Stone';
+import { Stone } from '../entities/resources/Stone';
 import { AttributeDecorator } from './Base';
 
 export type StoneResource = Resource<Stone>;

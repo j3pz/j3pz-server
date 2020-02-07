@@ -8,7 +8,7 @@ import { Resource } from '../model/Server';
 import { TalentService } from '../services/TalentService';
 import { KungFu } from '../model/Base';
 import { TalentResource } from '../model/Talent';
-import { Talent } from '../entities/Talent';
+import { Talent } from '../entities/resources/Talent';
 import { KungFuNotExistError } from '../utils/errors/BadRequests';
 import { TalentNotFound } from '../utils/errors/NotFound';
 import { ConfigService } from '../services/ConfigService';

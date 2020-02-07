@@ -4,7 +4,7 @@ import {
 import { Title } from '@tsed/swagger';
 import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
-import { Category, School } from '../model/Base';
+import { Category, School } from '../../model/Base';
 import { Source } from './Source';
 import { Represent } from './Represent';
 

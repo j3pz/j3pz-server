@@ -8,7 +8,7 @@ import { Resource } from '../model/Server';
 import { BuffService } from '../services/BuffService';
 import { KungFu } from '../model/Base';
 import { BuffCore, BuffResource, BuffCoreResource } from '../model/Buff';
-import { Buff } from '../entities/Buff';
+import { Buff } from '../entities/resources/Buff';
 import { KungFuNotExistError } from '../utils/errors/BadRequests';
 import { BuffNotFound } from '../utils/errors/NotFound';
 import { ConfigService } from '../services/ConfigService';

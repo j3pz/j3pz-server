@@ -3,13 +3,13 @@ import { TypeORMService } from '@tsed/typeorm';
 import {
     Connection, In, FindConditions, Not,
 } from 'typeorm';
-import { Stone } from '../entities/Stone';
+import { Stone } from '../entities/resources/Stone';
 import {
     KungFu, Attribute, AttributeDecorator, PrimaryAttribute, DecoratorTuple,
 } from '../model/Base';
 import { kungFuLib } from '../utils/KungFuLib';
 import { BANNED_ATTRIBUTES_BY_ROLE } from '../utils/KungfuMeta';
-import { StoneAttribute } from '../entities/StoneAttribute';
+import { StoneAttribute } from '../entities/resources/StoneAttribute';
 import { StoneAttributeCore } from '../model/Stone';
 import { getDecoratorList } from '../utils/decorator';
 

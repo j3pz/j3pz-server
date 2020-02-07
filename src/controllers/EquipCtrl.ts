@@ -8,7 +8,7 @@ import { Resource } from '../model/Server';
 import { EquipService } from '../services/EquipService';
 import { Category, KungFu } from '../model/Base';
 import { EquipResource, EquipCoreResource, EquipCore } from '../model/Equip';
-import { Equip } from '../entities/Equip';
+import { Equip } from '../entities/resources/Equip';
 import { KungFuNotExistError, CategoryNotExistError } from '../utils/errors/BadRequests';
 import { EquipNotFound } from '../utils/errors/NotFound';
 import { ConfigService } from '../services/ConfigService';

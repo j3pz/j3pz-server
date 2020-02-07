@@ -42,6 +42,16 @@
         "@typescript-eslint/no-useless-constructor": "error",
         "@typescript-eslint/no-parameter-properties": "off",
         "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }],
-        "max-len": ["error", 140]
+        "max-len": ["error", 140, {
+            "ignoreTemplateLiterals": true
+        }],
+        "import/extensions": [
+            "error",
+            "always",
+            {
+              "ts": "never",
+              "js": "never"
+            }
+        ]
     }
 }

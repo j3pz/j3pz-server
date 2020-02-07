@@ -3,7 +3,7 @@ import {
 } from 'typeorm';
 import { Title } from '@tsed/swagger';
 import { Effect } from './Effect';
-import { KungFu } from '../model/Base';
+import { KungFu } from '../../model/Base';
 
 export type BuffType = 'Formation' | 'LongTerm' | 'OnFight' | 'Potion';
 

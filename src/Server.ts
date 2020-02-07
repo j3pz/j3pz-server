@@ -2,6 +2,7 @@
 import {
     ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware, $log,
 } from '@tsed/common';
+import '@tsed/passport';
 import '@tsed/typeorm';
 import '@tsed/swagger';
 import '@tsed/ajv';
@@ -28,9 +29,10 @@ const rootDir = __dirname;
         '/api': '${rootDir}/controllers/**/*.{ts,js}',
     },
     componentsScan: [
-        '${rootDir}/middlewares/**/*.{ts,js}',
-        '${rootDir}/services/**/*.{ts,js}',
-        '${rootDir}/converters/**/*.{ts,js}',
+        `${rootDir}/middlewares/**/*.{ts,js}`,
+        `${rootDir}/services/**/*.{ts,js}`,
+        `${rootDir}/converters/**/*.{ts,js}`,
+        `${rootDir}/protocols/**/*.{ts,js}`,
     ],
     typeorm: [
         {
@@ -43,8 +45,18 @@ const rootDir = __dirname;
             password: process.env.MYSQL_DB_PASS,
             database: process.env.MYSQL_DB_NAME,
             entities: [
-                `${__dirname}/entities/*.{ts,js}`,
+                `${__dirname}/entities/resources/*.{ts,js}`,
             ],
+        },
+        {
+            name: 'users',
+            type: 'mongodb',
+            // eslint-disable-next-line max-len
+            url: `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`,
+            entities: [
+                `${__dirname}/entities/users/*.{ts,js}`,
+            ],
+            synchronize: true,
         },
     ],
     swagger: [
@@ -57,6 +69,7 @@ const rootDir = __dirname;
         logRequest: false,
         level: process.env.LOG_LEVEL as ('debug' | 'info' | 'warn' | 'error' | 'off'),
     },
+    passport: {},
 })
 export class Server extends ServerLoader {
     /**

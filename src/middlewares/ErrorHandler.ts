@@ -1,7 +1,8 @@
 import {
-    Err, Req, Res, OverrideProvider, GlobalErrorHandlerMiddleware, IResponseError, Response, $log,
+    Err, Req, Res, OverrideProvider, GlobalErrorHandlerMiddleware, IResponseError, Response, $log, ParseExpressionError,
 } from '@tsed/common';
 import { Exception } from 'ts-httpexceptions';
+import { NotLoggedInError } from '../utils/errors/Unauthorized';
 
 @OverrideProvider(GlobalErrorHandlerMiddleware)
 export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
@@ -10,6 +11,25 @@ export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
         @Req() request: Req,
         @Res() response: Res,
     ): Response {
+        if (error instanceof ParseExpressionError) {
+            return response.status(error.status).json({
+                // @ts-ignore
+                errors: error.origin.errors,
+                meta: {
+                    id: request.log.id,
+                    time: request.log.startDate,
+                },
+            });
+        }
+        if (error.name === 'AuthenticationError') {
+            return response.status(error.status).json({
+                errors: (new NotLoggedInError()).errors,
+                meta: {
+                    id: request.log.id,
+                    time: request.log.startDate,
+                },
+            });
+        }
         if (error instanceof Exception) {
             return response.status(error.status).json({
                 errors: error.errors,

@@ -3,7 +3,7 @@ import { TypeORMService } from '@tsed/typeorm';
 import {
     Connection, Not, In, FindConditions,
 } from 'typeorm';
-import { Enhance } from '../entities/Enhance';
+import { Enhance } from '../entities/resources/Enhance';
 import {
     Category, KungFu, Attribute, PrimaryAttribute, AttributeDecorator,
 } from '../model/Base';
