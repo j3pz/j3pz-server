@@ -1,5 +1,5 @@
 apps:
-  - script: ./dist/index.js
+  - script: ./dist/src/index.js
     name: 'j3pz-test'
     instances: 2
     exec_mode: cluster

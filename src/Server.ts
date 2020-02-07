@@ -15,7 +15,7 @@ import methodOverride from 'method-override';
 import { generateReqId } from './utils/RequestId';
 
 config({
-    path: resolve(__dirname, '../env'),
+    path: resolve(process.cwd(), './env'),
     // eslint-disable-next-line @typescript-eslint/camelcase
     default_node_env: 'development',
 });
