@@ -2,15 +2,12 @@ import { ExpressApplication } from '@tsed/common';
 import { TestContext } from '@tsed/testing';
 import { expect } from 'chai';
 import SuperTest from 'supertest';
-import { Server } from '../../../src/Server';
 
 describe('Equip', () => {
     let request: SuperTest.SuperTest<SuperTest.Test>;
-    before(TestContext.bootstrap(Server));
     before(TestContext.inject([ExpressApplication], (expressApplication: ExpressApplication) => {
         request = SuperTest(expressApplication);
     }));
-    after(TestContext.reset);
 
     describe('GET /api/equip', () => {
         it('should return 400001 error if no kungfu provided', async () => {

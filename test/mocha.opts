@@ -2,3 +2,4 @@
 --require scripts/mocha/register
 --bail
 --timeout 999999
+--file test/integration/setup.ts
