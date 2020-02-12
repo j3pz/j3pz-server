@@ -33,15 +33,43 @@ describe('Enhance', () => {
             expect(response.body.errors).to.be.an('array');
             expect(response.body.errors[0].code).equals(400002);
         });
-        it('should return all enhances', async () => {
+        it('should return all hat enhances for "花间游"', async () => {
             const kungfu = encodeURIComponent('花间游');
             const response = await request.get(`/api/enhance?kungfu=${kungfu}&category=hat`).expect(200);
             expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).equals(0);
+            expect(response.body.data.length).equals(8);
+        });
+        it('should return all jacket enhances for "离经易道"', async () => {
+            const kungfu = encodeURIComponent('离经易道');
+            const response = await request.get(`/api/enhance?kungfu=${kungfu}&category=jacket`).expect(200);
+            expect(response.body.data).to.be.an('array');
+            expect(response.body.data.length).equals(9);
         });
     });
 
-    // describe('GET /api/enhance/:id', () => {
+    describe('GET /api/enhance/:id', () => {
+        it('should return 404 for non-exist enhance', async () => {
+            const response = await request.get('/api/enhance/100000000').expect(404);
+            expect(response.body.errors).to.be.an('array');
+            expect(response.body.errors[0].code).equals(404201);
+        });
 
-    // });
+        it('should return a normal enhance', async () => {
+            const response = await request.get('/api/enhance/715').expect(200);
+            expect(response.body.data).to.deep.equals({
+                id: 715,
+                type: 'enhance',
+                attributes: {
+                    id: 715,
+                    name: '霁月·裤·会心',
+                    category: 'bottoms',
+                    attribute: ['crit'],
+                    value: ['80'],
+                    description: '全会心提升80点',
+                    decorator: 'ALL',
+                    deprecated: false,
+                },
+            });
+        });
+    });
 });
