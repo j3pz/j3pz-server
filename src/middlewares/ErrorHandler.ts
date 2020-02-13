@@ -14,7 +14,11 @@ export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
         if (error instanceof ParseExpressionError) {
             return response.status(error.status).json({
                 // @ts-ignore
-                errors: error.origin.errors,
+                errors: error.origin.errors || [{
+                    code: 400000,
+                    title: '请求解析错误',
+                    detail: error.origin.message,
+                }],
                 meta: {
                     id: request.log.id,
                     time: request.log.startDate,

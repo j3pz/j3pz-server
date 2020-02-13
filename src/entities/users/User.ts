@@ -4,6 +4,7 @@ import {
 import { createHash } from 'crypto';
 import { UserActivation } from './UserActivation';
 import { Preference } from './Preference';
+import { CaseInfo } from './CaseInfo';
 
 export interface UserInfo {
     uid: string;
@@ -12,6 +13,7 @@ export interface UserInfo {
     syncLimit: number;
     activation: UserActivation;
     preference: Preference;
+    cases: CaseInfo[];
 }
 
 @Entity()
@@ -42,10 +44,14 @@ export class User implements UserInfo {
     @Column(() => Preference)
     public preference: Preference;
 
+    @Column(() => CaseInfo)
+    public cases: CaseInfo[];
+
     public constructor() {
         this.syncLimit = 3;
         this.activation = new UserActivation();
         this.preference = new Preference();
+        this.cases = [];
     }
 
     public set password(password: string) {
