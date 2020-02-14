@@ -4,8 +4,9 @@ import {
 import { Summary } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
 import { Status, Resource } from '../model/Server';
-import { CaseInfoResource } from '../model/Case';
+import { CaseInfoResource, CaseResource } from '../model/Case';
 import { CaseService } from '../services/CaseService';
+import { CaseId } from '../model/CaseId';
 
 @Controller('/case')
 export class CaseCtrl {
@@ -17,18 +18,21 @@ export class CaseCtrl {
     public async list(@Req() req: Req, @QueryParams('detail', Number) detail: number): Promise<CaseInfoResource[]> {
         const detailMode = !!detail;
         const { cases } = req.user;
-        if (!detailMode) {
-            return cases.map(caseInfo => new Resource(caseInfo.id, 'Case', caseInfo));
+        if (detailMode) {
+            // TODO: Case detail mode
+            return [];
         }
-        return [];
+        return cases.map(caseInfo => new Resource(caseInfo.id, 'Case', caseInfo));
     }
 
     @Get('/:id')
     @Summary('获取方案详情')
     @Authenticate(['jwt', 'anonymous'])
-    public async find(@Req() req: Req, @PathParams('id') caseId: string): Promise<Status> {
-        console.log(caseId);
-        return new Status(true);
+    public async find(@Req() req: Req, @PathParams('id', CaseId) caseId: CaseId): Promise<CaseResource> {
+        const caseScheme = await this.caseService.findOne(caseId.objectId);
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+        const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
+        return new Resource(caseDetail.id, 'Case', caseDetail);
     }
 
     @Post()

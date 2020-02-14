@@ -34,7 +34,7 @@ export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
                 },
             });
         }
-        if (error instanceof Exception) {
+        if (error instanceof Exception && error.errors) {
             return response.status(error.status).json({
                 errors: error.errors,
                 meta: {
@@ -45,16 +45,20 @@ export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
         }
         $log.fatal({
             id: request.log.id,
-            code: 500000,
+            code: error.status * 100 + 999,
             title: '服务器未知错误',
             origin: error,
         });
-        return response.status(500).json({
+        return response.status(error.status).json({
             errors: [{
-                code: 500000,
+                code: error.status * 100 + 999,
                 title: '服务器未知错误',
                 detail: '发生了一些奇怪的问题',
             }],
+            meta: {
+                id: request.log.id,
+                time: request.log.startDate,
+            },
         });
     }
 }
