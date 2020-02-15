@@ -17,5 +17,6 @@ export class CaseDetail extends CaseInfo {
     // public result: CaseResult;
 }
 
+export type CaseModel = CaseInfo & CaseScheme;
 export type CaseInfoResource = Resource<CaseInfo>;
 export type CaseResource = Resource<CaseDetail>;

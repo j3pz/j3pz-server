@@ -1,12 +1,13 @@
 import {
-    Controller, Get, Req, PathParams, Post, Put, QueryParams,
+    Controller, Get, Req, PathParams, Post, Put, QueryParams, BodyParams,
 } from '@tsed/common';
 import { Summary } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
 import { Status, Resource } from '../model/Server';
-import { CaseInfoResource, CaseResource } from '../model/Case';
+import { CaseInfoResource, CaseResource, CaseModel } from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { CaseId } from '../model/CaseId';
+import { SyncLimitReachedError } from '../utils/errors/Forbidden';
 
 @Controller('/case')
 export class CaseCtrl {
@@ -38,8 +39,13 @@ export class CaseCtrl {
     @Post()
     @Summary('新建方案')
     @Authenticate('jwt', { failWithError: true })
-    public async create(@Req() req: Req): Promise<Status> {
-        return new Status(true);
+    public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource[]> {
+        if (req.user.syncLimit <= req.user.cases.length) {
+            throw new SyncLimitReachedError(req.user.email);
+        }
+        await this.caseService.create(caseModel, req.user);
+        const list = await this.list(req, 0);
+        return list;
     }
 
     @Put()

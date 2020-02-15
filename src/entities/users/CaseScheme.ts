@@ -43,8 +43,13 @@ export class CaseScheme {
     public equip: EquipScheme[];
 
     @Column()
-    public effects: number[];
+    public effect: number[];
 
     @Column()
-    public talents: number[];
+    public talent: number[];
+
+    public get id(): string {
+        // eslint-disable-next-line no-underscore-dangle
+        return this._id.toHexString();
+    }
 }

@@ -8,6 +8,8 @@ enum ForbiddenErrorCode {
     IncorrectToken = 403002,
     ExpiredToken = 403003,
     AlreadyActivated = 403004,
+    // 收费限制
+    SyncLimitReached = 403101,
 }
 
 export class DuplicateUserError extends Forbidden implements IResponseError {
@@ -66,6 +68,21 @@ export class ActivatedError extends Forbidden implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `用户: ${email} 已激活，无需重发激活邮件`,
+        });
+    }
+}
+
+export class SyncLimitReachedError extends Forbidden implements IResponseError {
+    public code: ForbiddenErrorCode = ForbiddenErrorCode.SyncLimitReached;
+
+    public errors: ServerError[] = [];
+
+    public constructor(email: string) {
+        super('用户线上同步数量已用完');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `用户: ${email} 已同步的方案数已达到最大限制`,
         });
     }
 }

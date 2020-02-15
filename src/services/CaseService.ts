@@ -6,8 +6,9 @@ import { CaseScheme } from '../entities/users/CaseScheme';
 import { EquipService } from './EquipService';
 import { CaseInfo } from '../entities/users/CaseInfo';
 import { CaseId } from '../model/CaseId';
-import { CaseDetail } from '../model/Case';
+import { CaseDetail, CaseModel } from '../model/Case';
 import { EnhanceService } from './EnhanceService';
+import { UserInfo } from '../entities/users/User';
 
 @Service()
 export class CaseService implements AfterRoutesInit {
@@ -23,7 +24,7 @@ export class CaseService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('users');
     }
 
-    public async findOne(id: ObjectID): Promise<any> {
+    public async findOne(id: ObjectID): Promise<CaseScheme> {
         const caseScheme = await this.connection.manager.findOne(CaseScheme, {
             where: { _id: id },
         });
@@ -46,5 +47,20 @@ export class CaseService implements AfterRoutesInit {
         detail.enhance = enhances;
 
         return detail;
+    }
+
+    public async create(caseModel: CaseModel, user: UserInfo): Promise<void> {
+        const scheme = new CaseScheme();
+        scheme.published = !!caseModel.published;
+        scheme.equip = caseModel.equip;
+        scheme.effect = caseModel.effect;
+        scheme.talent = caseModel.talent;
+        const { id } = await this.connection.manager.save(scheme);
+        const info = new CaseInfo();
+        info.id = id;
+        info.name = caseModel.name;
+        info.kungfu = caseModel.kungfu;
+        user.cases.push(info);
+        await this.connection.manager.save(user);
     }
 }
