@@ -8,6 +8,7 @@ import { CaseInfoResource, CaseResource, CaseModel } from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { CaseId } from '../model/CaseId';
 import { SyncLimitReachedError } from '../utils/errors/Forbidden';
+import { CaseNotFoundError } from '../utils/errors/NotFound';
 
 @Controller('/case')
 export class CaseCtrl {
@@ -31,6 +32,9 @@ export class CaseCtrl {
     @Authenticate(['jwt', 'anonymous'])
     public async find(@Req() req: Req, @PathParams('id', CaseId) caseId: CaseId): Promise<CaseResource> {
         const caseScheme = await this.caseService.findOne(caseId.objectId);
+        if (!caseScheme) {
+            throw new CaseNotFoundError(caseId);
+        }
         const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
         return new Resource(caseDetail.id, 'Case', caseDetail);
@@ -48,10 +52,15 @@ export class CaseCtrl {
         return list;
     }
 
-    @Put()
+    @Put('/:id')
     @Summary('更新方案')
     @Authenticate('jwt', { failWithError: true })
-    public async update(@Req() req: Req): Promise<Status> {
+    public async update(@Req() req: Req, @BodyParams() caseModel: CaseModel, @PathParams('id', CaseId) caseId: CaseId): Promise<Status> {
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+        if (!caseInfo) {
+            throw new CaseNotFoundError(caseId);
+        }
+        await this.caseService.update(caseModel, caseId);
         return new Status(true);
     }
 }

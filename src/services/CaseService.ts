@@ -9,6 +9,7 @@ import { CaseId } from '../model/CaseId';
 import { CaseDetail, CaseModel } from '../model/Case';
 import { EnhanceService } from './EnhanceService';
 import { UserInfo } from '../entities/users/User';
+import { CaseNotFoundError } from '../utils/errors/NotFound';
 
 @Service()
 export class CaseService implements AfterRoutesInit {
@@ -62,5 +63,17 @@ export class CaseService implements AfterRoutesInit {
         info.kungfu = caseModel.kungfu;
         user.cases.push(info);
         await this.connection.manager.save(user);
+    }
+
+    public async update(caseModel: CaseModel, id: CaseId): Promise<void> {
+        const scheme = await this.findOne(id.objectId);
+        if (!scheme) {
+            throw new CaseNotFoundError(id);
+        }
+        scheme.published = !!caseModel.published;
+        scheme.equip = caseModel.equip;
+        scheme.effect = caseModel.effect;
+        scheme.talent = caseModel.talent;
+        await this.connection.manager.save(scheme);
     }
 }
