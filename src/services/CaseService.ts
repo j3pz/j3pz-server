@@ -52,7 +52,6 @@ export class CaseService implements AfterRoutesInit {
 
     public async create(caseModel: CaseModel, user: UserInfo): Promise<void> {
         const scheme = new CaseScheme();
-        scheme.published = !!caseModel.published;
         scheme.equip = caseModel.equip;
         scheme.effect = caseModel.effect;
         scheme.talent = caseModel.talent;
@@ -61,6 +60,7 @@ export class CaseService implements AfterRoutesInit {
         info.id = id;
         info.name = caseModel.name;
         info.kungfu = caseModel.kungfu;
+        info.published = false;
         user.cases.push(info);
         await this.connection.manager.save(user);
     }
@@ -70,7 +70,6 @@ export class CaseService implements AfterRoutesInit {
         if (!scheme) {
             throw new CaseNotFoundError(id);
         }
-        scheme.published = !!caseModel.published;
         scheme.equip = caseModel.equip;
         scheme.effect = caseModel.effect;
         scheme.talent = caseModel.talent;

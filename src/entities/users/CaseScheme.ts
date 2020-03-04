@@ -37,9 +37,6 @@ export class CaseScheme {
     private _id: ObjectID;
 
     @Column()
-    public published: boolean;
-
-    @Column()
     public equip: EquipScheme[];
 
     @Column()

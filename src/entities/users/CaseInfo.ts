@@ -10,4 +10,7 @@ export class CaseInfo {
 
     @Column({ enum: KungFu })
     public kungfu: KungFu;
+
+    @Column()
+    public published: boolean;
 }
