@@ -6,7 +6,7 @@ import { CaseScheme } from '../entities/users/CaseScheme';
 import { EquipService } from './EquipService';
 import { CaseInfo } from '../entities/users/CaseInfo';
 import { CaseId } from '../model/CaseId';
-import { CaseDetail, CaseModel } from '../model/Case';
+import { CaseDetail, CaseModel, CaseInfoModel } from '../model/Case';
 import { EnhanceService } from './EnhanceService';
 import { UserInfo } from '../entities/users/User';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
@@ -75,5 +75,18 @@ export class CaseService implements AfterRoutesInit {
         scheme.effect = caseModel.effect;
         scheme.talent = caseModel.talent;
         await this.connection.manager.save(scheme);
+    }
+
+    public async updateCaseInfo(user: UserInfo, id: CaseId, patch: CaseInfoModel): Promise<CaseInfo> {
+        const idx = user.cases.findIndex(caseInfo => caseInfo.id === id.objectId.toHexString());
+        if (idx < 0) {
+            return null;
+        }
+        const info = user.cases[idx];
+        const newInfo = { ...info, ...patch };
+        // eslint-disable-next-line no-param-reassign
+        user.cases[idx] = newInfo;
+        await this.connection.manager.save(user);
+        return newInfo;
     }
 }

@@ -1,10 +1,12 @@
 import {
-    Controller, Get, Req, PathParams, Post, Put, QueryParams, BodyParams,
+    Controller, Get, Req, PathParams, Post, Put, QueryParams, BodyParams, Patch,
 } from '@tsed/common';
 import { Summary } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
 import { Status, Resource } from '../model/Server';
-import { CaseInfoResource, CaseResource, CaseModel } from '../model/Case';
+import {
+    CaseInfoResource, CaseResource, CaseModel, CaseInfoModel,
+} from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { CaseId } from '../model/CaseId';
 import { SyncLimitReachedError } from '../utils/errors/Forbidden';
@@ -55,12 +57,31 @@ export class CaseCtrl {
     @Put('/:id')
     @Summary('更新方案')
     @Authenticate('jwt', { failWithError: true })
-    public async update(@Req() req: Req, @BodyParams() caseModel: CaseModel, @PathParams('id', CaseId) caseId: CaseId): Promise<Status> {
+    public async update(
+        @Req() req: Req,
+        @BodyParams() caseModel: CaseModel,
+        @PathParams('id', CaseId) caseId: CaseId,
+    ): Promise<Status> {
         const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
         if (!caseInfo) {
             throw new CaseNotFoundError(caseId);
         }
         await this.caseService.update(caseModel, caseId);
         return new Status(true);
+    }
+
+    @Patch('/:id')
+    @Summary('修改方案信息')
+    @Authenticate('jwt', { failWithError: true })
+    public async patch(
+        @Req() req: Req,
+        @BodyParams() patch: CaseInfoModel,
+        @PathParams('id', CaseId) caseId: CaseId,
+    ): Promise<CaseInfoResource> {
+        const caseInfo = await this.caseService.updateCaseInfo(req.user, caseId, patch);
+        if (!caseInfo) {
+            throw new CaseNotFoundError(caseId);
+        }
+        return new Resource(caseInfo.id, 'Case', caseInfo);
     }
 }
