@@ -105,3 +105,5 @@ export const GamingRole = {
     TANK: lit('TANK'),
 };
 export type GamingRole = (typeof GamingRole)[keyof typeof GamingRole];
+
+export type EmbedStoneType = 'unified' | 'wood' | 'fire' | 'earth' | 'metal' | 'water';

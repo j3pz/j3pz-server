@@ -74,4 +74,25 @@ export class EquipService implements AfterRoutesInit {
         });
         return equip;
     }
+
+    public async findByIds(ids: number[]): Promise<Equip[]> {
+        const equip = await this.connection.manager.find(Equip, {
+            where: {
+                id: In(ids),
+            },
+            relations: [
+                'effect',
+                'set',
+                'set.equip',
+                'set.setEffect',
+                'set.setEffect.effect',
+                'source',
+                'source.boss',
+                'source.boss.map',
+                'source.reputation',
+                'represent',
+            ],
+        });
+        return equip;
+    }
 }

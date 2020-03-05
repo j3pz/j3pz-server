@@ -1,6 +1,7 @@
 import { NotFound } from 'ts-httpexceptions';
 import { IResponseError } from '@tsed/common';
 import { ServerError } from '../../model/Server';
+import { CaseId } from '../../model/CaseId';
 
 // 六位错误码，前三位为 HTTP Status Code，第四位表示模块，第五位和第六位表示错误
 enum BadRequestErrorCode {
@@ -14,6 +15,8 @@ enum BadRequestErrorCode {
     StoneNotFound = 404501,
     // 6 表示增益气劲模块错误
     BuffNotFound = 404601,
+    // 7 表示方案模块
+    CaseNotFound = 404701,
 }
 
 export class EquipNotFound extends NotFound implements IResponseError {
@@ -87,6 +90,21 @@ export class BuffNotFound extends NotFound implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `数据库中未找到 ID:${stoneId} 对应的增益气劲`,
+        });
+    }
+}
+
+export class CaseNotFoundError extends NotFound implements IResponseError {
+    public code: BadRequestErrorCode = BadRequestErrorCode.CaseNotFound;
+
+    public errors: ServerError[] = [];
+
+    public constructor(caseId: CaseId) {
+        super('配装方案未找到');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `数据库中未找到 ID:${caseId.url} 对应的方案，或方案不属于此用户`,
         });
     }
 }
