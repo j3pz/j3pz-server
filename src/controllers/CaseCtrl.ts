@@ -1,5 +1,5 @@
 import {
-    Controller, Get, Req, PathParams, Post, Put, QueryParams, BodyParams, Patch,
+    Controller, Get, Req, PathParams, Post, Put, QueryParams, BodyParams, Patch, Delete,
 } from '@tsed/common';
 import { Summary } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
@@ -83,5 +83,17 @@ export class CaseCtrl {
             throw new CaseNotFoundError(caseId);
         }
         return new Resource(caseInfo.id, 'Case', caseInfo);
+    }
+
+    @Delete('/:id')
+    @Summary('Delete Case')
+    @Authenticate('jwt', { failWithError: true })
+    public async delete(@Req() req: Req, @PathParams('id', CaseId) caseId: CaseId): Promise<Status> {
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+        if (!caseInfo) {
+            throw new CaseNotFoundError(caseId);
+        }
+        await this.caseService.remove(req.user, caseId);
+        return new Status(true);
     }
 }

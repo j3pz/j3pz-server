@@ -88,4 +88,12 @@ export class CaseService implements AfterRoutesInit {
         await this.connection.manager.save(user);
         return newInfo;
     }
+
+    public async remove(user: UserInfo, caseId: CaseId): Promise<void> {
+        await this.connection.manager.delete(CaseScheme, caseId.objectId);
+        const cases = user.cases.filter(c => c.id !== caseId.objectId.toHexString());
+        // eslint-disable-next-line no-param-reassign
+        user.cases = cases;
+        await this.connection.manager.save(user);
+    }
 }
