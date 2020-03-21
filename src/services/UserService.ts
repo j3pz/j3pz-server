@@ -4,6 +4,7 @@ import { Connection } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { isAfter } from 'date-fns';
+import { generate } from 'shortid';
 import { User, UserInfo } from '../entities/users/User';
 import {
     RegisterModel, JWTSignPayload, SimpleUserInfo, ResetModel,
@@ -60,6 +61,7 @@ export class UserService implements AfterRoutesInit {
         user.name = register.name;
         user.email = register.email.trim();
         user.password = register.password;
+        user.domain = generate();
         await this.connection.manager.save(user);
         this.mailService.sendWelcomeMail(user);
         return user;
@@ -104,6 +106,13 @@ export class UserService implements AfterRoutesInit {
 
     public async update(user: User): Promise<User> {
         await this.connection.manager.save(user);
+        return user;
+    }
+
+    public async findByDomain(domain: string): Promise<User> {
+        const user = await this.connection.manager.findOne(User, {
+            where: { domain },
+        });
         return user;
     }
 }

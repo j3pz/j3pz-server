@@ -26,6 +26,11 @@ export class User implements UserInfo {
     })
     public email: string;
 
+    @Column({
+        unique: true,
+    })
+    public domain: string;
+
     @Column()
     private hashedPassword: string;
 
