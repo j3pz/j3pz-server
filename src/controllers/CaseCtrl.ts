@@ -8,13 +8,14 @@ import {
     CaseInfoResource, CaseResource, CaseModel, CaseInfoModel,
 } from '../model/Case';
 import { CaseService } from '../services/CaseService';
-import { CaseId } from '../model/CaseId';
+import { UrlId } from '../model/UrlId';
 import { SyncLimitReachedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
+import { UserService } from '../services/UserService';
 
 @Controller('/case')
 export class CaseCtrl {
-    public constructor(private caseService: CaseService) {}
+    public constructor(private caseService: CaseService, private userService: UserService) {}
 
     @Get()
     @Summary('获取方案列表')
@@ -31,13 +32,13 @@ export class CaseCtrl {
 
     @Get('/:id')
     @Summary('获取方案详情')
-    @Authenticate(['jwt', 'anonymous'])
-    public async find(@Req() req: Req, @PathParams('id', CaseId) caseId: CaseId): Promise<CaseResource> {
-        const caseScheme = await this.caseService.findOne(caseId.objectId);
+    @Authenticate('jwt', { failWithError: true })
+    public async find(@Req() req: Req, @PathParams('id', UrlId) urlId: UrlId): Promise<CaseResource> {
+        const caseScheme = await this.caseService.findOne(urlId.objectId);
         if (!caseScheme) {
-            throw new CaseNotFoundError(caseId);
+            throw new CaseNotFoundError(urlId);
         }
-        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
         return new Resource(caseDetail.id, 'Case', caseDetail);
     }
@@ -60,13 +61,13 @@ export class CaseCtrl {
     public async update(
         @Req() req: Req,
         @BodyParams() caseModel: CaseModel,
-        @PathParams('id', CaseId) caseId: CaseId,
+        @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<Status> {
-        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
         if (!caseInfo) {
-            throw new CaseNotFoundError(caseId);
+            throw new CaseNotFoundError(urlId);
         }
-        await this.caseService.update(caseModel, caseId);
+        await this.caseService.update(caseModel, urlId);
         return new Status(true);
     }
 
@@ -76,11 +77,11 @@ export class CaseCtrl {
     public async patch(
         @Req() req: Req,
         @BodyParams() patch: CaseInfoModel,
-        @PathParams('id', CaseId) caseId: CaseId,
+        @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<CaseInfoResource> {
-        const caseInfo = await this.caseService.updateCaseInfo(req.user, caseId, patch);
+        const caseInfo = await this.caseService.updateCaseInfo(req.user, urlId, patch);
         if (!caseInfo) {
-            throw new CaseNotFoundError(caseId);
+            throw new CaseNotFoundError(urlId);
         }
         return new Resource(caseInfo.id, 'Case', caseInfo);
     }
@@ -88,12 +89,12 @@ export class CaseCtrl {
     @Delete('/:id')
     @Summary('Delete Case')
     @Authenticate('jwt', { failWithError: true })
-    public async delete(@Req() req: Req, @PathParams('id', CaseId) caseId: CaseId): Promise<Status> {
-        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+    public async delete(@Req() req: Req, @PathParams('id', UrlId) urlId: UrlId): Promise<Status> {
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
         if (!caseInfo) {
-            throw new CaseNotFoundError(caseId);
+            throw new CaseNotFoundError(urlId);
         }
-        await this.caseService.remove(req.user, caseId);
+        await this.caseService.remove(req.user, urlId);
         return new Status(true);
     }
 }
