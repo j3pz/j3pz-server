@@ -32,7 +32,7 @@ export class CaseService implements AfterRoutesInit {
         return caseScheme;
     }
 
-    public getCaseInfo(cases: CaseInfo[], id: UrlId): CaseInfo {
+    public getCaseInfo(cases: CaseInfo[], id: UrlId): CaseInfo | undefined {
         const info = cases.find(caseInfo => caseInfo.id === id.objectId.toHexString());
         return info;
     }

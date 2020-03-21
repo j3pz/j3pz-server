@@ -9,7 +9,7 @@ import {
 } from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { UrlId } from '../model/UrlId';
-import { SyncLimitReachedError } from '../utils/errors/Forbidden';
+import { SyncLimitReachedError, CaseNotPublishedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { UserService } from '../services/UserService';
 
@@ -27,7 +27,12 @@ export class CaseCtrl {
             // TODO: Case detail mode
             return [];
         }
-        return cases.map(caseInfo => new Resource(caseInfo.id, 'Case', caseInfo));
+        return cases.map(caseInfo => new Resource(
+            caseInfo.id,
+            'Case',
+            caseInfo,
+            `case/${UrlId.fromHex(caseInfo.id).url}`,
+        ));
     }
 
     @Get('/:id')
@@ -35,10 +40,30 @@ export class CaseCtrl {
     @Authenticate('jwt', { failWithError: true })
     public async find(@Req() req: Req, @PathParams('id', UrlId) urlId: UrlId): Promise<CaseResource> {
         const caseScheme = await this.caseService.findOne(urlId.objectId);
-        if (!caseScheme) {
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
+        if (!caseScheme || !caseInfo) {
             throw new CaseNotFoundError(urlId);
         }
-        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
+        const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
+        return new Resource(caseDetail.id, 'Case', caseDetail);
+    }
+
+    @Get('/:domain/:id')
+    @Summary('外部用户获取方案详情')
+    @Authenticate(['jwt', 'anonymous'])
+    public async findShared(
+        @PathParams('domain') domain: string,
+        @PathParams('id', UrlId) urlId: UrlId,
+    ): Promise<CaseResource> {
+        const user = await this.userService.findByDomain(domain);
+        const caseInfo = this.caseService.getCaseInfo(user.cases, urlId);
+        if (!caseInfo) {
+            throw new CaseNotFoundError(urlId);
+        }
+        if (!caseInfo.published) {
+            throw new CaseNotPublishedError(domain, urlId);
+        }
+        const caseScheme = await this.caseService.findOne(urlId.objectId);
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
         return new Resource(caseDetail.id, 'Case', caseDetail);
     }
