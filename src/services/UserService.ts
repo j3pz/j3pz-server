@@ -4,13 +4,15 @@ import { Connection } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { isAfter } from 'date-fns';
-import { generate } from 'shortid';
+import { customAlphabet } from 'nanoid';
 import { User, UserInfo } from '../entities/users/User';
 import {
     RegisterModel, JWTSignPayload, SimpleUserInfo, ResetModel,
 } from '../model/Credentials';
 import { IncorrectTokenError, ExpiredTokenError } from '../utils/errors/Forbidden';
 import { MailService } from './MailService';
+
+const nanoid = customAlphabet('23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 10);
 
 @Service()
 export class UserService implements AfterRoutesInit {
@@ -61,7 +63,7 @@ export class UserService implements AfterRoutesInit {
         user.name = register.name;
         user.email = register.email.trim();
         user.password = register.password;
-        user.domain = generate();
+        user.domain = nanoid();
         await this.connection.manager.save(user);
         this.mailService.sendWelcomeMail(user);
         return user;
