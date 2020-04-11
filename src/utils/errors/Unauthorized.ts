@@ -6,8 +6,9 @@ import { ServerError } from '../../model/Server';
 enum UnauthorizedErrorCode {
     NotLoggedIn = 401000,
     NoSuchUser = 401001,
-    PasswordNotCorrect = 401002,
-    PrivilegeNotCorrect = 401003,
+    NoSuchDomain = 401002,
+    PasswordNotCorrect = 401003,
+    PrivilegeNotCorrect = 401004,
 }
 
 export class NotLoggedInError extends Unauthorized implements IResponseError {
@@ -36,6 +37,21 @@ export class NoSuchUserError extends Unauthorized implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `登录用的邮箱: ${email} 未注册过配装器`,
+        });
+    }
+}
+
+export class NoSuchDomainError extends Unauthorized implements IResponseError {
+    public code: UnauthorizedErrorCode = UnauthorizedErrorCode.NoSuchDomain;
+
+    public errors: ServerError[] = [];
+
+    public constructor(domain: string) {
+        super('无此用户');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `Domain: ${domain} 不存在`,
         });
     }
 }

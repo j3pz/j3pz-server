@@ -12,6 +12,7 @@ import { UrlId } from '../model/UrlId';
 import { SyncLimitReachedError, CaseNotPublishedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { UserService } from '../services/UserService';
+import { NoSuchDomainError } from '../utils/errors/Unauthorized';
 
 @Controller('/case')
 export class CaseCtrl {
@@ -46,6 +47,24 @@ export class CaseCtrl {
         }
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
         return new Resource(caseDetail.id, 'Case', caseDetail);
+    }
+
+    @Get('/:domain/list')
+    @Summary('外部用户获取用户分享的方案')
+    @Authenticate(['jwt', 'anonymous'])
+    public async listShared(
+        @PathParams('domain') domain: string,
+    ): Promise<CaseInfoResource[]> {
+        const user = await this.userService.findByDomain(domain);
+        if (!user) {
+            throw new NoSuchDomainError(domain);
+        }
+        return user.cases.filter(caseInfo => caseInfo.published).map(caseInfo => new Resource(
+            caseInfo.id,
+            'Case',
+            caseInfo,
+            `case/${domain}/${UrlId.fromHex(caseInfo.id).url}`,
+        ));
     }
 
     @Get('/:domain/:id')
