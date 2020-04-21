@@ -20,6 +20,8 @@ enum RedeemType {
     PRESTIGE_VIRTUE = 'prestige_virtue', // 浩气盟威望
     ARENA = 'arena', // 名剑竞技场
     STORE = 'store', // 其他商店
+    SET = 'set', // 套装兑换
+    UNKNOWN = 'unknown', // 未知兑换来源
 }
 
 @Entity()

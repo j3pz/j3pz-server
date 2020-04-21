@@ -1,6 +1,7 @@
 import { Forbidden } from 'ts-httpexceptions';
 import { IResponseError } from '@tsed/common';
 import { ServerError } from '../../model/Server';
+import { UrlId } from '../../model/UrlId';
 
 // 六位错误码，前三位为 HTTP Status Code，第四位表示模块，第五位和第六位表示错误
 enum ForbiddenErrorCode {
@@ -8,6 +9,9 @@ enum ForbiddenErrorCode {
     IncorrectToken = 403002,
     ExpiredToken = 403003,
     AlreadyActivated = 403004,
+    CaseNotPublished = 403005,
+    // 收费限制
+    SyncLimitReached = 403101,
 }
 
 export class DuplicateUserError extends Forbidden implements IResponseError {
@@ -66,6 +70,36 @@ export class ActivatedError extends Forbidden implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `用户: ${email} 已激活，无需重发激活邮件`,
+        });
+    }
+}
+
+export class SyncLimitReachedError extends Forbidden implements IResponseError {
+    public code: ForbiddenErrorCode = ForbiddenErrorCode.SyncLimitReached;
+
+    public errors: ServerError[] = [];
+
+    public constructor(email: string) {
+        super('用户线上同步数量已用完');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `用户: ${email} 已同步的方案数已达到最大限制`,
+        });
+    }
+}
+
+export class CaseNotPublishedError extends Forbidden implements IResponseError {
+    public code: ForbiddenErrorCode = ForbiddenErrorCode.CaseNotPublished;
+
+    public errors: ServerError[] = [];
+
+    public constructor(domain: string, urlId: UrlId) {
+        super('该方案未被公开');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `ID:${urlId.url} 对应的方案未被 ${domain} 公开`,
         });
     }
 }

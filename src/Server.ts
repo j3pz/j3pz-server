@@ -56,12 +56,11 @@ const rootDir = __dirname;
             entities: [
                 `${__dirname}/entities/users/*.{ts,js}`,
             ],
-            synchronize: true,
         },
     ],
     swagger: [
         {
-            path: '/api-docs',
+            path: '/developer',
         },
     ],
     logger: {
