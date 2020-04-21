@@ -1,7 +1,7 @@
 import { NotFound } from 'ts-httpexceptions';
 import { IResponseError } from '@tsed/common';
 import { ServerError } from '../../model/Server';
-import { CaseId } from '../../model/CaseId';
+import { UrlId } from '../../model/UrlId';
 
 // 六位错误码，前三位为 HTTP Status Code，第四位表示模块，第五位和第六位表示错误
 enum BadRequestErrorCode {
@@ -99,12 +99,12 @@ export class CaseNotFoundError extends NotFound implements IResponseError {
 
     public errors: ServerError[] = [];
 
-    public constructor(caseId: CaseId) {
+    public constructor(urlId: UrlId) {
         super('配装方案未找到');
         this.errors.push({
             code: this.code,
             title: this.message,
-            detail: `数据库中未找到 ID:${caseId.url} 对应的方案，或方案不属于此用户`,
+            detail: `数据库中未找到 ID:${urlId.url} 对应的方案，或方案不属于此用户`,
         });
     }
 }

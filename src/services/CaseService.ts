@@ -5,7 +5,7 @@ import { Connection } from 'typeorm';
 import { CaseScheme } from '../entities/users/CaseScheme';
 import { EquipService } from './EquipService';
 import { CaseInfo } from '../entities/users/CaseInfo';
-import { CaseId } from '../model/CaseId';
+import { UrlId } from '../model/UrlId';
 import { CaseDetail, CaseModel, CaseInfoModel } from '../model/Case';
 import { EnhanceService } from './EnhanceService';
 import { UserInfo } from '../entities/users/User';
@@ -32,7 +32,7 @@ export class CaseService implements AfterRoutesInit {
         return caseScheme;
     }
 
-    public getCaseInfo(cases: CaseInfo[], id: CaseId): CaseInfo {
+    public getCaseInfo(cases: CaseInfo[], id: UrlId): CaseInfo | undefined {
         const info = cases.find(caseInfo => caseInfo.id === id.objectId.toHexString());
         return info;
     }
@@ -65,7 +65,7 @@ export class CaseService implements AfterRoutesInit {
         await this.connection.manager.save(user);
     }
 
-    public async update(caseModel: CaseModel, id: CaseId): Promise<void> {
+    public async update(caseModel: CaseModel, id: UrlId): Promise<void> {
         const scheme = await this.findOne(id.objectId);
         if (!scheme) {
             throw new CaseNotFoundError(id);
@@ -76,7 +76,7 @@ export class CaseService implements AfterRoutesInit {
         await this.connection.manager.save(scheme);
     }
 
-    public async updateCaseInfo(user: UserInfo, id: CaseId, patch: CaseInfoModel): Promise<CaseInfo> {
+    public async updateCaseInfo(user: UserInfo, id: UrlId, patch: CaseInfoModel): Promise<CaseInfo> {
         const idx = user.cases.findIndex(caseInfo => caseInfo.id === id.objectId.toHexString());
         if (idx < 0) {
             return null;
@@ -87,5 +87,13 @@ export class CaseService implements AfterRoutesInit {
         user.cases[idx] = newInfo;
         await this.connection.manager.save(user);
         return newInfo;
+    }
+
+    public async remove(user: UserInfo, urlId: UrlId): Promise<void> {
+        await this.connection.manager.delete(CaseScheme, urlId.objectId);
+        const cases = user.cases.filter(c => c.id !== urlId.objectId.toHexString());
+        // eslint-disable-next-line no-param-reassign
+        user.cases = cases;
+        await this.connection.manager.save(user);
     }
 }

@@ -1,5 +1,5 @@
 import {
-    Controller, Get, Req, PathParams, Post, Put, QueryParams, BodyParams, Patch,
+    Controller, Get, Req, PathParams, Post, Put, QueryParams, BodyParams, Patch, Delete,
 } from '@tsed/common';
 import { Summary } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
@@ -8,13 +8,15 @@ import {
     CaseInfoResource, CaseResource, CaseModel, CaseInfoModel,
 } from '../model/Case';
 import { CaseService } from '../services/CaseService';
-import { CaseId } from '../model/CaseId';
-import { SyncLimitReachedError } from '../utils/errors/Forbidden';
+import { UrlId } from '../model/UrlId';
+import { SyncLimitReachedError, CaseNotPublishedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
+import { UserService } from '../services/UserService';
+import { NoSuchDomainError } from '../utils/errors/Unauthorized';
 
 @Controller('/case')
 export class CaseCtrl {
-    public constructor(private caseService: CaseService) {}
+    public constructor(private caseService: CaseService, private userService: UserService) {}
 
     @Get()
     @Summary('获取方案列表')
@@ -26,18 +28,61 @@ export class CaseCtrl {
             // TODO: Case detail mode
             return [];
         }
-        return cases.map(caseInfo => new Resource(caseInfo.id, 'Case', caseInfo));
+        return cases.map(caseInfo => new Resource(
+            caseInfo.id,
+            'Case',
+            caseInfo,
+            `case/${UrlId.fromHex(caseInfo.id).url}`,
+        ));
     }
 
     @Get('/:id')
     @Summary('获取方案详情')
-    @Authenticate(['jwt', 'anonymous'])
-    public async find(@Req() req: Req, @PathParams('id', CaseId) caseId: CaseId): Promise<CaseResource> {
-        const caseScheme = await this.caseService.findOne(caseId.objectId);
-        if (!caseScheme) {
-            throw new CaseNotFoundError(caseId);
+    @Authenticate('jwt', { failWithError: true })
+    public async find(@Req() req: Req, @PathParams('id', UrlId) urlId: UrlId): Promise<CaseResource> {
+        const caseScheme = await this.caseService.findOne(urlId.objectId);
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
+        if (!caseScheme || !caseInfo) {
+            throw new CaseNotFoundError(urlId);
         }
-        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+        const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
+        return new Resource(caseDetail.id, 'Case', caseDetail);
+    }
+
+    @Get('/:domain/list')
+    @Summary('外部用户获取用户分享的方案')
+    @Authenticate(['jwt', 'anonymous'])
+    public async listShared(
+        @PathParams('domain') domain: string,
+    ): Promise<CaseInfoResource[]> {
+        const user = await this.userService.findByDomain(domain);
+        if (!user) {
+            throw new NoSuchDomainError(domain);
+        }
+        return user.cases.filter(caseInfo => caseInfo.published).map(caseInfo => new Resource(
+            caseInfo.id,
+            'Case',
+            caseInfo,
+            `case/${domain}/${UrlId.fromHex(caseInfo.id).url}`,
+        ));
+    }
+
+    @Get('/:domain/:id')
+    @Summary('外部用户获取方案详情')
+    @Authenticate(['jwt', 'anonymous'])
+    public async findShared(
+        @PathParams('domain') domain: string,
+        @PathParams('id', UrlId) urlId: UrlId,
+    ): Promise<CaseResource> {
+        const user = await this.userService.findByDomain(domain);
+        const caseInfo = this.caseService.getCaseInfo(user.cases, urlId);
+        if (!caseInfo) {
+            throw new CaseNotFoundError(urlId);
+        }
+        if (!caseInfo.published) {
+            throw new CaseNotPublishedError(domain, urlId);
+        }
+        const caseScheme = await this.caseService.findOne(urlId.objectId);
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
         return new Resource(caseDetail.id, 'Case', caseDetail);
     }
@@ -60,13 +105,13 @@ export class CaseCtrl {
     public async update(
         @Req() req: Req,
         @BodyParams() caseModel: CaseModel,
-        @PathParams('id', CaseId) caseId: CaseId,
+        @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<Status> {
-        const caseInfo = this.caseService.getCaseInfo(req.user.cases, caseId);
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
         if (!caseInfo) {
-            throw new CaseNotFoundError(caseId);
+            throw new CaseNotFoundError(urlId);
         }
-        await this.caseService.update(caseModel, caseId);
+        await this.caseService.update(caseModel, urlId);
         return new Status(true);
     }
 
@@ -76,12 +121,24 @@ export class CaseCtrl {
     public async patch(
         @Req() req: Req,
         @BodyParams() patch: CaseInfoModel,
-        @PathParams('id', CaseId) caseId: CaseId,
+        @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<CaseInfoResource> {
-        const caseInfo = await this.caseService.updateCaseInfo(req.user, caseId, patch);
+        const caseInfo = await this.caseService.updateCaseInfo(req.user, urlId, patch);
         if (!caseInfo) {
-            throw new CaseNotFoundError(caseId);
+            throw new CaseNotFoundError(urlId);
         }
         return new Resource(caseInfo.id, 'Case', caseInfo);
+    }
+
+    @Delete('/:id')
+    @Summary('Delete Case')
+    @Authenticate('jwt', { failWithError: true })
+    public async delete(@Req() req: Req, @PathParams('id', UrlId) urlId: UrlId): Promise<Status> {
+        const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
+        if (!caseInfo) {
+            throw new CaseNotFoundError(urlId);
+        }
+        await this.caseService.remove(req.user, urlId);
+        return new Status(true);
     }
 }
