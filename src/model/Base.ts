@@ -51,13 +51,18 @@ export const KungFu = {
 };
 export type KungFu = (typeof KungFu)[keyof typeof KungFu];
 
-export type PrimaryAttribute = 'vitality' | 'spunk' | 'spirit' | 'strength' | 'agility' | 'heal';
+export type PrimaryAttribute = 'vitality' | 'spunk' | 'spirit' | 'strength' | 'agility';
+export const PrimaryAttribute: PrimaryAttribute[] = ['vitality', 'spunk', 'spirit', 'strength', 'agility'];
 export type SecondaryAttribute =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'parryValue' | 'toughness' |
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
-    'hit' | 'strain' | 'haste' | 'threat' | 'huajing'
+    'hit' | 'strain' | 'haste' | 'threat' | 'huajing' |
+    // 直接增加百分比的属性
+    'dodgePercentage' | 'toughnessPercentage' |
+    'critPercentage' | 'critEffectPercentage' | 'overcomePercentage' |
+    'hitPercentage' | 'strainPercentage' | 'huajingPercentage';
 export type MinorAttribute = 'basicMagicShield' | 'basicPhysicsShield' | 'attackSpeed' | 'damageBase' | 'damageRange';
-export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover';
+export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover' | 'damageOffset';
 
 export type Attribute = PrimaryAttribute | SecondaryAttribute | MinorAttribute | ExtraAttribute;
 export type AttributeTag =
@@ -68,8 +73,15 @@ export const AttributeDecorator = {
     PHYSICS: lit('PHYSICS'),
     MAGIC: lit('MAGIC'),
     ALL: lit('ALL'),
+    NONE: lit('NONE'),
+    NEUTRAL: lit('NEUTRAL'),
+    SOLAR: lit('SOLAR'),
+    LUNAR: lit('LUNAR'),
+    POISON: lit('POISON'),
+    SOLAR_LUNAR: lit('SOLAR_LUNAR'),
 };
 export type AttributeDecorator = (typeof AttributeDecorator)[keyof typeof AttributeDecorator];
+export type DecoratorTuple = [Attribute, AttributeDecorator];
 
 export const Category = {
     HAT: lit('hat'),
@@ -86,3 +98,12 @@ export const Category = {
     TERTIARY_WEAPON: lit('tertiaryWeapon'),
 };
 export type Category = (typeof Category)[keyof typeof Category];
+
+export const GamingRole = {
+    DAMAGE_DEALER: lit('DAMAGE_DEALER'),
+    HEALER: lit('HEALER'),
+    TANK: lit('TANK'),
+};
+export type GamingRole = (typeof GamingRole)[keyof typeof GamingRole];
+
+export type EmbedStoneType = 'unified' | 'wood' | 'fire' | 'earth' | 'metal' | 'water';

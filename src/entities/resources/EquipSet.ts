@@ -4,12 +4,10 @@ import {
 import { Title } from '@tsed/swagger';
 import { SetEffect } from './SetEffect';
 import { Equip } from './Equip';
-import { Category } from '../model/Base';
-import { EquipCore } from '../model/Equip';
+import { Category } from '../../model/Base';
+import { EquipCore } from '../../model/Equip';
 
-type SetEquipInfo = {
-    [key in Category]?: EquipCore[];
-}
+type SetEquipInfo = Partial<Record<Category, EquipCore[]>>;
 
 @Entity()
 export class EquipSet {

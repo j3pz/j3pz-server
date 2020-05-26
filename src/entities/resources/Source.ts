@@ -20,11 +20,13 @@ enum RedeemType {
     PRESTIGE_VIRTUE = 'prestige_virtue', // 浩气盟威望
     ARENA = 'arena', // 名剑竞技场
     STORE = 'store', // 其他商店
+    SET = 'set', // 套装兑换
+    UNKNOWN = 'unknown', // 未知兑换来源
 }
 
 @Entity()
-@TableInheritance({ column: { type: 'enum', enum: SourceType } })
-export class Source {
+@TableInheritance({ column: { type: 'enum', enum: SourceType, name: 'type' } })
+export abstract class Source {
     @PrimaryGeneratedColumn()
     @Title('ID')
     public id: number;
@@ -34,23 +36,29 @@ export class Source {
     })
     @Title('备注')
     public comment?: string;
+
+    @Column({
+        type: 'enum',
+        enum: SourceType,
+    })
+    public type: SourceType;
 }
 
-@ChildEntity()
+@ChildEntity(SourceType.RAID)
 export class RaidSource extends Source {
     @ManyToOne(() => Boss, boss => boss.id)
     @Title('首领ID')
     public boss: Boss;
 }
 
-@ChildEntity()
+@ChildEntity(SourceType.REPUTATION)
 export class ReputationSource extends Source {
     @ManyToOne(() => Reputation, reputation => reputation.id)
     @Title('声望ID')
     public reputation: Reputation;
 }
 
-@ChildEntity()
+@ChildEntity(SourceType.REDEEM)
 export class RedeemSource extends Source {
     @Column({
         type: 'enum',
@@ -60,7 +68,7 @@ export class RedeemSource extends Source {
     public redeem: RedeemType;
 }
 
-@ChildEntity()
+@ChildEntity(SourceType.ACTIVITY)
 export class ActivitySource extends Source {
     @Column()
     @Title('活动名')
@@ -71,7 +79,7 @@ export class ActivitySource extends Source {
     public limitedTime?: boolean;
 }
 
-@ChildEntity()
+@ChildEntity(SourceType.OTHER)
 export class OtherSource extends Source {
 
 }

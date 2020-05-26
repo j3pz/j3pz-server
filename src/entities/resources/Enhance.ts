@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Title } from '@tsed/swagger';
-import { Category, Attribute, AttributeDecorator } from '../model/Base';
+import { Category, Attribute, AttributeDecorator } from '../../model/Base';
 
 @Entity()
 export class Enhance {

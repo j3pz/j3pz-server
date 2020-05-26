@@ -1,7 +1,7 @@
 import {
     OverrideProvider, Res, ResponseData, SendResponseMiddleware, Response, Req,
 } from '@tsed/common';
-import { Resource } from '../model/Server';
+import { Resource, Status } from '../model/Server';
 
 @OverrideProvider(SendResponseMiddleware)
 export class JsonApiResponseMiddleware extends SendResponseMiddleware {
@@ -11,7 +11,7 @@ export class JsonApiResponseMiddleware extends SendResponseMiddleware {
         @Res() response: Res,
         @Req() request: Req,
     ): Response {
-        if (data instanceof Array || data instanceof Resource) {
+        if (data instanceof Array || data instanceof Resource || data instanceof Status) {
             return response.json({
                 data,
                 meta: {
@@ -20,6 +20,7 @@ export class JsonApiResponseMiddleware extends SendResponseMiddleware {
                 },
             });
         }
-        return super.use(data, response);
+        request.ctx.data = data;
+        return super.use(request, response);
     }
 }

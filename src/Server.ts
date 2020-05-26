@@ -1,5 +1,8 @@
 /* eslint-disable no-template-curly-in-string */
-import { ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware } from '@tsed/common';
+import {
+    ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware, $log,
+} from '@tsed/common';
+import '@tsed/passport';
 import '@tsed/typeorm';
 import '@tsed/swagger';
 import '@tsed/ajv';
@@ -12,7 +15,7 @@ import methodOverride from 'method-override';
 import { generateReqId } from './utils/RequestId';
 
 config({
-    path: resolve(__dirname, '../env'),
+    path: resolve(process.cwd(), './env'),
     // eslint-disable-next-line @typescript-eslint/camelcase
     default_node_env: 'development',
 });
@@ -26,34 +29,46 @@ const rootDir = __dirname;
         '/api': '${rootDir}/controllers/**/*.{ts,js}',
     },
     componentsScan: [
-        '${rootDir}/middlewares/**/*.{ts,js}',
-        '${rootDir}/services/**/*.{ts,js}',
-        '${rootDir}/converters/**/*.{ts,js}',
+        `${rootDir}/middlewares/**/*.{ts,js}`,
+        `${rootDir}/services/**/*.{ts,js}`,
+        `${rootDir}/converters/**/*.{ts,js}`,
+        `${rootDir}/protocols/**/*.{ts,js}`,
     ],
     typeorm: [
         {
             name: 'resources',
             type: 'mysql',
             host: process.env.MYSQL_DB_HOST,
-            port: 3306,
+            port: +process.env.MYSQL_DB_PORT,
             synchronize: true,
             username: process.env.MYSQL_DB_USER,
             password: process.env.MYSQL_DB_PASS,
             database: process.env.MYSQL_DB_NAME,
             entities: [
-                `${__dirname}/entities/*.{ts,js}`,
+                `${__dirname}/entities/resources/*.{ts,js}`,
+            ],
+        },
+        {
+            name: 'users',
+            type: 'mongodb',
+            // eslint-disable-next-line max-len
+            url: `${process.env.MONGO_DB_PROTOCOL}://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB_NAME}?${process.env.MONGO_DB_PARAMETERS}`,
+            entities: [
+                `${__dirname}/entities/users/*.{ts,js}`,
             ],
         },
     ],
     swagger: [
         {
-            path: '/api-docs',
+            path: '/developer',
         },
     ],
     logger: {
-        // @ts-ignore
         reqIdBuilder: generateReqId,
+        logRequest: false,
+        level: process.env.LOG_LEVEL as ('debug' | 'info' | 'warn' | 'error' | 'off'),
     },
+    passport: {},
 })
 export class Server extends ServerLoader {
     /**
@@ -61,7 +76,7 @@ export class Server extends ServerLoader {
      * @returns {Server}
     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public $onMountingMiddlewares(): void|Promise<any> {
+    public $beforeRoutesInit(): void | Promise<any> {
         this
             .use(GlobalAcceptMimesMiddleware)
             .use(cookieParser())
@@ -73,5 +88,13 @@ export class Server extends ServerLoader {
             }));
 
         return null;
+    }
+
+    public $onReady(): void {
+        $log.info('Server started...');
+    }
+
+    public $onServerInitError(err): void {
+        $log.error(err);
     }
 }

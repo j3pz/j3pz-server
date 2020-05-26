@@ -1,7 +1,31 @@
-export interface RawGlobalConfig {
-    qualityRange: string;
-    talent: boolean;
+export const enum SettingType {
+    ON_OFF_TOGGLE,
+    TEXT,
+    WHOLE_NUMBER,
+    DECIMAL_NUMBER,
 }
+
+export interface ConfigObject<T> {
+    Value: T;
+    SettingType: SettingType;
+}
+
+export interface RawGlobalConfig {
+    qualityRange: ConfigObject<string>;
+    talent: ConfigObject<boolean>;
+}
+
+export const defaultConfig: RawGlobalConfig = {
+    qualityRange: {
+        Value: '1080|2000|3000',
+        SettingType: SettingType.TEXT,
+    },
+    talent: {
+        Value: true,
+        SettingType: SettingType.ON_OFF_TOGGLE,
+    },
+};
+
 export class GlobalConfig {
     public minQuality: number;
 
@@ -11,13 +35,13 @@ export class GlobalConfig {
 
     public talent: boolean;
 
-    public constructor(rawConfig: RawGlobalConfig) {
-        this.update(rawConfig);
+    private parseConfig<T>(config: ConfigObject<T>): T {
+        return config.Value;
     }
 
     public update(rawConfig: RawGlobalConfig): void {
-        this.updateQuality(rawConfig.qualityRange);
-        this.talent = rawConfig.talent;
+        this.updateQuality(this.parseConfig(rawConfig.qualityRange));
+        this.talent = this.parseConfig(rawConfig.talent);
     }
 
     private updateQuality(range: string): void {
