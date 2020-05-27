@@ -49,7 +49,7 @@ export class FurnitureService implements AfterRoutesInit {
         const condition: FindConditions<Furniture> = { };
         if (source !== undefined) condition.source = Like(`%${source}%`);
         if (category !== undefined || Object.keys(condition).length === 0
-            || (category === undefined && condition.source === '园宅币')
+            || (category === undefined && ('园宅币'.match(new RegExp(`.*${source}.*`))))
         ) {
             condition.category = category;
         }
