@@ -47,13 +47,12 @@ export class FurnitureService implements AfterRoutesInit {
             asc = 1,
         } = filter;
         const condition: FindConditions<Furniture> = { };
-        if (interactable !== undefined) condition.interact = !!interactable;
-        if (limit !== undefined) condition.limit = LessThanOrEqual(limit);
         if (source !== undefined) condition.source = Like(`%${source}%`);
-
         if (category !== undefined || Object.keys(condition).length === 0) {
             condition.category = category;
         }
+        if (interactable !== undefined) condition.interact = !!interactable;
+        if (limit !== undefined) condition.limit = LessThanOrEqual(limit);
 
         const furnitures = await this.connection.manager.find(Furniture, {
             where: {
