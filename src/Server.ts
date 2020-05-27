@@ -10,6 +10,7 @@ import { config } from 'dotenv-flow';
 import { resolve } from 'path';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import compress from 'compression';
 import methodOverride from 'method-override';
 import { generateReqId } from './utils/RequestId';
@@ -79,6 +80,9 @@ export class Server extends ServerLoader {
     public $beforeRoutesInit(): void | Promise<any> {
         this
             .use(GlobalAcceptMimesMiddleware)
+            .use(cors({
+                origin: '*.j3pz.com',
+            }))
             .use(cookieParser())
             .use(compress({}))
             .use(methodOverride())
