@@ -46,10 +46,16 @@ export class FurnitureService implements AfterRoutesInit {
             orderKey = 'price',
             asc = 1,
         } = filter;
-        const condition: FindConditions<Furniture> = { category };
+        const condition: FindConditions<Furniture> = { };
+        if (source !== undefined) condition.source = Like(`%${source}%`);
+        if (category !== undefined || Object.keys(condition).length === 0
+            || (category === undefined && ('园宅币'.match(new RegExp(`.*${source}.*`))))
+        ) {
+            condition.category = category;
+        }
         if (interactable !== undefined) condition.interact = !!interactable;
         if (limit !== undefined) condition.limit = LessThanOrEqual(limit);
-        if (source !== undefined) condition.source = Like(`%${source}%`);
+
         const furnitures = await this.connection.manager.find(Furniture, {
             where: {
                 ...condition,
