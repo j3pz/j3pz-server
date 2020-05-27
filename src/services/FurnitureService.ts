@@ -1,6 +1,6 @@
 import { Service } from '@tsed/di';
 import {
-    Connection, FindConditions, LessThanOrEqual, MoreThanOrEqual,
+    Connection, FindConditions, LessThanOrEqual, MoreThanOrEqual, Like,
 } from 'typeorm';
 import { TypeORMService } from '@tsed/typeorm';
 import { AfterRoutesInit } from '@tsed/common';
@@ -49,7 +49,7 @@ export class FurnitureService implements AfterRoutesInit {
         const condition: FindConditions<Furniture> = { category };
         if (interactable !== undefined) condition.interact = !!interactable;
         if (limit !== undefined) condition.limit = LessThanOrEqual(limit);
-        if (source !== undefined) condition.source = source;
+        if (source !== undefined) condition.source = Like(`%${source}%`);
         const furnitures = await this.connection.manager.find(Furniture, {
             where: {
                 ...condition,
