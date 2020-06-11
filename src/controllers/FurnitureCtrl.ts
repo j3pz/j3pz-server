@@ -1,4 +1,6 @@
-import { Controller, Get, QueryParams } from '@tsed/common';
+import {
+    Controller, Get, QueryParams, RequestContext, Context,
+} from '@tsed/common';
 import { Summary } from '@tsed/swagger';
 import { FurnitureService } from '../services/FurnitureService';
 import { Resource } from '../model/Server';
@@ -22,8 +24,11 @@ export class FurnitureCtrl {
         @QueryParams('fun') fun: number,
         @QueryParams('orderBy') orderKey: string,
         @QueryParams('order') asc: boolean,
+        @QueryParams('page') page: number,
+        @QueryParams('size') size: number,
+        @Context() context: RequestContext,
     ): Promise<FurnitureResource[]> {
-        const list = await this.furnitureService.list({
+        const { list, total } = await this.furnitureService.list({
             category,
             source,
             interactable,
@@ -35,7 +40,11 @@ export class FurnitureCtrl {
             fun,
             orderKey,
             asc,
+            page,
+            size,
         });
+        context.set('total', total);
+        context.set('page', page);
         return list.map(furniture => new Resource(furniture.id, 'Furniture', furniture));
     }
 }

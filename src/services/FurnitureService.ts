@@ -18,6 +18,8 @@ export interface FurnitureFilter {
     fun?: number;
     orderKey?: string;
     asc?: boolean;
+    page?: number;
+    size?: number;
 }
 
 @Service()
@@ -32,7 +34,7 @@ export class FurnitureService implements AfterRoutesInit {
         this.connection = this.typeORMService.get('resources');
     }
 
-    public async list(filter: FurnitureFilter): Promise<Furniture[]> {
+    public async list(filter: FurnitureFilter): Promise<{ list: Furniture[]; total: number }> {
         const {
             category,
             interactable,
@@ -45,6 +47,8 @@ export class FurnitureService implements AfterRoutesInit {
             fun = 0,
             orderKey = 'price',
             asc = 1,
+            page = 1,
+            size = 20,
         } = filter;
         const condition: FindConditions<Furniture> = { };
         if (source !== undefined) condition.source = Like(`%${source}%`);
@@ -52,7 +56,7 @@ export class FurnitureService implements AfterRoutesInit {
         if (interactable !== undefined) condition.interact = !!interactable;
         if (limit !== undefined) condition.limit = LessThanOrEqual(limit);
 
-        const furnitures = await this.connection.manager.find(Furniture, {
+        const [furnitures, total] = await this.connection.manager.findAndCount(Furniture, {
             where: {
                 ...condition,
                 environment: MoreThanOrEqual(environment),
@@ -64,7 +68,9 @@ export class FurnitureService implements AfterRoutesInit {
             order: {
                 [orderKey]: asc ? 'ASC' : 'DESC',
             },
+            take: size,
+            skip: (page - 1) * size,
         });
-        return furnitures;
+        return { list: furnitures, total };
     }
 }
