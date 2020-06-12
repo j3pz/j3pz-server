@@ -11,6 +11,7 @@ export interface FurnitureFilter {
     interactable?: number;
     limit?: number;
     source?: string;
+    name?: string;
     environment?: number;
     beauty?: number;
     practicality?: number;
@@ -40,6 +41,7 @@ export class FurnitureService implements AfterRoutesInit {
             interactable,
             limit,
             source,
+            name,
             environment = 0,
             beauty = 0,
             practicality = 0,
@@ -51,6 +53,7 @@ export class FurnitureService implements AfterRoutesInit {
             size = 20,
         } = filter;
         const condition: FindConditions<Furniture> = { };
+        if (name !== undefined && name !== '') condition.name = Like(`%${name}%`);
         if (source !== undefined) condition.source = Like(`%${source}%`);
         if (category !== undefined) condition.category = category;
         if (interactable !== undefined) condition.interact = !!interactable;
