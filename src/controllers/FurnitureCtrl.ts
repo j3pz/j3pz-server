@@ -24,6 +24,7 @@ export class FurnitureCtrl {
         @QueryParams('fun') fun: number,
         @QueryParams('orderBy') orderKey: string,
         @QueryParams('order') asc: boolean,
+        @QueryParams('name') name: string,
         @QueryParams('page') page: number,
         @QueryParams('size') size: number,
         @Context() context: RequestContext,
@@ -40,6 +41,7 @@ export class FurnitureCtrl {
             fun,
             orderKey,
             asc,
+            name,
             page,
             size,
         });
