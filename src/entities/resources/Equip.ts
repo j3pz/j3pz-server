@@ -145,6 +145,10 @@ export class Equip {
     public strain: number;
 
     @Column()
+    @Title('破招')
+    public surplus: number;
+
+    @Column()
     @Title('化劲')
     public huajing: number;
 
