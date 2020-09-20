@@ -15,6 +15,7 @@ import { 莫问, 相知 } from './schools/长歌';
 import { 北傲诀 } from './schools/霸刀';
 import { 凌海诀 } from './schools/蓬莱';
 import { 隐龙诀 } from './schools/凌雪';
+import { 太玄经 } from './schools/衍天';
 
 export const kungFuLib: {[k in KungFu]: KungFuMeta} = {
     花间游,
@@ -43,4 +44,5 @@ export const kungFuLib: {[k in KungFu]: KungFuMeta} = {
     北傲诀,
     凌海诀,
     隐龙诀,
+    太玄经,
 };
