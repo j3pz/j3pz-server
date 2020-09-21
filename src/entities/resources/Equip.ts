@@ -5,7 +5,7 @@ import { Title } from '@tsed/swagger';
 import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
 import {
-    SecondaryAttribute, AttributeDecorator, Category, School, PrimaryAttribute,
+    SecondaryAttribute, AttributeDecorator, Category, School, PrimaryAttribute, AttributeTag,
 } from '../../model/Base';
 import { Source } from './Source';
 import { Represent } from './Represent';
@@ -199,10 +199,22 @@ export class Equip {
     public deprecated: boolean;
 
     @Title('属性修饰符')
-    public decorators: { [key in SecondaryAttribute]?: AttributeDecorator}
+    public decorators: { [key in SecondaryAttribute]?: AttributeDecorator };
+
+    @Title('属性标签')
+    public get tags(): AttributeTag[] {
+        const tags: AttributeTag[] = [];
+        AttributeTag.forEach((key) => {
+            if (this[key] > 0) {
+                tags.push(key);
+            }
+        });
+        return tags;
+    }
 
     @AfterLoad()
-    private compute(): void {
+    protected computeDecorators(): void {
+        if (!this.school) return;
         const decorators: { [key in SecondaryAttribute]?: AttributeDecorator} = {
             attack: AttributeDecorator.ALL,
             hit: AttributeDecorator.ALL,
@@ -253,7 +265,7 @@ export class Equip {
                     break;
             }
         } else {
-            const kungfu = schoolKungfuMap[this.school].find(meta => meta.primaryAttribute === this.primaryAttribute);
+            const kungfu = schoolKungfuMap[this.school]?.find(meta => meta.primaryAttribute === this.primaryAttribute);
             if (kungfu) {
                 kungfu.decorator.forEach(([attribute, decorator]) => {
                     decorators[attribute] = decorator;
