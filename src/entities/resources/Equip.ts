@@ -248,11 +248,13 @@ export class Equip {
             }
         } else if (this.school === '精简') {
             switch (this.primaryAttribute) {
+                case 'magic':
                 case 'spirit':
                 case 'spunk':
                     decorators.attack = AttributeDecorator.MAGIC;
                     decorators.overcome = AttributeDecorator.MAGIC;
                     break;
+                case 'physics':
                 case 'agility':
                 case 'strength':
                     decorators.attack = AttributeDecorator.PHYSICS;
