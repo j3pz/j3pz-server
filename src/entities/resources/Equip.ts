@@ -7,6 +7,7 @@ import { Effect } from './Effect';
 import { Category, School } from '../../model/Base';
 import { Source } from './Source';
 import { Represent } from './Represent';
+import { EquipEmbedTransformer, EmbedInfo } from '../../utils/transformers/EquipEmbedTransformer';
 
 @Entity()
 export class Equip {
@@ -170,9 +171,11 @@ export class Equip {
 
     @Column({
         nullable: true,
+        type: 'varchar',
+        transformer: new EquipEmbedTransformer(),
     })
     @Title('镶嵌')
-    public embed: string;
+    public embed: EmbedInfo;
 
     @Column()
     @Title('最大精炼等级')
