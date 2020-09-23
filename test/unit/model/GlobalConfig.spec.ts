@@ -14,6 +14,10 @@ describe('GlobalConfig', () => {
                 Value: false,
                 SettingType: SettingType.ON_OFF_TOGGLE,
             },
+            dbVersion: {
+                Value: '1.0.0.1',
+                SettingType: SettingType.TEXT,
+            },
         });
         expect(config.minQuality).equals(undefined);
         expect(config.maxQaulity).equals(undefined);
@@ -30,6 +34,10 @@ describe('GlobalConfig', () => {
             talent: {
                 Value: true,
                 SettingType: SettingType.ON_OFF_TOGGLE,
+            },
+            dbVersion: {
+                Value: '1.0.0.1',
+                SettingType: SettingType.TEXT,
             },
         });
         expect(config.minQuality).equals(1080);
