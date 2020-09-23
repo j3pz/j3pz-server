@@ -29,7 +29,7 @@ export class TalentCtrl {
         }
         const list = await this.talentService.find({
             kungfu,
-            version: '1.0.0',
+            version: this.configService.getConfig().dbVersion,
         }) as Talent[];
         return list.map((talent): TalentResource => new Resource(talent.id, 'Talent', talent));
     }

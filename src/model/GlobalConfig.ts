@@ -13,6 +13,7 @@ export interface ConfigObject<T> {
 export interface RawGlobalConfig {
     qualityRange: ConfigObject<string>;
     talent: ConfigObject<boolean>;
+    dbVersion: ConfigObject<string>;
 }
 
 export const defaultConfig: RawGlobalConfig = {
@@ -23,6 +24,10 @@ export const defaultConfig: RawGlobalConfig = {
     talent: {
         Value: true,
         SettingType: SettingType.ON_OFF_TOGGLE,
+    },
+    dbVersion: {
+        Value: '1.0.0.0',
+        SettingType: SettingType.TEXT,
     },
 };
 
@@ -35,6 +40,8 @@ export class GlobalConfig {
 
     public talent: boolean;
 
+    public dbVersion: string;
+
     private parseConfig<T>(config: ConfigObject<T>): T {
         return config.Value;
     }
@@ -42,6 +49,7 @@ export class GlobalConfig {
     public update(rawConfig: RawGlobalConfig): void {
         this.updateQuality(this.parseConfig(rawConfig.qualityRange));
         this.talent = this.parseConfig(rawConfig.talent);
+        this.dbVersion = this.parseConfig(rawConfig.dbVersion);
     }
 
     private updateQuality(range: string): void {
