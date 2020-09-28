@@ -70,7 +70,7 @@ const attributeTuples: [Attribute, AttributeDecorator][] = [
 
 export class EquipEmbedTransformer {
     public from(composed: string): EmbedInfo {
-        if (composed === '') {
+        if (!composed || composed === '') {
             return new EmbedInfo(0, []);
         }
         const count = parseInt(composed.substr(0, 1), 10);
