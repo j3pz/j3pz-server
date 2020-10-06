@@ -62,6 +62,7 @@ export class StoneService implements AfterRoutesInit {
         const stones = await this.connection.getRepository(Stone)
             .createQueryBuilder('stone')
             .innerJoin('stone.attributes', 'attribute')
+            .select(['stone.id', 'stone.name'])
             .where((qb) => {
                 let subQuery = qb.subQuery()
                     .select('attribute.id')
@@ -79,7 +80,6 @@ export class StoneService implements AfterRoutesInit {
             .having('count(*) >= :count', { count: tuples.length })
             .getMany();
 
-        stones.forEach(stone => stone.attributes.sort((a, b) => a.requiredQuantity - b.requiredQuantity));
         return stones;
     }
 
@@ -101,6 +101,7 @@ export class StoneService implements AfterRoutesInit {
         const stone = await this.connection.manager.findOne(Stone, id, {
             relations: ['attributes'],
         });
+        stone.attributes.sort((a, b) => a.requiredQuantity - b.requiredQuantity);
         return stone;
     }
 }
