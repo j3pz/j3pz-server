@@ -17,4 +17,16 @@ export class Stone {
     @JoinTable()
     @Title('五彩石属性')
     public attributes: StoneAttribute[];
+
+    @Column()
+    @Title('五彩石图标')
+    public icon: number;
+
+    @Column()
+    @Title('五彩石等级')
+    public level: number;
+
+    @Column()
+    @Title('是否过期')
+    public deprecated: boolean;
 }

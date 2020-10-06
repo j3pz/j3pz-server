@@ -79,6 +79,7 @@ export class StoneService implements AfterRoutesInit {
             .having('count(*) >= :count', { count: tuples.length })
             .getMany();
 
+        stones.forEach(stone => stone.attributes.sort((a, b) => a.requiredQuantity - b.requiredQuantity));
         return stones;
     }
 

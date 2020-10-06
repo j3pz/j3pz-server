@@ -24,7 +24,7 @@ export class StoneAttribute {
 
     @Column({
         type: 'decimal',
-        precision: 5,
+        precision: 7,
         scale: 2,
         transformer: new ColumnNumericTransformer(),
     })
