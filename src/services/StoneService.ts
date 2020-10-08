@@ -59,7 +59,7 @@ export class StoneService implements AfterRoutesInit {
     }
 
     public async find(tuples: DecoratorTuple[]): Promise<Stone[]> {
-        const stones = await this.connection.getRepository(Stone)
+        const stonesIds = await this.connection.getRepository(Stone)
             .createQueryBuilder('stone')
             .innerJoin('stone.attributes', 'attribute')
             .select(['stone.id', 'stone.name'])
@@ -79,6 +79,10 @@ export class StoneService implements AfterRoutesInit {
             .groupBy('stone.id')
             .having('count(*) >= :count', { count: tuples.length })
             .getMany();
+
+        const stones = await this.connection.manager.findByIds(Stone, stonesIds.map(s => s.id), {
+            relations: ['attributes'],
+        });
 
         return stones;
     }
