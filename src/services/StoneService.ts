@@ -10,7 +10,7 @@ import {
 import { kungFuLib } from '../utils/KungFuLib';
 import { BANNED_ATTRIBUTES_BY_ROLE } from '../utils/KungfuMeta';
 import { StoneAttribute } from '../entities/resources/StoneAttribute';
-import { StoneAttributeCore } from '../model/Stone';
+import { StoneAttributeCore, StoneCore } from '../model/Stone';
 import { getDecoratorList } from '../utils/decorator';
 
 interface AttributeListFilter {
@@ -58,7 +58,7 @@ export class StoneService implements AfterRoutesInit {
         }];
     }
 
-    public async find(tuples: DecoratorTuple[]): Promise<Stone[]> {
+    public async find(tuples: DecoratorTuple[]): Promise<StoneCore[]> {
         const stonesIds = await this.connection.getRepository(Stone)
             .createQueryBuilder('stone')
             .innerJoin('stone.attributes', 'attribute')
@@ -84,7 +84,11 @@ export class StoneService implements AfterRoutesInit {
             relations: ['attributes'],
         });
 
-        return stones;
+        return stones.map(s => ({
+            id: s.id,
+            name: s.name,
+            attributes: s.attributes.map(a => a.name),
+        }));
     }
 
     public async findAttributes(filter: AttributeListFilter): Promise<StoneAttributeCore[]> {

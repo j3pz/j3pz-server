@@ -7,7 +7,7 @@ import {
 import { Resource } from '../model/Server';
 import { StoneService } from '../services/StoneService';
 import { Attribute, AttributeDecorator, DecoratorTuple } from '../model/Base';
-import { StoneResource } from '../model/Stone';
+import { StoneResource, StoneCoreResource } from '../model/Stone';
 import { Stone } from '../entities/resources/Stone';
 import { StoneNotFound } from '../utils/errors/NotFound';
 import { ConfigService } from '../services/ConfigService';
@@ -22,15 +22,19 @@ export class StoneCtrl {
     @ReturnsArray(200, { description: 'OK', type: Stone })
     @ReturnsArray(400, { description: 'Bad Request' })
     public async list(
+        // @QueryParams('kungfu') @Description('所属心法') kungfu: KungFu,
         @QueryParams('attribute') @Description('包含属性') attributes: Attribute[],
         @QueryParams('decorator') @Description('包含属性') decorators: AttributeDecorator[],
-    ): Promise<StoneResource[]> {
+    ): Promise<StoneCoreResource[]> {
         if (attributes === undefined) {
             throw new AttributeRequiredError();
         }
         if (decorators === undefined) {
             throw new DecoratorRequiredError();
         }
+        // if (!Object.values(KungFu).includes(kungfu)) {
+        //     throw new KungFuNotExistError(kungfu);
+        // }
         if (decorators.length !== attributes.length) {
             throw new AttributeDecoratorNotMatchError();
         }
