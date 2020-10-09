@@ -87,7 +87,9 @@ export class StoneService implements AfterRoutesInit {
         return stones.map(s => ({
             id: s.id,
             name: s.name,
-            attributes: s.attributes.map(a => a.name),
+            attributes: s.attributes.map(a => ({
+                name: a.name, key: a.key, decorator: a.decorator, id: a.id,
+            })),
         }));
     }
 

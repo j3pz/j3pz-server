@@ -28,6 +28,6 @@ export class StoneCore {
     public name: string;
 
     @Title('属性名称')
-    public attributes: string[];
+    public attributes: StoneAttributeCore[];
 }
 export type StoneCoreResource = Resource<StoneCore>;
