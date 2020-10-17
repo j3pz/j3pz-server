@@ -28,12 +28,15 @@ export class CaseCtrl {
             // TODO: Case detail mode
             return [];
         }
-        return cases.map(caseInfo => new Resource(
-            caseInfo.id,
-            'Case',
-            caseInfo,
-            `case/${UrlId.fromHex(caseInfo.id).url}`,
-        ));
+        return cases.map((caseInfo) => {
+            const urlId = UrlId.fromHex(caseInfo.id).url;
+            return new Resource(
+                urlId,
+                'Case',
+                { ...caseInfo, id: urlId },
+                `case/${UrlId.fromHex(caseInfo.id).url}`,
+            );
+        });
     }
 
     @Get('/:id')
@@ -46,7 +49,7 @@ export class CaseCtrl {
             throw new CaseNotFoundError(urlId);
         }
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
-        return new Resource(caseDetail.id, 'Case', caseDetail);
+        return new Resource(urlId.url, 'Case', caseDetail);
     }
 
     @Get('/:domain/list')
@@ -59,12 +62,15 @@ export class CaseCtrl {
         if (!user) {
             throw new NoSuchDomainError(domain);
         }
-        return user.cases.filter(caseInfo => caseInfo.published).map(caseInfo => new Resource(
-            caseInfo.id,
-            'Case',
-            caseInfo,
-            `case/${domain}/${UrlId.fromHex(caseInfo.id).url}`,
-        ));
+        return user.cases.filter(caseInfo => caseInfo.published).map((caseInfo) => {
+            const urlId = UrlId.fromHex(caseInfo.id).url;
+            return new Resource(
+                urlId,
+                'Case',
+                { ...caseInfo, id: urlId },
+                `case/${domain}/${UrlId.fromHex(caseInfo.id).url}`,
+            );
+        });
     }
 
     @Get('/:domain/:id')
@@ -84,7 +90,7 @@ export class CaseCtrl {
         }
         const caseScheme = await this.caseService.findOne(urlId.objectId);
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
-        return new Resource(caseDetail.id, 'Case', caseDetail);
+        return new Resource(urlId.url, 'Case', caseDetail);
     }
 
     @Post()
@@ -127,7 +133,7 @@ export class CaseCtrl {
         if (!caseInfo) {
             throw new CaseNotFoundError(urlId);
         }
-        return new Resource(caseInfo.id, 'Case', caseInfo);
+        return new Resource(urlId.url, 'Case', caseInfo);
     }
 
     @Delete('/:id')
