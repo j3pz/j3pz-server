@@ -46,6 +46,7 @@ export class CaseService implements AfterRoutesInit {
         const enhances = await this.enhanceService.findByIds(enhanceIds);
         detail.equip = equips;
         detail.enhance = enhances;
+        detail.id = UrlId.fromHex(detail.id).url;
 
         return detail;
     }
