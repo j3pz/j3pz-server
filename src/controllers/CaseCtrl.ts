@@ -13,6 +13,8 @@ import { SyncLimitReachedError, CaseNotPublishedError } from '../utils/errors/Fo
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { UserService } from '../services/UserService';
 import { NoSuchDomainError } from '../utils/errors/Unauthorized';
+import { EquipCore } from '../model/Equip';
+import { Equip } from '../entities/resources/Equip';
 
 @Controller('/case')
 export class CaseCtrl {
@@ -49,6 +51,28 @@ export class CaseCtrl {
             throw new CaseNotFoundError(urlId);
         }
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
+        caseDetail.equip.forEach((eq) => {
+            const equip = eq;
+            if (equip.set) {
+                const collection = equip.set.equip.map((e: Equip): EquipCore => ({
+                    id: e.id,
+                    name: e.name,
+                    icon: e.icon,
+                    quality: e.quality,
+                    category: e.category,
+                    tags: e.tags,
+                })).reduce((acc, cur) => {
+                    if (acc[cur.category]) {
+                        acc[cur.category].push(cur);
+                    } else {
+                        acc[cur.category] = [cur];
+                    }
+                    return acc;
+                }, {});
+                delete equip.set.equip;
+                equip.set.equips = collection;
+            }
+        });
         return new Resource(urlId.url, 'Case', caseDetail);
     }
 
@@ -78,7 +102,7 @@ export class CaseCtrl {
     @Authenticate(['jwt', 'anonymous'])
     public async findShared(
         @PathParams('domain') domain: string,
-        @PathParams('id', UrlId) urlId: UrlId,
+            @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<CaseResource> {
         const user = await this.userService.findByDomain(domain);
         const caseInfo = this.caseService.getCaseInfo(user.cases, urlId);
@@ -110,8 +134,8 @@ export class CaseCtrl {
     @Authenticate('jwt', { failWithError: true })
     public async update(
         @Req() req: Req,
-        @BodyParams() caseModel: CaseModel,
-        @PathParams('id', UrlId) urlId: UrlId,
+            @BodyParams() caseModel: CaseModel,
+            @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<Status> {
         const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
         if (!caseInfo) {
@@ -126,8 +150,8 @@ export class CaseCtrl {
     @Authenticate('jwt', { failWithError: true })
     public async patch(
         @Req() req: Req,
-        @BodyParams() patch: CaseInfoModel,
-        @PathParams('id', UrlId) urlId: UrlId,
+            @BodyParams() patch: CaseInfoModel,
+            @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<CaseInfoResource> {
         const caseInfo = await this.caseService.updateCaseInfo(req.user, urlId, patch);
         if (!caseInfo) {
