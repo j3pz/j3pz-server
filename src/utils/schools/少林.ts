@@ -33,7 +33,9 @@ export const 洗髓经: KungFuMeta = {
     primaryAttribute: 'vitality',
     school: '少林',
     role: GamingRole.TANK,
-    decorator: [],
+    decorator: [
+        ['hit', AttributeDecorator.SOLAR],
+    ],
     base: {
         magicShield: 814,
         physicsShield: 649,

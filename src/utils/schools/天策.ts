@@ -33,7 +33,9 @@ export const 铁牢律: KungFuMeta = {
     primaryAttribute: 'vitality',
     school: '天策',
     role: GamingRole.TANK,
-    decorator: [],
+    decorator: [
+        ['hit', AttributeDecorator.PHYSICS],
+    ],
     base: {
         parryValue: 958,
         physicsShield: 814,

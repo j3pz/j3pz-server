@@ -33,6 +33,7 @@ export const 补天诀: KungFuMeta = {
     school: '五毒',
     role: GamingRole.HEALER,
     decorator: [
+        ['hit', AttributeDecorator.POISON],
         ['crit', AttributeDecorator.POISON],
         ['critEffect', AttributeDecorator.POISON],
     ],
