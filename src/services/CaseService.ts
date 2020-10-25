@@ -51,7 +51,7 @@ export class CaseService implements AfterRoutesInit {
         const talents = await this.talentService.findByIds(scheme.talent);
         detail.equip = equips;
         detail.enhance = enhances;
-        detail.talents = talents;
+        detail.talent = talents;
         detail.id = UrlId.fromHex(detail.id).url;
 
         return detail;

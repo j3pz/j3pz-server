@@ -15,7 +15,7 @@ export class CaseDetail extends CaseInfo {
 
     public stone: Stone[];
 
-    public talents: Talent[];
+    public talent: Talent[];
 
     // public result: CaseResult;
 }
