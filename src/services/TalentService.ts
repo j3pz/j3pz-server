@@ -1,6 +1,6 @@
 import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
-import { Connection } from 'typeorm';
+import { Connection, In } from 'typeorm';
 import { Talent } from '../entities/resources/Talent';
 import { KungFu } from '../model/Base';
 
@@ -38,5 +38,13 @@ export class TalentService implements AfterRoutesInit {
             relations: ['effect'],
         });
         return talent;
+    }
+
+    public async findByIds(ids: number[]): Promise<Talent[]> {
+        const talents = await this.connection.manager.find(Talent, {
+            where: { id: In(ids) },
+            relations: ['effect'],
+        });
+        return talents;
     }
 }

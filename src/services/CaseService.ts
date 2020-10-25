@@ -10,6 +10,7 @@ import { CaseDetail, CaseModel, CaseInfoModel } from '../model/Case';
 import { EnhanceService } from './EnhanceService';
 import { UserInfo } from '../entities/users/User';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
+import { TalentService } from './TalentService';
 
 @Service()
 export class CaseService implements AfterRoutesInit {
@@ -19,6 +20,7 @@ export class CaseService implements AfterRoutesInit {
         private typeORMService: TypeORMService,
         private equipService: EquipService,
         private enhanceService: EnhanceService,
+        private talentService: TalentService,
     ) {}
 
     public $afterRoutesInit(): void {
@@ -42,10 +44,14 @@ export class CaseService implements AfterRoutesInit {
         detail.scheme = scheme;
         const equipIds = scheme.equip.map(equip => equip.id);
         const equips = await this.equipService.findByIds(equipIds);
+
         const enhanceIds = scheme.equip.map(equip => equip.enhance).filter(id => !!id);
         const enhances = await this.enhanceService.findByIds(enhanceIds);
+
+        const talents = await this.talentService.findByIds(scheme.talent);
         detail.equip = equips;
         detail.enhance = enhances;
+        detail.talents = talents;
         detail.id = UrlId.fromHex(detail.id).url;
 
         return detail;
