@@ -2,6 +2,7 @@ import { KungFuMeta } from '../KungfuMeta';
 import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 焚影圣诀: KungFuMeta = {
+    name: 'fenying',
     primaryAttribute: 'spunk',
     school: '明教',
     role: GamingRole.DAMAGE_DEALER,
@@ -29,6 +30,7 @@ export const 焚影圣诀: KungFuMeta = {
 };
 
 export const 明尊琉璃体: KungFuMeta = {
+    name: 'mingzun',
     primaryAttribute: 'vitality',
     school: '明教',
     role: GamingRole.TANK,

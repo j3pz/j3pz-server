@@ -2,6 +2,7 @@ import { KungFuMeta } from '../KungfuMeta';
 import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 天罗诡道: KungFuMeta = {
+    name: 'tianluo',
     primaryAttribute: 'spunk',
     school: '唐门',
     role: GamingRole.DAMAGE_DEALER,
@@ -30,6 +31,7 @@ export const 天罗诡道: KungFuMeta = {
 };
 
 export const 惊羽诀: KungFuMeta = {
+    name: 'jingyu',
     primaryAttribute: 'strength',
     school: '唐门',
     role: GamingRole.DAMAGE_DEALER,

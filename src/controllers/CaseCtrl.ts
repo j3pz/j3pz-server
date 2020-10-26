@@ -32,11 +32,13 @@ export class CaseCtrl {
         }
         return cases.map((caseInfo) => {
             const urlId = UrlId.fromHex(caseInfo.id).url;
+            const urlCase = caseInfo;
+            urlCase.id = urlId;
             return new Resource(
                 urlId,
                 'Case',
-                { ...caseInfo, id: urlId },
-                `case/${UrlId.fromHex(caseInfo.id).url}`,
+                urlCase,
+                `case/${urlId}`,
             );
         });
     }
@@ -88,11 +90,13 @@ export class CaseCtrl {
         }
         return user.cases.filter(caseInfo => caseInfo.published).map((caseInfo) => {
             const urlId = UrlId.fromHex(caseInfo.id).url;
+            const urlCase = caseInfo;
+            urlCase.id = urlId;
             return new Resource(
                 urlId,
                 'Case',
-                { ...caseInfo, id: urlId },
-                `case/${domain}/${UrlId.fromHex(caseInfo.id).url}`,
+                urlCase,
+                `case/${domain}/${urlId}`,
             );
         });
     }

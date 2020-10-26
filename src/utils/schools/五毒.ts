@@ -2,6 +2,7 @@ import { KungFuMeta } from '../KungfuMeta';
 import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 毒经: KungFuMeta = {
+    name: 'dujing',
     primaryAttribute: 'spirit',
     school: '五毒',
     role: GamingRole.DAMAGE_DEALER,
@@ -29,6 +30,7 @@ export const 毒经: KungFuMeta = {
 };
 
 export const 补天诀: KungFuMeta = {
+    name: 'butian',
     primaryAttribute: 'spirit',
     school: '五毒',
     role: GamingRole.HEALER,

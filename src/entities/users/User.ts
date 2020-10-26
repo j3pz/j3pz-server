@@ -77,12 +77,19 @@ export class User implements UserInfo {
     @AfterLoad()
     public versionAdapter(): void {
         // adapter for version 1
-        if (this.version !== 2) {
+        if (this.version === 1) {
             this.hashedPassword = this.v1Password;
+            if (this.activate) {
+                this.activation.activate = true;
+            }
+            this.cases = this.cases.map(c => c.versionAdapter());
         }
     }
 
     // ↓ Version 1 Properties
-    @Column({ name: 'password' })
-    private v1Password: string;
+    @Column({ name: 'password', update: false })
+    public v1Password: string;
+
+    @Column({ update: false })
+    public activate: boolean;
 }

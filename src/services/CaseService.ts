@@ -90,7 +90,8 @@ export class CaseService implements AfterRoutesInit {
             return null;
         }
         const info = user.cases[idx];
-        const newInfo = { ...info, ...patch };
+        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+        const newInfo = { ...info, ...patch } as CaseInfo;
         // eslint-disable-next-line no-param-reassign
         user.cases[idx] = newInfo;
         await this.connection.manager.save(user);

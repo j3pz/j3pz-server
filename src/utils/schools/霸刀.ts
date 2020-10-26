@@ -2,6 +2,7 @@ import { KungFuMeta } from '../KungfuMeta';
 import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 北傲诀: KungFuMeta = {
+    name: 'beiao',
     primaryAttribute: 'strength',
     school: '霸刀',
     role: GamingRole.DAMAGE_DEALER,

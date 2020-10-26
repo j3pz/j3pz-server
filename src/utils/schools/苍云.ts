@@ -2,6 +2,7 @@ import { KungFuMeta } from '../KungfuMeta';
 import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 分山劲: KungFuMeta = {
+    name: 'fenshan',
     primaryAttribute: 'agility',
     school: '苍云',
     role: GamingRole.DAMAGE_DEALER,
@@ -31,6 +32,7 @@ export const 分山劲: KungFuMeta = {
 };
 
 export const 铁骨衣: KungFuMeta = {
+    name: 'tiegu',
     primaryAttribute: 'vitality',
     school: '苍云',
     role: GamingRole.TANK,

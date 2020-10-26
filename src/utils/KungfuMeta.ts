@@ -15,6 +15,8 @@ export interface KungFuInfo {
 }
 
 export interface KungFuMeta extends KungFuInfo {
+    // 英文标识
+    name: string;
     // 属性修饰
     decorator: DecoratorTuple[];
     // 属性基础数值
@@ -27,6 +29,9 @@ export interface KungFuMeta extends KungFuInfo {
 
 export const BANNED_ATTRIBUTES_BY_ROLE: { [key in GamingRole]: Attribute[] } = {
     [GamingRole.DAMAGE_DEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'heal', 'threat'],
-    [GamingRole.HEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'attack', 'overcome', 'threat', 'hit', 'surplus'],
+    [GamingRole.HEALER]: [
+        'physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue',
+        'attack', 'overcome', 'threat', 'hit', 'surplus',
+    ],
     [GamingRole.TANK]: ['attack', 'crit', 'critEffect', 'damageBase', 'damageRange', 'heal', 'overcome', 'surplus'],
 };

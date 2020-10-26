@@ -53,6 +53,9 @@ export class UserService implements AfterRoutesInit {
         const user = await this.connection.manager.findOne(User, {
             where: { email },
         });
+        if (user.version < 2) {
+            await this.upgradeUser(user);
+        }
         return user;
     }
 
@@ -100,6 +103,9 @@ export class UserService implements AfterRoutesInit {
             throw new ExpiredTokenError(`${permalink}/${token}`, 'reset');
         }
         user.password = password;
+        if (!user.activation.activate) {
+            user.activation.activate = true;
+        }
         await this.update(user);
         return user;
     }
@@ -114,5 +120,24 @@ export class UserService implements AfterRoutesInit {
             where: { domain },
         });
         return user;
+    }
+
+    private async upgradeUser(old: User): Promise<void> {
+        const user = old;
+        user.version = 2;
+        delete user.activate;
+        delete user.v1Password;
+        await this.connection.getMongoRepository(User).updateOne(
+            { _id: ObjectID.createFromHexString(user.uid) },
+            {
+                $unset: {
+                    password: '',
+                    activate: '',
+                    reset: '',
+                    lastEmail: '',
+                },
+            },
+        );
+        await this.connection.manager.save(user);
     }
 }
