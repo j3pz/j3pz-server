@@ -69,9 +69,9 @@ export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover'
 export type Attribute = PrimaryAttribute | SecondaryAttribute | MinorAttribute | ExtraAttribute;
 export type AttributeTag =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'toughness' |
-    'crit' | 'overcome' | 'strain' | 'surplus' | 'haste';
+    'crit' | 'overcome' | 'strain' | 'surplus' | 'haste' | 'huajing';
 export const AttributeTag: AttributeTag[] = ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'toughness',
-    'crit', 'overcome', 'strain', 'surplus', 'haste'];
+    'crit', 'overcome', 'strain', 'surplus', 'haste', 'huajing'];
 
 export const AttributeDecorator = {
     PHYSICS: lit('PHYSICS'),
