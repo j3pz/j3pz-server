@@ -9,7 +9,7 @@ import {
 } from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { UrlId } from '../model/UrlId';
-import { SyncLimitReachedError, CaseNotPublishedError } from '../utils/errors/Forbidden';
+import { CaseNotPublishedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { UserService } from '../services/UserService';
 import { NoSuchDomainError } from '../utils/errors/Unauthorized';
@@ -121,9 +121,6 @@ export class CaseCtrl {
     @Summary('新建方案')
     @Authenticate('jwt', { failWithError: true })
     public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource[]> {
-        if (req.user.syncLimit <= req.user.cases.length) {
-            throw new SyncLimitReachedError(req.user.email);
-        }
         await this.caseService.create(caseModel, req.user);
         const list = await this.list(req, 0);
         return list;

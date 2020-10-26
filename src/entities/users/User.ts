@@ -1,5 +1,5 @@
 import {
-    Entity, ObjectID, ObjectIdColumn, Column, CreateDateColumn,
+    Entity, ObjectID, ObjectIdColumn, Column, CreateDateColumn, AfterLoad,
 } from 'typeorm';
 import { createHash } from 'crypto';
 import { UserActivation } from './UserActivation';
@@ -10,7 +10,6 @@ export interface UserInfo {
     uid: string;
     email: string;
     name: string;
-    syncLimit: number;
     activation: UserActivation;
     preference: Preference;
     cases: CaseInfo[];
@@ -38,7 +37,7 @@ export class User implements UserInfo {
     public name: string;
 
     @Column()
-    public syncLimit: number;
+    public version: number;
 
     @Column(() => UserActivation)
     public activation: UserActivation;
@@ -53,7 +52,6 @@ export class User implements UserInfo {
     public cases: CaseInfo[];
 
     public constructor() {
-        this.syncLimit = 3;
         this.activation = new UserActivation();
         this.preference = new Preference();
         this.cases = [];
@@ -75,4 +73,16 @@ export class User implements UserInfo {
         // eslint-disable-next-line no-underscore-dangle
         return this._id.toHexString();
     }
+
+    @AfterLoad()
+    public versionAdapter(): void {
+        // adapter for version 1
+        if (this.version !== 2) {
+            this.hashedPassword = this.v1Password;
+        }
+    }
+
+    // ↓ Version 1 Properties
+    @Column({ name: 'password' })
+    private v1Password: string;
 }

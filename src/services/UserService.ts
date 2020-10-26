@@ -31,7 +31,6 @@ export class UserService implements AfterRoutesInit {
             uid: user.uid,
             email: user.email,
             name: user.name,
-            syncLimit: user.syncLimit,
             activate: user.activation.activate,
             token,
         };
@@ -41,7 +40,6 @@ export class UserService implements AfterRoutesInit {
     public sign(user: UserInfo): string {
         const payload: JWTSignPayload = {
             nam: user.name,
-            lim: user.syncLimit,
             act: user.activation.activate,
         };
         const token = sign(payload, process.env.JWT_SECRET, {

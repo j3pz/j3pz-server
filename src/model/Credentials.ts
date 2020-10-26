@@ -40,7 +40,6 @@ export interface SimpleUserInfo {
     uid: string;
     email: string;
     name: string;
-    syncLimit: number;
     activate: boolean;
     token: string;
 }
@@ -49,7 +48,6 @@ export type UserInfoResource = Resource<SimpleUserInfo>;
 export interface JWTSignPayload {
     nam: string;
     act: boolean;
-    lim: number;
 }
 export interface JWTPayload extends JWTSignPayload {
     iat: number;
