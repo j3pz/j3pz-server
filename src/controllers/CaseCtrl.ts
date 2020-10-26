@@ -142,6 +142,7 @@ export class CaseCtrl {
             throw new CaseNotFoundError(urlId);
         }
         await this.caseService.update(caseModel, urlId);
+        await this.caseService.updateCaseInfo(req.user, urlId, { lastUpdate: new Date() });
         return new Status(true);
     }
 

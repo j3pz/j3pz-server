@@ -68,6 +68,7 @@ export class CaseService implements AfterRoutesInit {
         info.name = caseModel.name;
         info.kungfu = caseModel.kungfu;
         info.published = false;
+        info.lastUpdate = new Date();
         user.cases.push(info);
         await this.connection.manager.save(user);
     }

@@ -13,4 +13,7 @@ export class CaseInfo {
 
     @Column()
     public published: boolean;
+
+    @Column()
+    public lastUpdate: Date;
 }
