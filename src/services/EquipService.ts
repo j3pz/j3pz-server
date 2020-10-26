@@ -53,6 +53,7 @@ export class EquipService implements AfterRoutesInit {
             order: {
                 quality: 'ASC',
             },
+            take: filter.name ? 10 : undefined,
         });
 
         return equips.map((equip) => {
