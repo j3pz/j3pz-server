@@ -54,7 +54,7 @@ export class UserService implements AfterRoutesInit {
         const user = await this.connection.manager.findOne(User, {
             where: { email },
         });
-        if (user.version < 2) {
+        if (user?.version < 2) {
             await this.upgradeUser(user);
         }
         return user;
