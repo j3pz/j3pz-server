@@ -89,7 +89,7 @@ export class UserService implements AfterRoutesInit {
         return user;
     }
 
-    public async resetPassword(resetInfo: ResetModel): Promise<User> {
+    public async resetPassword(resetInfo: ResetModel): Promise<User | boolean> {
         const { password, permalink, token } = resetInfo;
         const user = await this.connection.manager.findOne(User, {
             where: { _id: ObjectID.createFromHexString(permalink) },
@@ -103,6 +103,7 @@ export class UserService implements AfterRoutesInit {
         if (isAfter(Date.now(), user.activation.resetExpireAt)) {
             throw new ExpiredTokenError(`${permalink}/${token}`, 'reset');
         }
+        if (resetInfo.dryRun) return true;
         user.password = password;
         if (!user.activation.activate) {
             user.activation.activate = true;

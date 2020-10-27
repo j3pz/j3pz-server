@@ -25,6 +25,7 @@ export interface ResetModel {
     permalink: string;
     token: string;
     password: string;
+    dryRun: boolean;
 }
 
 export interface PreferenceModel {
