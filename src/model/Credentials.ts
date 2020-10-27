@@ -27,6 +27,18 @@ export interface ResetModel {
     password: string;
 }
 
+export interface PreferenceModel {
+    strengthen?: boolean;
+    magicStoneLevel?: number;
+}
+
+export interface UserUpdateModel {
+    password?: string;
+    oldPassword?: string;
+
+    name?: string;
+}
+
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Express {

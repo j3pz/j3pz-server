@@ -5,14 +5,14 @@ export class Preference {
     public quality: number[];
 
     @Column()
-    public strengthen: number;
+    public strengthen: boolean;
 
     @Column()
     public magicStoneLevel: number;
 
     public constructor() {
         this.quality = [];
-        this.strengthen = 6;
+        this.strengthen = true;
         this.magicStoneLevel = 6;
     }
 }
