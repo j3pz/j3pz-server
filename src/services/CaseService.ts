@@ -57,7 +57,7 @@ export class CaseService implements AfterRoutesInit {
         return detail;
     }
 
-    public async create(caseModel: CaseModel, user: UserInfo): Promise<void> {
+    public async create(caseModel: CaseModel, user: UserInfo): Promise<CaseInfo> {
         const scheme = new CaseScheme();
         scheme.equip = caseModel.equip;
         scheme.effect = caseModel.effect;
@@ -71,6 +71,7 @@ export class CaseService implements AfterRoutesInit {
         info.lastUpdate = new Date();
         user.cases.push(info);
         await this.connection.manager.save(user);
+        return info;
     }
 
     public async update(caseModel: CaseModel, id: UrlId): Promise<void> {

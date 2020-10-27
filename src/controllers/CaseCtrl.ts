@@ -124,10 +124,10 @@ export class CaseCtrl {
     @Post()
     @Summary('新建方案')
     @Authenticate('jwt', { failWithError: true })
-    public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource[]> {
-        await this.caseService.create(caseModel, req.user);
-        const list = await this.list(req, 0);
-        return list;
+    public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource> {
+        const caseInfo = await this.caseService.create(caseModel, req.user);
+        const urlId = UrlId.fromHex(caseInfo.id).url;
+        return new Resource(urlId, 'Case', caseInfo);
     }
 
     @Put('/:id')
