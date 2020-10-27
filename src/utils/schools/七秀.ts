@@ -14,19 +14,17 @@ export const 冰心诀: KungFuMeta = {
         ['overcome', AttributeDecorator.LUNAR],
     ],
     base: {
-        attack: 738,
-        hit: 265,
-        magicShield: 753,
-        physicsShield: 400,
-        dodge: 265,
-        huajing: 1078,
+        attack: 1868,
+        magicShield: 400 + 323,
+        physicsShield: 400 + 254,
+        huajing: 1175,
     },
     factor: {
         attack: 1.9,
         crit: 0.28,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };
 
@@ -41,17 +39,16 @@ export const 云裳心经: KungFuMeta = {
         ['critEffect', AttributeDecorator.LUNAR],
     ],
     base: {
-        heal: 2144,
-        magicShield: 621,
-        physicsShield: 400,
-        dodge: 243,
-        huajing: 1078,
+        heal: 2979,
+        magicShield: 400 + 578,
+        physicsShield: 400 + 578,
+        huajing: 1725,
     },
     factor: {
         heal: 1.75,
         crit: 0.21,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };

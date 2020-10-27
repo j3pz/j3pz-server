@@ -14,17 +14,17 @@ export const 太玄经: KungFuMeta = {
         ['overcome', AttributeDecorator.NEUTRAL],
     ],
     base: {
-        attack: 664,
-        hit: 442,
+        attack: 1868,
+        crit: 1088,
         physicsShield: 400,
         magicShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
-        attack: 1.55,
-        overcome: 0.36,
+        attack: 1.8,
+        crit: 0.42,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };

@@ -14,20 +14,18 @@ export const 山居剑意: KungFuMeta = {
         ['overcome', AttributeDecorator.PHYSICS],
     ],
     base: {
-        attack: 615,
-        hit: 265,
-        crit: 176,
-        dodge: 221,
+        attack: 1526,
+        crit: 1156,
         physicsShield: 400,
         magicShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         attack: 1.6,
         overcome: 0.25,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };
 

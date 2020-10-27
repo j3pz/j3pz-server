@@ -14,18 +14,17 @@ export const 花间游: KungFuMeta = {
         ['overcome', AttributeDecorator.NEUTRAL],
     ],
     base: {
-        attack: 738,
-        hit: 265,
-        magicShield: 576,
+        attack: 1831,
+        magicShield: 400 + 231,
         physicsShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         attack: 1.95,
         overcome: 0.19,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };
 
@@ -40,16 +39,16 @@ export const 离经易道: KungFuMeta = {
         ['critEffect', AttributeDecorator.NEUTRAL],
     ],
     base: {
-        heal: 2001,
-        magicShield: 621,
+        heal: 2780,
+        magicShield: 400 + 578,
         physicsShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         heal: 1.65,
         crit: 0.41,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };

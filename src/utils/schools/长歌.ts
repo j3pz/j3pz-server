@@ -14,17 +14,17 @@ export const 相知: KungFuMeta = {
         ['overcome', AttributeDecorator.LUNAR],
     ],
     base: {
-        heal: 2215,
-        magicShield: 621,
+        heal: 3078,
+        magicShield: 400 + 578,
         physicsShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         heal: 1.7,
         crit: 0.31,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };
 
@@ -41,18 +41,17 @@ export const 莫问: KungFuMeta = {
         ['overcome', AttributeDecorator.LUNAR],
     ],
     base: {
-        attack: 664,
-        hit: 353,
-        crit: 265,
-        magicShield: 576,
+        attack: 1648,
+        crit: 572,
+        magicShield: 400 + 462,
         physicsShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         attack: 1.85,
         crit: 0.38,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };

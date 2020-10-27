@@ -14,18 +14,17 @@ export const 隐龙诀: KungFuMeta = {
         ['overcome', AttributeDecorator.PHYSICS],
     ],
     base: {
-        attack: 652,
-        hit: 398,
-        overcome: 217,
+        attack: 1618,
+        overcome: 952,
         magicShield: 400,
         physicsShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         attack: 1.5,
         overcome: 0.47,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };
