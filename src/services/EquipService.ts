@@ -85,6 +85,7 @@ export class EquipService implements AfterRoutesInit {
     }
 
     public async findByIds(ids: number[]): Promise<Equip[]> {
+        if (ids.length === 0) return [];
         const equip = await this.connection.manager.find(Equip, {
             where: {
                 id: In(ids),
