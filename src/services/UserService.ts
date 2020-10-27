@@ -32,7 +32,7 @@ export class UserService implements AfterRoutesInit {
             email: user.email,
             name: user.name,
             activate: user.activation.activate,
-            preferrence: user.preference,
+            preference: user.preference,
             token,
         };
         return info;
