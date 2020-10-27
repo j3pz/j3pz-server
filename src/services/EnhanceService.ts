@@ -74,6 +74,7 @@ export class EnhanceService implements AfterRoutesInit {
     }
 
     public async findByIds(ids: number[]): Promise<Enhance[]> {
+        if (ids.length === 0) return [];
         const enhances = await this.connection.manager.find(Enhance, {
             where: { id: In(ids) },
         });

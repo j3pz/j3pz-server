@@ -41,6 +41,7 @@ export class TalentService implements AfterRoutesInit {
     }
 
     public async findByIds(ids: number[]): Promise<Talent[]> {
+        if (ids.length === 0) return [];
         const talents = await this.connection.manager.find(Talent, {
             where: { id: In(ids) },
             relations: ['effect'],
