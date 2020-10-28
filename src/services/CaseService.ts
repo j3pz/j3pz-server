@@ -11,6 +11,7 @@ import { EnhanceService } from './EnhanceService';
 import { UserInfo } from '../entities/users/User';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { TalentService } from './TalentService';
+import { StoneService } from './StoneService';
 
 @Service()
 export class CaseService implements AfterRoutesInit {
@@ -21,6 +22,7 @@ export class CaseService implements AfterRoutesInit {
         private equipService: EquipService,
         private enhanceService: EnhanceService,
         private talentService: TalentService,
+        private stoneService: StoneService,
     ) {}
 
     public $afterRoutesInit(): void {
@@ -42,18 +44,28 @@ export class CaseService implements AfterRoutesInit {
     public async getCaseDetail(info: CaseInfo, scheme: CaseScheme): Promise<CaseDetail> {
         const detail = Object.assign(new CaseDetail(), info) as CaseDetail;
         detail.scheme = scheme;
-        const equipIds = scheme.equip.map(equip => equip.id);
+        const stoneIds = [];
+        const equipIds = scheme.equip.map((equip) => {
+            if (equip.stone) {
+                stoneIds.push(equip.stone);
+            }
+            return equip.id;
+        });
         const equips = await this.equipService.findByIds(equipIds);
 
         const enhanceIds = scheme.equip.map(equip => equip.enhance).filter(id => !!id);
         const enhances = await this.enhanceService.findByIds(enhanceIds);
 
         const talents = await this.talentService.findByIds(scheme.talent);
+        const stones = await this.stoneService.findByIds(stoneIds);
+
         detail.equip = equips;
         detail.enhance = enhances;
         detail.talent = talents;
+        detail.stone = stones;
         detail.id = UrlId.fromHex(detail.id).url;
 
+        delete detail.school;
         return detail;
     }
 

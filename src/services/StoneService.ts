@@ -114,4 +114,16 @@ export class StoneService implements AfterRoutesInit {
         stone.attributes.sort((a, b) => a.requiredQuantity - b.requiredQuantity);
         return stone;
     }
+
+    public async findByIds(ids: number[]): Promise<Stone[]> {
+        if (ids.length === 0) return [];
+        const stones = await this.connection.manager.find(Stone, {
+            where: { id: In(ids) },
+            relations: ['attributes'],
+        });
+        stones.forEach((stone) => {
+            stone.attributes.sort((a, b) => a.requiredQuantity - b.requiredQuantity);
+        });
+        return stones;
+    }
 }
