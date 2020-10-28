@@ -1,4 +1,4 @@
-import { Service, AfterRoutesInit } from '@tsed/common';
+import { Service, AfterRoutesInit, $log } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { ObjectID } from 'mongodb';
 import { Connection } from 'typeorm';
@@ -114,7 +114,11 @@ export class CaseService implements AfterRoutesInit {
     }
 
     public async remove(user: UserInfo, urlId: UrlId): Promise<void> {
-        await this.connection.manager.delete(CaseScheme, urlId.objectId);
+        $log.info(`User ${user.uid} delete case ${urlId.objectId}`);
+        // await this.connection.manager.delete(CaseScheme, urlId.objectId);
+        const scheme = await this.findOne(urlId.objectId);
+        scheme.deleted = true;
+        await this.connection.manager.save(scheme);
         const cases = user.cases.filter(c => c.id !== urlId.objectId.toHexString());
         // eslint-disable-next-line no-param-reassign
         user.cases = cases;
