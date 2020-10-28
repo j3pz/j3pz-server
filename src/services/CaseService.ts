@@ -117,8 +117,10 @@ export class CaseService implements AfterRoutesInit {
         $log.info(`User ${user.uid} delete case ${urlId.objectId}`);
         // await this.connection.manager.delete(CaseScheme, urlId.objectId);
         const scheme = await this.findOne(urlId.objectId);
-        scheme.deleted = true;
-        await this.connection.manager.save(scheme);
+        if (scheme) {
+            scheme.deleted = true;
+            await this.connection.manager.save(scheme);
+        }
         const cases = user.cases.filter(c => c.id !== urlId.objectId.toHexString());
         // eslint-disable-next-line no-param-reassign
         user.cases = cases;
