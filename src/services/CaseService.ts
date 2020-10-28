@@ -119,6 +119,7 @@ export class CaseService implements AfterRoutesInit {
         const scheme = await this.findOne(urlId.objectId);
         if (scheme) {
             scheme.deleted = true;
+            scheme.deletedAt = new Date();
             await this.connection.manager.save(scheme);
         }
         const cases = user.cases.filter(c => c.id !== urlId.objectId.toHexString());
