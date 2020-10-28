@@ -5,6 +5,7 @@ import { Equip } from '../entities/resources/Equip';
 import { Enhance } from '../entities/resources/Enhance';
 import { Stone } from '../entities/resources/Stone';
 import { Talent } from '../entities/resources/Talent';
+import { KungFuMeta } from '../utils/KungfuMeta';
 
 export class CaseDetail extends CaseInfo {
     public scheme: CaseScheme;
@@ -16,6 +17,8 @@ export class CaseDetail extends CaseInfo {
     public stone: Stone[];
 
     public talent: Talent[];
+
+    public kungfuMeta: KungFuMeta;
 
     // public result: CaseResult;
 }

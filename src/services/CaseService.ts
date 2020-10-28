@@ -12,6 +12,7 @@ import { UserInfo } from '../entities/users/User';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { TalentService } from './TalentService';
 import { StoneService } from './StoneService';
+import { kungFuLib } from '../utils/KungFuLib';
 
 @Service()
 export class CaseService implements AfterRoutesInit {
@@ -63,6 +64,7 @@ export class CaseService implements AfterRoutesInit {
         detail.enhance = enhances;
         detail.talent = talents;
         detail.stone = stones;
+        detail.kungfuMeta = kungFuLib[detail.kungfu];
         detail.id = UrlId.fromHex(detail.id).url;
 
         delete detail.school;
