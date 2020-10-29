@@ -12,6 +12,7 @@ import { ActivatedError } from '../utils/errors/Forbidden';
 import { MailService } from '../services/MailService';
 import { NoSuchUserError, PasswordVerifyError } from '../utils/errors/Unauthorized';
 import { User } from '../entities/users/User';
+import { UserActivation } from '../entities/users/UserActivation';
 
 @Controller('/user')
 export class UserCtrl {
@@ -50,6 +51,8 @@ export class UserCtrl {
         if (req.user.activation.activate) {
             throw new ActivatedError(req.user.email);
         }
+        req.user.activation = new UserActivation();
+        await this.userService.update(req.user as User);
         this.mailService.sendWelcomeMail(req.user);
         return new Status(true);
     }
