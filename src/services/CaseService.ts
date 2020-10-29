@@ -79,6 +79,7 @@ export class CaseService implements AfterRoutesInit {
         scheme.equip = caseModel.equip;
         scheme.effect = caseModel.effect;
         scheme.talent = caseModel.talent;
+        scheme.version = 2;
         const { id } = await this.connection.manager.save(scheme);
         const info = new CaseInfo();
         info.id = id;

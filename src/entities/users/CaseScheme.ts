@@ -53,7 +53,7 @@ export class CaseScheme {
     public deletedAt: Date;
 
     @Column()
-    public version: number = 2;
+    public version: number;
 
     public get id(): string {
         // eslint-disable-next-line no-underscore-dangle
@@ -62,7 +62,7 @@ export class CaseScheme {
 
     @AfterLoad()
     public versionAdapter(): CaseScheme {
-        if (this.version === 1 && this.save) {
+        if ((this.version === 1 || this.version === undefined) && this.save) {
             Object.entries(this.save.equips).forEach(([key, equip]) => {
                 const es = new EquipScheme();
                 es.id = equip.equipId;
