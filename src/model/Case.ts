@@ -19,8 +19,6 @@ export class CaseDetail extends CaseInfo {
     public talent: Talent[];
 
     public kungfuMeta: KungFuMeta;
-
-    // public result: CaseResult;
 }
 
 export type CaseModel = CaseInfo & CaseScheme;
