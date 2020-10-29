@@ -9,7 +9,7 @@ import {
 } from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { UrlId } from '../model/UrlId';
-import { CaseNotPublishedError } from '../utils/errors/Forbidden';
+import { CaseNotPublishedError, UserNotActivatedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { UserService } from '../services/UserService';
 import { NoSuchDomainError } from '../utils/errors/Unauthorized';
@@ -125,6 +125,10 @@ export class CaseCtrl {
     @Summary('新建方案')
     @Authenticate('jwt', { failWithError: true })
     public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource> {
+        const caseCount = req.user.cases.length;
+        if (caseCount > 0 && !req.user.activation.activate) {
+            throw new UserNotActivatedError(req.user.email);
+        }
         const caseInfo = await this.caseService.create(caseModel, req.user);
         const urlId = UrlId.fromHex(caseInfo.id).url;
         return new Resource(urlId, 'Case', caseInfo);
