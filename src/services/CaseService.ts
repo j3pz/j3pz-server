@@ -44,7 +44,7 @@ export class CaseService implements AfterRoutesInit {
 
     public async getCaseDetail(info: CaseInfo, scheme: CaseScheme): Promise<CaseDetail> {
         const detail = Object.assign(new CaseDetail(), info) as CaseDetail;
-        detail.scheme = scheme;
+        detail.scheme = scheme.versionAdapter();
         const stoneIds = [];
         const equipIds = scheme.equip.map((equip) => {
             if (equip.stone) {
