@@ -34,6 +34,9 @@ export class CaseService implements AfterRoutesInit {
         const caseScheme = await this.connection.manager.findOne(CaseScheme, {
             where: { _id: id },
         });
+        if (caseScheme.version < 2) {
+            await this.upgradeScheme(caseScheme);
+        }
         return caseScheme;
     }
 
@@ -126,5 +129,23 @@ export class CaseService implements AfterRoutesInit {
         // eslint-disable-next-line no-param-reassign
         user.cases = cases;
         await this.connection.manager.save(user);
+    }
+
+    private async upgradeScheme(old: CaseScheme): Promise<void> {
+        const scheme = old;
+        scheme.version = 2;
+        delete scheme.save;
+        await this.connection.getMongoRepository(CaseScheme).updateOne(
+            { _id: ObjectID.createFromHexString(scheme.id) },
+            {
+                $unset: {
+                    save: '',
+                    attribute: '',
+                    name: '',
+                    school: '',
+                },
+            },
+        );
+        await this.connection.manager.save(scheme);
     }
 }
