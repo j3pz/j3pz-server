@@ -1,5 +1,5 @@
 import {
-    Entity, ObjectID, ObjectIdColumn, Column,
+    Entity, ObjectID, ObjectIdColumn, Column, AfterLoad,
 } from 'typeorm';
 import { EmbedStoneType, Category } from '../../model/Base';
 import { CaseSchemeV1, categoryMap } from './CaseSchemeV1';
@@ -60,6 +60,7 @@ export class CaseScheme {
         return this._id.toHexString();
     }
 
+    @AfterLoad()
     public versionAdapter(): CaseScheme {
         if (this.version === 1 && this.save) {
             Object.entries(this.save.equips).forEach(([key, equip]) => {
@@ -71,7 +72,6 @@ export class CaseScheme {
                 es.category = categoryMap[key];
                 this.equip.push(es);
             });
-            delete this.save;
         }
         return this;
     }

@@ -10,6 +10,7 @@ enum ForbiddenErrorCode {
     ExpiredToken = 403003,
     AlreadyActivated = 403004,
     CaseNotPublished = 403005,
+    UserNotActivated = 403006,
 }
 
 export class DuplicateUserError extends Forbidden implements IResponseError {
@@ -83,6 +84,21 @@ export class CaseNotPublishedError extends Forbidden implements IResponseError {
             code: this.code,
             title: this.message,
             detail: `ID:${urlId.url} 对应的方案未被 ${domain} 公开`,
+        });
+    }
+}
+
+export class UserNotActivatedError extends Forbidden implements IResponseError {
+    public code: ForbiddenErrorCode = ForbiddenErrorCode.UserNotActivated;
+
+    public errors: ServerError[] = [];
+
+    public constructor(email: string) {
+        super('邮箱尚未通过验证，仅能创建一套方案');
+        this.errors.push({
+            code: this.code,
+            title: this.message,
+            detail: `用户: ${email} 尚未通过验证`,
         });
     }
 }
