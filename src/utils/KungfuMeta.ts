@@ -5,13 +5,18 @@ import {
 type AttributeBaseValue = Partial<Record<PrimaryAttribute | SecondaryAttribute | ExtraAttribute, number>>;
 type AttributeFactor = Partial<Record<SecondaryAttribute | ExtraAttribute, number>>;
 
-export interface KungFuMeta {
+export interface KungFuInfo {
     // 主属性
     primaryAttribute: PrimaryAttribute;
     // 门派
     school: School;
     // 心法类型
     role: GamingRole;
+}
+
+export interface KungFuMeta extends KungFuInfo {
+    // 英文标识
+    name: string;
     // 属性修饰
     decorator: DecoratorTuple[];
     // 属性基础数值
@@ -24,6 +29,9 @@ export interface KungFuMeta {
 
 export const BANNED_ATTRIBUTES_BY_ROLE: { [key in GamingRole]: Attribute[] } = {
     [GamingRole.DAMAGE_DEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'heal', 'threat'],
-    [GamingRole.HEALER]: ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue', 'attack', 'overcome', 'threat'],
-    [GamingRole.TANK]: ['attack', 'crit', 'critEffect', 'damageBase', 'damageRange', 'heal', 'huajing', 'overcome'],
+    [GamingRole.HEALER]: [
+        'physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue',
+        'attack', 'overcome', 'threat', 'hit', 'surplus',
+    ],
+    [GamingRole.TANK]: ['attack', 'crit', 'critEffect', 'damageBase', 'damageRange', 'heal', 'overcome', 'surplus'],
 };

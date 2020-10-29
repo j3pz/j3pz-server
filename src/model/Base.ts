@@ -18,6 +18,7 @@ export const School = {
     霸刀: lit('霸刀'),
     蓬莱: lit('蓬莱'),
     凌雪: lit('凌雪'),
+    衍天: lit('衍天'),
 };
 export type School = (typeof School)[keyof typeof School];
 
@@ -48,6 +49,7 @@ export const KungFu = {
     明尊琉璃体: lit('明尊琉璃体'),
     铁骨衣: lit('铁骨衣'),
     隐龙诀: lit('隐龙诀'),
+    太玄经: lit('太玄经'),
 };
 export type KungFu = (typeof KungFu)[keyof typeof KungFu];
 
@@ -56,7 +58,7 @@ export const PrimaryAttribute: PrimaryAttribute[] = ['vitality', 'spunk', 'spiri
 export type SecondaryAttribute =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'parryValue' | 'toughness' |
     'attack' | 'heal' | 'crit' | 'critEffect' | 'overcome' |
-    'hit' | 'strain' | 'haste' | 'threat' | 'huajing' |
+    'hit' | 'strain' | 'surplus' | 'haste' | 'threat' | 'huajing' |
     // 直接增加百分比的属性
     'dodgePercentage' | 'toughnessPercentage' |
     'critPercentage' | 'critEffectPercentage' | 'overcomePercentage' |
@@ -67,7 +69,9 @@ export type ExtraAttribute = 'health' | 'healthRecover' | 'mana' | 'manaRecover'
 export type Attribute = PrimaryAttribute | SecondaryAttribute | MinorAttribute | ExtraAttribute;
 export type AttributeTag =
     'physicsShield' | 'magicShield' | 'dodge' | 'parryBase' | 'toughness' |
-    'crit' | 'overcome' | 'hit' | 'strain' | 'haste';
+    'crit' | 'overcome' | 'strain' | 'surplus' | 'haste' | 'huajing';
+export const AttributeTag: AttributeTag[] = ['physicsShield', 'magicShield', 'dodge', 'parryBase', 'toughness',
+    'crit', 'overcome', 'strain', 'surplus', 'haste', 'huajing'];
 
 export const AttributeDecorator = {
     PHYSICS: lit('PHYSICS'),

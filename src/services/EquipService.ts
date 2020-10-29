@@ -5,6 +5,7 @@ import {
 } from 'typeorm';
 import { Equip } from '../entities/resources/Equip';
 import { AttributeTag, Category, KungFu } from '../model/Base';
+import { EquipCore } from '../model/Equip';
 import { kungFuLib } from '../utils/KungFuLib';
 import { KungFuMeta } from '../utils/KungfuMeta';
 
@@ -33,7 +34,7 @@ export class EquipService implements AfterRoutesInit {
         return { school, primaryAttribute };
     }
 
-    public async find(filter: EquipListFilter): Promise<Equip[]> {
+    public async find(filter: EquipListFilter): Promise<EquipCore[]> {
         const kungfuFilter = this.getFilterByKungfu(filter.kungfu);
         const whereCondition: FindConditions<Equip> = {
             quality: Between(filter.quality[0], filter.quality[1]),
@@ -47,14 +48,22 @@ export class EquipService implements AfterRoutesInit {
             whereCondition.primaryAttribute = In([kungfuFilter.primaryAttribute, 'magic']);
         }
         const equips = await this.connection.manager.find(Equip, {
-            select: ['id', 'icon', 'name', 'quality', 'category'],
+            select: ['id', 'icon', 'name', 'quality', 'category', ...AttributeTag],
             where: whereCondition,
             order: {
                 quality: 'ASC',
             },
+            take: filter.name ? 10 : undefined,
         });
 
-        return equips;
+        return equips.map((equip) => {
+            const {
+                id, name, icon, quality, category, tags,
+            } = equip;
+            return {
+                id, name, icon, quality, category, tags,
+            };
+        });
     }
 
     public async findById(id: number): Promise<Equip> {
@@ -76,6 +85,7 @@ export class EquipService implements AfterRoutesInit {
     }
 
     public async findByIds(ids: number[]): Promise<Equip[]> {
+        if (ids.length === 0) return [];
         const equip = await this.connection.manager.find(Equip, {
             where: {
                 id: In(ids),

@@ -1,12 +1,16 @@
 import {
-    Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable,
+    Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, AfterLoad,
 } from 'typeorm';
 import { Title } from '@tsed/swagger';
 import { EquipSet } from './EquipSet';
 import { Effect } from './Effect';
-import { Category, School } from '../../model/Base';
+import {
+    SecondaryAttribute, AttributeDecorator, Category, School, PrimaryAttribute, AttributeTag,
+} from '../../model/Base';
 import { Source } from './Source';
 import { Represent } from './Represent';
+import { EquipEmbedTransformer, EmbedInfo } from '../../utils/transformers/EquipEmbedTransformer';
+import { schoolKungfuMap } from '../../utils/KungFuLib';
 
 @Entity()
 export class Equip {
@@ -42,7 +46,7 @@ export class Equip {
 
     @Column()
     @Title('主属性')
-    public primaryAttribute: string;
+    public primaryAttribute: PrimaryAttribute | 'magic' | 'physics';
 
     @Column()
     @Title('基础装分')
@@ -145,6 +149,10 @@ export class Equip {
     public strain: number;
 
     @Column()
+    @Title('破招')
+    public surplus: number;
+
+    @Column()
     @Title('化劲')
     public huajing: number;
 
@@ -166,9 +174,11 @@ export class Equip {
 
     @Column({
         nullable: true,
+        type: 'varchar',
+        transformer: new EquipEmbedTransformer(),
     })
     @Title('镶嵌')
-    public embed: string;
+    public embed: EmbedInfo;
 
     @Column()
     @Title('最大精炼等级')
@@ -187,4 +197,83 @@ export class Equip {
     @Column()
     @Title('过时装备')
     public deprecated: boolean;
+
+    @Title('属性修饰符')
+    public decorators: { [key in SecondaryAttribute]?: AttributeDecorator };
+
+    @Title('属性标签')
+    public get tags(): AttributeTag[] {
+        const tags: AttributeTag[] = [];
+        AttributeTag.forEach((key) => {
+            if (this[key] > 0) {
+                tags.push(key);
+            }
+        });
+        return tags;
+    }
+
+    @AfterLoad()
+    protected computeDecorators(): void {
+        if (!this.school) return;
+        const decorators: { [key in SecondaryAttribute]?: AttributeDecorator} = {
+            attack: AttributeDecorator.ALL,
+            hit: AttributeDecorator.ALL,
+            crit: AttributeDecorator.ALL,
+            critEffect: AttributeDecorator.ALL,
+            overcome: AttributeDecorator.ALL,
+        };
+        if (this.school === '通用') {
+            switch (this.primaryAttribute) {
+                case 'spirit':
+                    decorators.attack = AttributeDecorator.MAGIC;
+                    decorators.hit = AttributeDecorator.MAGIC;
+                    decorators.crit = AttributeDecorator.MAGIC;
+                    decorators.critEffect = AttributeDecorator.MAGIC;
+                    decorators.overcome = AttributeDecorator.MAGIC;
+                    break;
+                case 'spunk':
+                    decorators.attack = AttributeDecorator.MAGIC;
+                    decorators.overcome = AttributeDecorator.MAGIC;
+                    break;
+                case 'agility':
+                case 'strength':
+                    decorators.attack = AttributeDecorator.PHYSICS;
+                    decorators.hit = AttributeDecorator.PHYSICS;
+                    decorators.crit = AttributeDecorator.PHYSICS;
+                    decorators.critEffect = AttributeDecorator.PHYSICS;
+                    decorators.overcome = AttributeDecorator.PHYSICS;
+                    break;
+                default:
+                    break;
+            }
+        } else if (this.school === '精简') {
+            switch (this.primaryAttribute) {
+                case 'magic':
+                case 'spirit':
+                case 'spunk':
+                    decorators.attack = AttributeDecorator.MAGIC;
+                    decorators.overcome = AttributeDecorator.MAGIC;
+                    break;
+                case 'physics':
+                case 'agility':
+                case 'strength':
+                    decorators.attack = AttributeDecorator.PHYSICS;
+                    decorators.hit = AttributeDecorator.PHYSICS;
+                    decorators.crit = AttributeDecorator.PHYSICS;
+                    decorators.critEffect = AttributeDecorator.PHYSICS;
+                    decorators.overcome = AttributeDecorator.PHYSICS;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            const kungfu = schoolKungfuMap[this.school]?.find(meta => meta.primaryAttribute === this.primaryAttribute);
+            if (kungfu) {
+                kungfu.decorator.forEach(([attribute, decorator]) => {
+                    decorators[attribute] = decorator;
+                });
+            }
+        }
+        this.decorators = decorators;
+    }
 }

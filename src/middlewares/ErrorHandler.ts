@@ -49,9 +49,9 @@ export class ErrorHandlerMiddleware extends GlobalErrorHandlerMiddleware {
             title: '服务器未知错误',
             origin: error,
         });
-        return response.status(error.status).json({
+        return response.status(error.status || 500).json({
             errors: [{
-                code: error.status * 100 + 999,
+                code: (error.status || 500) * 100 + 999,
                 title: '服务器未知错误',
                 detail: '发生了一些奇怪的问题',
             }],

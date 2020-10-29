@@ -9,10 +9,12 @@ import {
 } from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { UrlId } from '../model/UrlId';
-import { SyncLimitReachedError, CaseNotPublishedError } from '../utils/errors/Forbidden';
+import { CaseNotPublishedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { UserService } from '../services/UserService';
 import { NoSuchDomainError } from '../utils/errors/Unauthorized';
+import { EquipCore } from '../model/Equip';
+import { Equip } from '../entities/resources/Equip';
 
 @Controller('/case')
 export class CaseCtrl {
@@ -28,12 +30,17 @@ export class CaseCtrl {
             // TODO: Case detail mode
             return [];
         }
-        return cases.map(caseInfo => new Resource(
-            caseInfo.id,
-            'Case',
-            caseInfo,
-            `case/${UrlId.fromHex(caseInfo.id).url}`,
-        ));
+        return cases.map((caseInfo) => {
+            const urlId = UrlId.fromHex(caseInfo.id).url;
+            const urlCase = caseInfo;
+            urlCase.id = urlId;
+            return new Resource(
+                urlId,
+                'Case',
+                urlCase,
+                `case/${urlId}`,
+            );
+        });
     }
 
     @Get('/:id')
@@ -46,7 +53,29 @@ export class CaseCtrl {
             throw new CaseNotFoundError(urlId);
         }
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
-        return new Resource(caseDetail.id, 'Case', caseDetail);
+        caseDetail.equip.forEach((eq) => {
+            const equip = eq;
+            if (equip.set) {
+                const collection = equip.set.equip.map((e: Equip): EquipCore => ({
+                    id: e.id,
+                    name: e.name,
+                    icon: e.icon,
+                    quality: e.quality,
+                    category: e.category,
+                    tags: e.tags,
+                })).reduce((acc, cur) => {
+                    if (acc[cur.category]) {
+                        acc[cur.category].push(cur);
+                    } else {
+                        acc[cur.category] = [cur];
+                    }
+                    return acc;
+                }, {});
+                delete equip.set.equip;
+                equip.set.equips = collection;
+            }
+        });
+        return new Resource(urlId.url, 'Case', caseDetail);
     }
 
     @Get('/:domain/list')
@@ -59,12 +88,17 @@ export class CaseCtrl {
         if (!user) {
             throw new NoSuchDomainError(domain);
         }
-        return user.cases.filter(caseInfo => caseInfo.published).map(caseInfo => new Resource(
-            caseInfo.id,
-            'Case',
-            caseInfo,
-            `case/${domain}/${UrlId.fromHex(caseInfo.id).url}`,
-        ));
+        return user.cases.filter(caseInfo => caseInfo.published).map((caseInfo) => {
+            const urlId = UrlId.fromHex(caseInfo.id).url;
+            const urlCase = caseInfo;
+            urlCase.id = urlId;
+            return new Resource(
+                urlId,
+                'Case',
+                urlCase,
+                `case/${domain}/${urlId}`,
+            );
+        });
     }
 
     @Get('/:domain/:id')
@@ -72,7 +106,7 @@ export class CaseCtrl {
     @Authenticate(['jwt', 'anonymous'])
     public async findShared(
         @PathParams('domain') domain: string,
-        @PathParams('id', UrlId) urlId: UrlId,
+            @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<CaseResource> {
         const user = await this.userService.findByDomain(domain);
         const caseInfo = this.caseService.getCaseInfo(user.cases, urlId);
@@ -84,19 +118,16 @@ export class CaseCtrl {
         }
         const caseScheme = await this.caseService.findOne(urlId.objectId);
         const caseDetail = await this.caseService.getCaseDetail(caseInfo, caseScheme);
-        return new Resource(caseDetail.id, 'Case', caseDetail);
+        return new Resource(urlId.url, 'Case', caseDetail);
     }
 
     @Post()
     @Summary('新建方案')
     @Authenticate('jwt', { failWithError: true })
-    public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource[]> {
-        if (req.user.syncLimit <= req.user.cases.length) {
-            throw new SyncLimitReachedError(req.user.email);
-        }
-        await this.caseService.create(caseModel, req.user);
-        const list = await this.list(req, 0);
-        return list;
+    public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource> {
+        const caseInfo = await this.caseService.create(caseModel, req.user);
+        const urlId = UrlId.fromHex(caseInfo.id).url;
+        return new Resource(urlId, 'Case', caseInfo);
     }
 
     @Put('/:id')
@@ -104,14 +135,15 @@ export class CaseCtrl {
     @Authenticate('jwt', { failWithError: true })
     public async update(
         @Req() req: Req,
-        @BodyParams() caseModel: CaseModel,
-        @PathParams('id', UrlId) urlId: UrlId,
+            @BodyParams() caseModel: CaseModel,
+            @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<Status> {
         const caseInfo = this.caseService.getCaseInfo(req.user.cases, urlId);
         if (!caseInfo) {
             throw new CaseNotFoundError(urlId);
         }
         await this.caseService.update(caseModel, urlId);
+        await this.caseService.updateCaseInfo(req.user, urlId, { lastUpdate: new Date() });
         return new Status(true);
     }
 
@@ -120,14 +152,14 @@ export class CaseCtrl {
     @Authenticate('jwt', { failWithError: true })
     public async patch(
         @Req() req: Req,
-        @BodyParams() patch: CaseInfoModel,
-        @PathParams('id', UrlId) urlId: UrlId,
+            @BodyParams() patch: CaseInfoModel,
+            @PathParams('id', UrlId) urlId: UrlId,
     ): Promise<CaseInfoResource> {
         const caseInfo = await this.caseService.updateCaseInfo(req.user, urlId, patch);
         if (!caseInfo) {
             throw new CaseNotFoundError(urlId);
         }
-        return new Resource(caseInfo.id, 'Case', caseInfo);
+        return new Resource(urlId.url, 'Case', caseInfo);
     }
 
     @Delete('/:id')

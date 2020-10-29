@@ -81,7 +81,7 @@ export class Server extends ServerLoader {
         this
             .use(GlobalAcceptMimesMiddleware)
             .use(cors({
-                origin: [/\.j3pz\.com$/, /\.j3pz\.app$/, /\.j3pz\.dev$/, /\.jx3box\.com$/],
+                origin: [/\.j3pz\.com$/, /\.j3pz\.app$/, /\.j3pz\.dev$/, /\.jx3box\.com$/, /localhost:8000$/],
             }))
             .use(cookieParser())
             .use(compress({}))

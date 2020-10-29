@@ -1,7 +1,7 @@
 import { Title } from '@tsed/swagger';
 import { Resource } from './Server';
 import { Equip } from '../entities/resources/Equip';
-import { Category } from './Base';
+import { AttributeTag, Category } from './Base';
 
 export class EquipCore {
     @Title('ID')
@@ -18,6 +18,9 @@ export class EquipCore {
 
     @Title('品质')
     public quality: number;
+
+    @Title('属性标签')
+    public tags: AttributeTag[];
 }
 
 export type EquipCoreResource = Resource<EquipCore>;

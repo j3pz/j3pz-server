@@ -19,3 +19,15 @@ export class StoneAttributeCore {
 }
 
 export type StoneAttributeCoreResource = Resource<StoneAttributeCore>;
+
+export class StoneCore {
+    @Title('ID')
+    public id: number;
+
+    @Title('名称')
+    public name: string;
+
+    @Title('属性名称')
+    public attributes: StoneAttributeCore[];
+}
+export type StoneCoreResource = Resource<StoneCore>;

@@ -60,6 +60,7 @@ export class EquipCtrl {
                 icon: e.icon,
                 quality: e.quality,
                 category: e.category,
+                tags: e.tags,
             })).reduce((acc, cur) => {
                 if (acc[cur.category]) {
                     acc[cur.category].push(cur);

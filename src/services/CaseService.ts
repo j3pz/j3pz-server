@@ -1,4 +1,4 @@
-import { Service, AfterRoutesInit } from '@tsed/common';
+import { Service, AfterRoutesInit, $log } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { ObjectID } from 'mongodb';
 import { Connection } from 'typeorm';
@@ -10,6 +10,9 @@ import { CaseDetail, CaseModel, CaseInfoModel } from '../model/Case';
 import { EnhanceService } from './EnhanceService';
 import { UserInfo } from '../entities/users/User';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
+import { TalentService } from './TalentService';
+import { StoneService } from './StoneService';
+import { kungFuLib } from '../utils/KungFuLib';
 
 @Service()
 export class CaseService implements AfterRoutesInit {
@@ -19,6 +22,8 @@ export class CaseService implements AfterRoutesInit {
         private typeORMService: TypeORMService,
         private equipService: EquipService,
         private enhanceService: EnhanceService,
+        private talentService: TalentService,
+        private stoneService: StoneService,
     ) {}
 
     public $afterRoutesInit(): void {
@@ -40,17 +45,33 @@ export class CaseService implements AfterRoutesInit {
     public async getCaseDetail(info: CaseInfo, scheme: CaseScheme): Promise<CaseDetail> {
         const detail = Object.assign(new CaseDetail(), info) as CaseDetail;
         detail.scheme = scheme;
-        const equipIds = scheme.equip.map(equip => equip.id);
+        const stoneIds = [];
+        const equipIds = scheme.equip.map((equip) => {
+            if (equip.stone) {
+                stoneIds.push(equip.stone);
+            }
+            return equip.id;
+        });
         const equips = await this.equipService.findByIds(equipIds);
+
         const enhanceIds = scheme.equip.map(equip => equip.enhance).filter(id => !!id);
         const enhances = await this.enhanceService.findByIds(enhanceIds);
+
+        const talents = await this.talentService.findByIds(scheme.talent);
+        const stones = await this.stoneService.findByIds(stoneIds);
+
         detail.equip = equips;
         detail.enhance = enhances;
+        detail.talent = talents;
+        detail.stone = stones;
+        detail.kungfuMeta = kungFuLib[detail.kungfu];
+        detail.id = UrlId.fromHex(detail.id).url;
 
+        delete detail.school;
         return detail;
     }
 
-    public async create(caseModel: CaseModel, user: UserInfo): Promise<void> {
+    public async create(caseModel: CaseModel, user: UserInfo): Promise<CaseInfo> {
         const scheme = new CaseScheme();
         scheme.equip = caseModel.equip;
         scheme.effect = caseModel.effect;
@@ -61,8 +82,10 @@ export class CaseService implements AfterRoutesInit {
         info.name = caseModel.name;
         info.kungfu = caseModel.kungfu;
         info.published = false;
+        info.lastUpdate = new Date();
         user.cases.push(info);
         await this.connection.manager.save(user);
+        return info;
     }
 
     public async update(caseModel: CaseModel, id: UrlId): Promise<void> {
@@ -82,7 +105,8 @@ export class CaseService implements AfterRoutesInit {
             return null;
         }
         const info = user.cases[idx];
-        const newInfo = { ...info, ...patch };
+        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+        const newInfo = { ...info, ...patch } as CaseInfo;
         // eslint-disable-next-line no-param-reassign
         user.cases[idx] = newInfo;
         await this.connection.manager.save(user);
@@ -90,7 +114,14 @@ export class CaseService implements AfterRoutesInit {
     }
 
     public async remove(user: UserInfo, urlId: UrlId): Promise<void> {
-        await this.connection.manager.delete(CaseScheme, urlId.objectId);
+        $log.info(`User ${user.uid} delete case ${urlId.objectId}`);
+        // await this.connection.manager.delete(CaseScheme, urlId.objectId);
+        const scheme = await this.findOne(urlId.objectId);
+        if (scheme) {
+            scheme.deleted = true;
+            scheme.deletedAt = new Date();
+            await this.connection.manager.save(scheme);
+        }
         const cases = user.cases.filter(c => c.id !== urlId.objectId.toHexString());
         // eslint-disable-next-line no-param-reassign
         user.cases = cases;

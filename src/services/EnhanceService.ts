@@ -57,7 +57,7 @@ export class EnhanceService implements AfterRoutesInit {
     public async find(filter: EnhanceListFilter): Promise<Enhance[]> {
         const kungfuFilters = this.getFilterByKungfu(filter.kungfu);
         const baseFilter = {
-            category: filter.category,
+            category: filter.category === Category.TERTIARY_WEAPON ? Category.PRIMARY_WEAPON : filter.category,
             deprecated: false,
         };
         const enhances = await this.connection.manager.find(Enhance, {
@@ -74,6 +74,7 @@ export class EnhanceService implements AfterRoutesInit {
     }
 
     public async findByIds(ids: number[]): Promise<Enhance[]> {
+        if (ids.length === 0) return [];
         const enhances = await this.connection.manager.find(Enhance, {
             where: { id: In(ids) },
         });

@@ -31,8 +31,8 @@ export class UserService implements AfterRoutesInit {
             uid: user.uid,
             email: user.email,
             name: user.name,
-            syncLimit: user.syncLimit,
             activate: user.activation.activate,
+            preference: user.preference,
             token,
         };
         return info;
@@ -41,7 +41,6 @@ export class UserService implements AfterRoutesInit {
     public sign(user: UserInfo): string {
         const payload: JWTSignPayload = {
             nam: user.name,
-            lim: user.syncLimit,
             act: user.activation.activate,
         };
         const token = sign(payload, process.env.JWT_SECRET, {
@@ -55,6 +54,9 @@ export class UserService implements AfterRoutesInit {
         const user = await this.connection.manager.findOne(User, {
             where: { email },
         });
+        if (user?.version < 2) {
+            await this.upgradeUser(user);
+        }
         return user;
     }
 
@@ -87,7 +89,7 @@ export class UserService implements AfterRoutesInit {
         return user;
     }
 
-    public async resetPassword(resetInfo: ResetModel): Promise<User> {
+    public async resetPassword(resetInfo: ResetModel): Promise<User | boolean> {
         const { password, permalink, token } = resetInfo;
         const user = await this.connection.manager.findOne(User, {
             where: { _id: ObjectID.createFromHexString(permalink) },
@@ -101,7 +103,11 @@ export class UserService implements AfterRoutesInit {
         if (isAfter(Date.now(), user.activation.resetExpireAt)) {
             throw new ExpiredTokenError(`${permalink}/${token}`, 'reset');
         }
+        if (resetInfo.dryRun) return true;
         user.password = password;
+        if (!user.activation.activate) {
+            user.activation.activate = true;
+        }
         await this.update(user);
         return user;
     }
@@ -116,5 +122,24 @@ export class UserService implements AfterRoutesInit {
             where: { domain },
         });
         return user;
+    }
+
+    private async upgradeUser(old: User): Promise<void> {
+        const user = old;
+        user.version = 2;
+        delete user.activate;
+        delete user.v1Password;
+        await this.connection.getMongoRepository(User).updateOne(
+            { _id: ObjectID.createFromHexString(user.uid) },
+            {
+                $unset: {
+                    password: '',
+                    activate: '',
+                    reset: '',
+                    lastEmail: '',
+                },
+            },
+        );
+        await this.connection.manager.save(user);
     }
 }

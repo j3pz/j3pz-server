@@ -10,7 +10,7 @@ import {
 import { kungFuLib } from '../utils/KungFuLib';
 import { BANNED_ATTRIBUTES_BY_ROLE } from '../utils/KungfuMeta';
 import { StoneAttribute } from '../entities/resources/StoneAttribute';
-import { StoneAttributeCore } from '../model/Stone';
+import { StoneAttributeCore, StoneCore } from '../model/Stone';
 import { getDecoratorList } from '../utils/decorator';
 
 interface AttributeListFilter {
@@ -58,10 +58,11 @@ export class StoneService implements AfterRoutesInit {
         }];
     }
 
-    public async find(tuples: DecoratorTuple[]): Promise<Stone[]> {
-        const stones = await this.connection.getRepository(Stone)
+    public async find(tuples: DecoratorTuple[]): Promise<StoneCore[]> {
+        const stonesIds = await this.connection.getRepository(Stone)
             .createQueryBuilder('stone')
             .innerJoin('stone.attributes', 'attribute')
+            .select(['stone.id', 'stone.name'])
             .where((qb) => {
                 let subQuery = qb.subQuery()
                     .select('attribute.id')
@@ -79,7 +80,17 @@ export class StoneService implements AfterRoutesInit {
             .having('count(*) >= :count', { count: tuples.length })
             .getMany();
 
-        return stones;
+        const stones = await this.connection.manager.findByIds(Stone, stonesIds.map(s => s.id), {
+            relations: ['attributes'],
+        });
+
+        return stones.map(s => ({
+            id: s.id,
+            name: s.name,
+            attributes: s.attributes.map(a => ({
+                name: a.name, key: a.key, decorator: a.decorator, id: a.id,
+            })),
+        }));
     }
 
     public async findAttributes(filter: AttributeListFilter): Promise<StoneAttributeCore[]> {
@@ -100,6 +111,19 @@ export class StoneService implements AfterRoutesInit {
         const stone = await this.connection.manager.findOne(Stone, id, {
             relations: ['attributes'],
         });
+        stone.attributes.sort((a, b) => a.requiredQuantity - b.requiredQuantity);
         return stone;
+    }
+
+    public async findByIds(ids: number[]): Promise<Stone[]> {
+        if (ids.length === 0) return [];
+        const stones = await this.connection.manager.find(Stone, {
+            where: { id: In(ids) },
+            relations: ['attributes'],
+        });
+        stones.forEach((stone) => {
+            stone.attributes.sort((a, b) => a.requiredQuantity - b.requiredQuantity);
+        });
+        return stones;
     }
 }

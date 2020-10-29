@@ -45,6 +45,12 @@ export class CaseScheme {
     @Column()
     public talent: number[];
 
+    @Column()
+    public deleted: boolean;
+
+    @Column()
+    public deletedAt: Date;
+
     public get id(): string {
         // eslint-disable-next-line no-underscore-dangle
         return this._id.toHexString();
