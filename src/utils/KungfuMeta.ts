@@ -33,5 +33,5 @@ export const BANNED_ATTRIBUTES_BY_ROLE: { [key in GamingRole]: Attribute[] } = {
         'physicsShield', 'magicShield', 'dodge', 'parryBase', 'parryValue',
         'attack', 'overcome', 'threat', 'hit', 'surplus',
     ],
-    [GamingRole.TANK]: ['attack', 'crit', 'critEffect', 'damageBase', 'damageRange', 'heal', 'overcome', 'surplus'],
+    [GamingRole.TANK]: ['attack', 'crit', 'critEffect', 'damageRange', 'heal', 'overcome'],
 };
