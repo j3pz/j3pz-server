@@ -27,12 +27,12 @@ export class SettingsCtrl {
     @Get('/announcement')
     @Summary('获取运营公告')
     @Returns(200, { description: 'OK' })
-    public async announcement(): Promise<Announcement> {
+    public async announcement(): Promise<Announcement[]> {
         const { announcementVersion, announcement, announcementTitle } = this.configService.getConfig();
-        return {
+        return [{
             version: announcementVersion,
             title: announcementTitle,
             content: announcement,
-        };
+        }];
     }
 }
