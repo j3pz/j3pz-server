@@ -61,7 +61,7 @@ export class GlobalConfig {
         this.updateQuality(this.parseConfig(rawConfig.qualityRange));
         this.talent = this.parseConfig(rawConfig.talent);
         this.dbVersion = this.parseConfig(rawConfig.dbVersion);
-        [this.announcementVersion, this.announcementTitle, this.announcement] = this.parseConfig(rawConfig.announcement);
+        [this.announcementVersion, this.announcementTitle, this.announcement] = this.parseConfig(rawConfig.announcement).split('|');
     }
 
     private updateQuality(range: string): void {
