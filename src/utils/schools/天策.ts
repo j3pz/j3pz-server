@@ -34,7 +34,11 @@ export const 铁牢律: KungFuMeta = {
     school: '天策',
     role: GamingRole.TANK,
     decorator: [
+        ['attack', AttributeDecorator.PHYSICS],
         ['hit', AttributeDecorator.PHYSICS],
+        ['crit', AttributeDecorator.PHYSICS],
+        ['critEffect', AttributeDecorator.PHYSICS],
+        ['overcome', AttributeDecorator.PHYSICS],
     ],
     base: {
         parryBase: 548,

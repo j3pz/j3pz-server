@@ -34,9 +34,11 @@ export const 离经易道: KungFuMeta = {
     school: '万花',
     role: GamingRole.HEALER,
     decorator: [
+        ['attack', AttributeDecorator.NEUTRAL],
         ['hit', AttributeDecorator.NEUTRAL],
         ['crit', AttributeDecorator.NEUTRAL],
         ['critEffect', AttributeDecorator.NEUTRAL],
+        ['overcome', AttributeDecorator.NEUTRAL],
     ],
     base: {
         heal: 2780,

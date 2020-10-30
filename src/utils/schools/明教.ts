@@ -35,7 +35,11 @@ export const 明尊琉璃体: KungFuMeta = {
     school: '明教',
     role: GamingRole.TANK,
     decorator: [
+        ['attack', AttributeDecorator.SOLAR_LUNAR],
         ['hit', AttributeDecorator.SOLAR_LUNAR],
+        ['crit', AttributeDecorator.SOLAR_LUNAR],
+        ['critEffect', AttributeDecorator.SOLAR_LUNAR],
+        ['overcome', AttributeDecorator.SOLAR_LUNAR],
     ],
     base: {
         magicShield: 400 + 457,

@@ -35,7 +35,11 @@ export const 洗髓经: KungFuMeta = {
     school: '少林',
     role: GamingRole.TANK,
     decorator: [
+        ['attack', AttributeDecorator.SOLAR],
         ['hit', AttributeDecorator.SOLAR],
+        ['crit', AttributeDecorator.SOLAR],
+        ['critEffect', AttributeDecorator.SOLAR],
+        ['overcome', AttributeDecorator.SOLAR],
     ],
     base: {
         magicShield: 400 + 914,

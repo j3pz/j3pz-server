@@ -37,7 +37,11 @@ export const 铁骨衣: KungFuMeta = {
     school: '苍云',
     role: GamingRole.TANK,
     decorator: [
+        ['attack', AttributeDecorator.PHYSICS],
         ['hit', AttributeDecorator.PHYSICS],
+        ['crit', AttributeDecorator.PHYSICS],
+        ['critEffect', AttributeDecorator.PHYSICS],
+        ['overcome', AttributeDecorator.PHYSICS],
     ],
     base: {
         parryBase: 914,

@@ -34,9 +34,11 @@ export const 云裳心经: KungFuMeta = {
     school: '七秀',
     role: GamingRole.HEALER,
     decorator: [
+        ['attack', AttributeDecorator.LUNAR],
         ['hit', AttributeDecorator.LUNAR],
         ['crit', AttributeDecorator.LUNAR],
         ['critEffect', AttributeDecorator.LUNAR],
+        ['overcome', AttributeDecorator.LUNAR],
     ],
     base: {
         heal: 2979,
