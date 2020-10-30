@@ -27,3 +27,14 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
+      - name: Reload Server
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /data/j3pz
+            cp ../config/.env.development.local ./env
+            npm install
+            pm2 reload j3pz-test

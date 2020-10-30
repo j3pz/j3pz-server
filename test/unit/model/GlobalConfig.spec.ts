@@ -18,6 +18,10 @@ describe('GlobalConfig', () => {
                 Value: '1.0.0.1',
                 SettingType: SettingType.TEXT,
             },
+            announcement: {
+                Value: 'v1|Test|Content',
+                SettingType: SettingType.TEXT,
+            },
         });
         expect(config.minQuality).equals(undefined);
         expect(config.maxQaulity).equals(undefined);
@@ -39,10 +43,15 @@ describe('GlobalConfig', () => {
                 Value: '1.0.0.1',
                 SettingType: SettingType.TEXT,
             },
+            announcement: {
+                Value: 'v1|Test|Content',
+                SettingType: SettingType.TEXT,
+            },
         });
         expect(config.minQuality).equals(1080);
         expect(config.maxQaulity).equals(3000);
         expect(config.qualityTick).equals(2000);
         expect(config.talent).equals(true);
+        expect(config.announcement).equals('Content');
     });
 });
