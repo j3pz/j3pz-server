@@ -47,8 +47,13 @@ export class EquipService implements AfterRoutesInit {
             whereCondition.name = Like(`%${filter.name}%`);
         } else {
             whereCondition.school = In([kungfuFilter.school, '通用', '精简']);
-            const attributeType = ['spunk', 'spirit'].includes(kungfuFilter.primaryAttribute) ? 'magic' : 'physics';
-            whereCondition.primaryAttribute = In([kungfuFilter.primaryAttribute, attributeType]);
+            const primaryAttributeFilter: string[] = [kungfuFilter.primaryAttribute];
+
+            const isMagic = ['spunk', 'spirit'].includes(kungfuFilter.primaryAttribute);
+            if (isMagic) primaryAttributeFilter.push('magic');
+            const isPhysics = ['agility', 'strength'].includes(kungfuFilter.primaryAttribute);
+            if (isPhysics) primaryAttributeFilter.push('physics');
+            whereCondition.primaryAttribute = In(primaryAttributeFilter);
         }
         if (kungfuFilter.role === GamingRole.HEALER) {
             whereCondition.heal = MoreThan(0);
