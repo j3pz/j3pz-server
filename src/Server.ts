@@ -59,11 +59,11 @@ const rootDir = __dirname;
             ],
         },
     ],
-    swagger: [
-        {
-            path: '/developer',
-        },
-    ],
+    // swagger: [
+    //     {
+    //         path: '/developer',
+    //     },
+    // ],
     logger: {
         reqIdBuilder: generateReqId,
         logRequest: false,
