@@ -43,7 +43,7 @@ export class MailService {
             title: '剑网3配装器密码重置',
             name: user.name,
             permalink: user.uid,
-            token: user.activation.verifyToken,
+            token: user.activation.resetToken,
         });
         this.transporter.sendMail({
             to: `"${user.name}" <${user.email}>`,
