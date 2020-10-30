@@ -52,6 +52,8 @@ export class EquipService implements AfterRoutesInit {
         }
         if (kungfuFilter.role === GamingRole.HEALER) {
             whereCondition.heal = MoreThan(0);
+        } else {
+            whereCondition.heal = 0;
         }
         const equips = await this.connection.manager.find(Equip, {
             select: ['id', 'icon', 'name', 'quality', 'category', ...AttributeTag],
