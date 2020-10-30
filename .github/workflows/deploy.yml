@@ -29,9 +29,13 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TARGET }}
       - name: Reload Server
         uses: appleboy/ssh-action@v0.1.3
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
         with:
           host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.USERNAME }}
+          username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /data/j3pz
