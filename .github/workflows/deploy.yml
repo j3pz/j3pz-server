@@ -39,6 +39,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /data/j3pz
-            cp ../config/.env.development.local ./env
+            cp ../config/.env.production.local ./env
             npm install
             pm2 reload j3pz-test
