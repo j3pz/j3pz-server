@@ -16,7 +16,7 @@ export class Boss {
     @Title('首领名称')
     public name: string;
 
-    @ManyToOne(() => GameMap, map => map.id)
+    @ManyToOne(() => GameMap, map => map.id, { cascade: true })
     @Title('对应地图')
     public map: GameMap;
 }

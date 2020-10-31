@@ -19,11 +19,11 @@ export class EquipSet {
     @Title('套装名称')
     public name: string;
 
-    @OneToMany(() => SetEffect, setEffect => setEffect.set)
+    @OneToMany(() => SetEffect, setEffect => setEffect.set, { cascade: true })
     @Title('套装特效')
     public setEffect: SetEffect[];
 
-    @OneToMany(() => Equip, equip => equip.set)
+    @OneToMany(() => Equip, equip => equip.set, { cascade: true })
     public equip: Equip[];
 
     // 实际返回给前端的过滤后的值

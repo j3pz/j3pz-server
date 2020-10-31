@@ -13,7 +13,7 @@ export class Stone {
     @Title('五彩石名称')
     public name: string;
 
-    @ManyToMany(() => StoneAttribute, attribute => attribute.id)
+    @ManyToMany(() => StoneAttribute, attribute => attribute.id, { cascade: true })
     @JoinTable()
     @Title('五彩石属性')
     public attributes: StoneAttribute[];
