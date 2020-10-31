@@ -162,14 +162,12 @@ export class Equip {
 
     @ManyToOne(() => Effect, effect => effect.id, {
         nullable: true,
-        cascade: true,
     })
     @Title('特效')
     public effect: Effect;
 
     @ManyToOne(() => EquipSet, set => set.equip, {
         nullable: true,
-        cascade: true,
     })
     @Title('套装')
     public set: EquipSet;
@@ -186,12 +184,12 @@ export class Equip {
     @Title('最大精炼等级')
     public strengthen: number;
 
-    @ManyToMany(() => Source, source => source.id, { cascade: true })
+    @ManyToMany(() => Source, source => source.id)
     @JoinTable()
     @Title('装备来源')
     public source: Source[];
 
-    @ManyToOne(() => Represent, represent => represent.id, { cascade: true })
+    @ManyToOne(() => Represent, represent => represent.id)
     @JoinTable()
     @Title('装备外观')
     public represent: Represent;

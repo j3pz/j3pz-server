@@ -16,10 +16,10 @@ export class SetEffect {
     @Description('套装特效生效要求的特效装备数量')
     public requirement: number;
 
-    @ManyToOne(() => Effect, effect => effect.id, { cascade: true })
+    @ManyToOne(() => Effect, effect => effect.id)
     @Title('特效')
     public effect: Effect;
 
-    @ManyToOne(() => EquipSet, set => set.setEffect, { cascade: true })
+    @ManyToOne(() => EquipSet, set => set.setEffect)
     public set: EquipSet;
 }

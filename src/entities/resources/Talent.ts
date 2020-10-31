@@ -36,7 +36,6 @@ export class Talent {
 
     @ManyToOne(() => Effect, effect => effect.id, {
         nullable: true,
-        cascade: true,
     })
     @Title('激活效果')
     public effect?: Effect;

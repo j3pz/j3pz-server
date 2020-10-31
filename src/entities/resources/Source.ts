@@ -46,14 +46,14 @@ export abstract class Source {
 
 @ChildEntity(SourceType.RAID)
 export class RaidSource extends Source {
-    @ManyToOne(() => Boss, boss => boss.id, { cascade: true })
+    @ManyToOne(() => Boss, boss => boss.id)
     @Title('首领ID')
     public boss: Boss;
 }
 
 @ChildEntity(SourceType.REPUTATION)
 export class ReputationSource extends Source {
-    @ManyToOne(() => Reputation, reputation => reputation.id, { cascade: true })
+    @ManyToOne(() => Reputation, reputation => reputation.id)
     @Title('声望ID')
     public reputation: Reputation;
 }
