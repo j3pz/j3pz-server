@@ -34,7 +34,7 @@ export class CaseService implements AfterRoutesInit {
         const caseScheme = await this.connection.manager.findOne(CaseScheme, {
             where: { _id: id },
         });
-        if (caseScheme.version < 2) {
+        if (caseScheme.version !== 2) {
             await this.upgradeScheme(caseScheme);
         }
         return caseScheme;
@@ -100,6 +100,7 @@ export class CaseService implements AfterRoutesInit {
         scheme.equip = caseModel.equip;
         scheme.effect = caseModel.effect;
         scheme.talent = caseModel.talent;
+        scheme.version = 2;
         await this.connection.manager.save(scheme);
     }
 
