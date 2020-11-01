@@ -1,14 +1,18 @@
 import {
-    Controller, Get, Req, PathParams, Post, QueryParams, BodyParams,
+    Controller, Get, Req, PathParams, Post, QueryParams, BodyParams, Put,
 } from '@tsed/common';
 import { Summary, Description } from '@tsed/swagger';
 import { Authenticate } from '@tsed/passport';
 import { UserService } from '../services/UserService';
-import { UserInfoResource, ResetModel } from '../model/Credentials';
+import {
+    UserInfoResource, ResetModel, UserUpdateModel, PreferenceModel,
+} from '../model/Credentials';
 import { Resource, Status } from '../model/Server';
 import { ActivatedError } from '../utils/errors/Forbidden';
 import { MailService } from '../services/MailService';
-import { NoSuchUserError } from '../utils/errors/Unauthorized';
+import { NoSuchUserError, PasswordVerifyError } from '../utils/errors/Unauthorized';
+import { User } from '../entities/users/User';
+import { UserActivation } from '../entities/users/UserActivation';
 
 @Controller('/user')
 export class UserCtrl {
@@ -47,6 +51,8 @@ export class UserCtrl {
         if (req.user.activation.activate) {
             throw new ActivatedError(req.user.email);
         }
+        req.user.activation = new UserActivation();
+        await this.userService.update(req.user as User);
         this.mailService.sendWelcomeMail(req.user);
         return new Status(true);
     }
@@ -68,6 +74,36 @@ export class UserCtrl {
     @Summary('重置密码')
     public async reset(@BodyParams() resetInfo: ResetModel): Promise<Status> {
         await this.userService.resetPassword(resetInfo);
+        return new Status(true);
+    }
+
+    @Put()
+    @Authenticate('jwt', { failWithError: true })
+    public async updateUser(@Req() req: Req, @BodyParams() patch: UserUpdateModel): Promise<Status> {
+        const user = req.user as User;
+        if (patch.password && patch.oldPassword && user.verifyPassword(patch.oldPassword)) {
+            user.password = patch.password;
+        } else if (patch.password) {
+            throw new PasswordVerifyError();
+        }
+        if (patch.name) {
+            user.name = patch.name;
+        }
+        await this.userService.update(user);
+        return new Status(true);
+    }
+
+    @Put('/preference')
+    @Authenticate('jwt', { failWithError: true })
+    public async updatePreference(@Req() req: Req, @BodyParams() patch: PreferenceModel): Promise<Status> {
+        const user = req.user as User;
+        if (patch.magicStoneLevel) {
+            user.preference.magicStoneLevel = patch.magicStoneLevel;
+        }
+        if (patch.strengthen) {
+            user.preference.strengthen = patch.strengthen;
+        }
+        await this.userService.update(user);
         return new Status(true);
     }
 }

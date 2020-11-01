@@ -2,6 +2,7 @@ import { KungFuMeta } from '../KungfuMeta';
 import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 焚影圣诀: KungFuMeta = {
+    name: 'fenying',
     primaryAttribute: 'spunk',
     school: '明教',
     role: GamingRole.DAMAGE_DEALER,
@@ -13,22 +14,23 @@ export const 焚影圣诀: KungFuMeta = {
         ['overcome', AttributeDecorator.SOLAR_LUNAR],
     ],
     base: {
-        attack: 775,
+        attack: 1923,
         hit: 397,
-        magicShield: 621,
+        magicShield: 400 + 493,
         physicsShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         attack: 1.9,
         crit: 0.29,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };
 
 export const 明尊琉璃体: KungFuMeta = {
+    name: 'mingzun',
     primaryAttribute: 'vitality',
     school: '明教',
     role: GamingRole.TANK,
@@ -36,15 +38,16 @@ export const 明尊琉璃体: KungFuMeta = {
         ['hit', AttributeDecorator.SOLAR_LUNAR],
     ],
     base: {
-        magicShield: 607,
-        physicsShield: 607,
-        dodge: 414,
+        magicShield: 400 + 457,
+        physicsShield: 400 + 457,
+        dodge: 914,
     },
     factor: {
         health: 1.25,
         dodge: 0.225,
+        attack: 0.05,
     },
     override: {
-        health: 1.47,
+        health: 1.22,
     },
 };

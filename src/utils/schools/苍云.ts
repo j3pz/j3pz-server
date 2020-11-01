@@ -2,6 +2,7 @@ import { KungFuMeta } from '../KungfuMeta';
 import { AttributeDecorator, GamingRole } from '../../model/Base';
 
 export const 分山劲: KungFuMeta = {
+    name: 'fenshan',
     primaryAttribute: 'agility',
     school: '苍云',
     role: GamingRole.DAMAGE_DEALER,
@@ -13,24 +14,25 @@ export const 分山劲: KungFuMeta = {
         ['overcome', AttributeDecorator.PHYSICS],
     ],
     base: {
-        attack: 627,
-        hit: 256,
-        overcome: 353,
-        parryBase: 318,
+        attack: 1526,
+        overcome: 694,
+        parryBase: 554,
         physicsShield: 400,
         magicShield: 400,
-        huajing: 1078,
+        huajing: 1725,
     },
     factor: {
         attack: 1.71,
+        parryBase: 0.1,
         parryValue: 1,
     },
     override: {
-        health: 1.21,
+        health: 1.22,
     },
 };
 
 export const 铁骨衣: KungFuMeta = {
+    name: 'tiegu',
     primaryAttribute: 'vitality',
     school: '苍云',
     role: GamingRole.TANK,
@@ -38,17 +40,18 @@ export const 铁骨衣: KungFuMeta = {
         ['hit', AttributeDecorator.PHYSICS],
     ],
     base: {
-        parryBase: 414,
-        parryValue: 958,
-        physicsShield: 6494,
+        parryBase: 914,
+        parryValue: 2114,
+        physicsShield: 400 + 548,
         magicShield: 400,
     },
     factor: {
         health: 2.2,
         parryBase: 0.15,
         parryValue: 0.5,
+        attack: 0.04,
     },
     override: {
-        health: 1.47,
+        health: 1.22,
     },
 };

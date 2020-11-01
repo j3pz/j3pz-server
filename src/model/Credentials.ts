@@ -25,6 +25,19 @@ export interface ResetModel {
     permalink: string;
     token: string;
     password: string;
+    dryRun: boolean;
+}
+
+export interface PreferenceModel {
+    strengthen?: boolean;
+    magicStoneLevel?: number;
+}
+
+export interface UserUpdateModel {
+    password?: string;
+    oldPassword?: string;
+
+    name?: string;
 }
 
 declare global {
@@ -40,7 +53,6 @@ export interface SimpleUserInfo {
     uid: string;
     email: string;
     name: string;
-    syncLimit: number;
     activate: boolean;
     token: string;
 }
@@ -49,7 +61,6 @@ export type UserInfoResource = Resource<SimpleUserInfo>;
 export interface JWTSignPayload {
     nam: string;
     act: boolean;
-    lim: number;
 }
 export interface JWTPayload extends JWTSignPayload {
     iat: number;

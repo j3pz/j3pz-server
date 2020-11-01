@@ -1,7 +1,8 @@
 import {
-    Entity, ObjectID, ObjectIdColumn, Column,
+    Entity, ObjectID, ObjectIdColumn, Column, AfterLoad,
 } from 'typeorm';
 import { EmbedStoneType, Category } from '../../model/Base';
+import { CaseSchemeV1, categoryMap } from './CaseSchemeV1';
 
 export class EquipEmbed {
     @Column()
@@ -37,16 +38,45 @@ export class CaseScheme {
     private _id: ObjectID;
 
     @Column()
-    public equip: EquipScheme[];
+    public equip: EquipScheme[] = [];
 
     @Column()
-    public effect: number[];
+    public effect: number[] = [];
 
     @Column()
-    public talent: number[];
+    public talent: number[] = [];
+
+    @Column()
+    public deleted: boolean;
+
+    @Column()
+    public deletedAt: Date;
+
+    @Column()
+    public version: number;
 
     public get id(): string {
         // eslint-disable-next-line no-underscore-dangle
         return this._id.toHexString();
     }
+
+    @AfterLoad()
+    public versionAdapter(): CaseScheme {
+        if ((this.version === 1 || this.version === undefined) && this.save) {
+            Object.entries(this.save.equips).forEach(([key, equip]) => {
+                const es = new EquipScheme();
+                es.id = equip.equipId;
+                es.enhance = equip.enhanceId;
+                es.strengthen = equip.strengthen;
+                es.embed = equip.embed.map(v => ({ type: 'unified', level: v.level }));
+                es.category = categoryMap[key];
+                this.equip.push(es);
+            });
+        }
+        return this;
+    }
+
+    // ↓ Version 1 Properties
+    @Column({ update: false })
+    public save?: CaseSchemeV1;
 }

@@ -9,7 +9,7 @@ import {
 } from '../model/Case';
 import { CaseService } from '../services/CaseService';
 import { UrlId } from '../model/UrlId';
-import { SyncLimitReachedError, CaseNotPublishedError } from '../utils/errors/Forbidden';
+import { CaseNotPublishedError, UserNotActivatedError } from '../utils/errors/Forbidden';
 import { CaseNotFoundError } from '../utils/errors/NotFound';
 import { UserService } from '../services/UserService';
 import { NoSuchDomainError } from '../utils/errors/Unauthorized';
@@ -32,11 +32,13 @@ export class CaseCtrl {
         }
         return cases.map((caseInfo) => {
             const urlId = UrlId.fromHex(caseInfo.id).url;
+            const urlCase = caseInfo;
+            urlCase.id = urlId;
             return new Resource(
                 urlId,
                 'Case',
-                { ...caseInfo, id: urlId },
-                `case/${UrlId.fromHex(caseInfo.id).url}`,
+                urlCase,
+                `case/${urlId}`,
             );
         });
     }
@@ -88,11 +90,13 @@ export class CaseCtrl {
         }
         return user.cases.filter(caseInfo => caseInfo.published).map((caseInfo) => {
             const urlId = UrlId.fromHex(caseInfo.id).url;
+            const urlCase = caseInfo;
+            urlCase.id = urlId;
             return new Resource(
                 urlId,
                 'Case',
-                { ...caseInfo, id: urlId },
-                `case/${domain}/${UrlId.fromHex(caseInfo.id).url}`,
+                urlCase,
+                `case/${domain}/${urlId}`,
             );
         });
     }
@@ -120,13 +124,14 @@ export class CaseCtrl {
     @Post()
     @Summary('新建方案')
     @Authenticate('jwt', { failWithError: true })
-    public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource[]> {
-        if (req.user.syncLimit <= req.user.cases.length) {
-            throw new SyncLimitReachedError(req.user.email);
+    public async create(@Req() req: Req, @BodyParams() caseModel: CaseModel): Promise<CaseInfoResource> {
+        const caseCount = req.user.cases.length;
+        if (caseCount > 0 && !req.user.activation.activate) {
+            throw new UserNotActivatedError(req.user.email);
         }
-        await this.caseService.create(caseModel, req.user);
-        const list = await this.list(req, 0);
-        return list;
+        const caseInfo = await this.caseService.create(caseModel, req.user);
+        const urlId = UrlId.fromHex(caseInfo.id).url;
+        return new Resource(urlId, 'Case', caseInfo);
     }
 
     @Put('/:id')
@@ -142,6 +147,7 @@ export class CaseCtrl {
             throw new CaseNotFoundError(urlId);
         }
         await this.caseService.update(caseModel, urlId);
+        await this.caseService.updateCaseInfo(req.user, urlId, { lastUpdate: new Date(), kungfu: caseModel.kungfu });
         return new Status(true);
     }
 
