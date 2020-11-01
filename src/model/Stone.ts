@@ -27,6 +27,9 @@ export class StoneCore {
     @Title('名称')
     public name: string;
 
+    @Title('ICON')
+    public icon: number;
+
     @Title('属性名称')
     public attributes: StoneAttributeCore[];
 }
