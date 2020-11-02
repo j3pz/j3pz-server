@@ -39,7 +39,6 @@ export class EquipService implements AfterRoutesInit {
     public async find(filter: EquipListFilter): Promise<EquipCore[]> {
         const kungfuFilter = this.getFilterByKungfu(filter.kungfu);
         const whereCondition: FindConditions<Equip> = {
-            quality: Between(filter.quality[0], filter.quality[1]),
             category: filter.category,
             deprecated: false,
         };
@@ -47,6 +46,8 @@ export class EquipService implements AfterRoutesInit {
             whereCondition.name = Like(`%${filter.name}%`);
         } else {
             whereCondition.school = In([kungfuFilter.school, '通用', '精简']);
+            whereCondition.quality = Between(filter.quality[0], filter.quality[1]);
+
             const primaryAttributeFilter: string[] = [kungfuFilter.primaryAttribute];
 
             const isMagic = ['spunk', 'spirit'].includes(kungfuFilter.primaryAttribute);
