@@ -50,6 +50,7 @@ export const 明尊琉璃体: KungFuMeta = {
         health: 1.25,
         dodge: 0.225,
         attack: 0.05,
+        physicsShield: 0.1,
     },
     override: {
         health: 1.22,
