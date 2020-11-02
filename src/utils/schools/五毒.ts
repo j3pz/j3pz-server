@@ -41,7 +41,7 @@ export const 补天诀: KungFuMeta = {
         ['overcome', AttributeDecorator.POISON],
     ],
     base: {
-        heal: 2072,
+        heal: 2880,
         magicShield: 400 + 578,
         physicsShield: 400,
         huajing: 1725,
