@@ -29,6 +29,7 @@ const rootDir = __dirname;
     mount: {
         '/api': '${rootDir}/controllers/**/*.{ts,js}',
     },
+    httpsPort: 8081,
     componentsScan: [
         `${rootDir}/middlewares/**/*.{ts,js}`,
         `${rootDir}/services/**/*.{ts,js}`,

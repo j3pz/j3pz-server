@@ -2,6 +2,7 @@ import { Service, AfterRoutesInit } from '@tsed/common';
 import { TypeORMService } from '@tsed/typeorm';
 import { Connection, In } from 'typeorm';
 import { Talent } from '../entities/resources/Talent';
+import { TalentRecommend } from '../entities/resources/TalentRecommend';
 import { KungFu } from '../model/Base';
 
 interface TalentListFilter {
@@ -22,7 +23,7 @@ export class TalentService implements AfterRoutesInit {
     }
 
     public async find(filter: TalentListFilter): Promise<Talent[]> {
-        const Talents = await this.connection.manager.find(Talent, {
+        const talents = await this.connection.manager.find(Talent, {
             select: ['id', 'index', 'name', 'description', 'icon'],
             relations: ['effect'],
             where: {
@@ -31,7 +32,7 @@ export class TalentService implements AfterRoutesInit {
             },
         });
 
-        return Talents;
+        return talents;
     }
 
     public async findById(id: number): Promise<Talent> {
@@ -48,5 +49,13 @@ export class TalentService implements AfterRoutesInit {
             relations: ['effect'],
         });
         return talents;
+    }
+
+    public async findRecommends(kungfu: KungFu): Promise<TalentRecommend[]> {
+        const recommends = await this.connection.manager.find(TalentRecommend, {
+            where: { kungfu },
+            relations: ['talents'],
+        });
+        return recommends;
     }
 }
