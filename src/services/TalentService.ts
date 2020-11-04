@@ -27,7 +27,7 @@ export class TalentService implements AfterRoutesInit {
             select: ['id', 'index', 'name', 'description', 'icon'],
             relations: ['effect'],
             where: {
-                kungfu: filter.kungfu,
+                kungfu: filter.kungfu === '山居剑意' ? '问水诀' : filter.kungfu,
                 version: filter.version,
             },
         });
