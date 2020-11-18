@@ -47,7 +47,7 @@ export class EnhanceService implements AfterRoutesInit {
             });
         // 基于心法类型去除一些属性
         const bannedAttributes = BANNED_ATTRIBUTES_BY_ROLE[role]
-            .concat(PrimaryAttribute.filter(_ => _ !== primaryAttribute))
+            .concat(PrimaryAttribute.filter(_ => _ !== primaryAttribute && _ !== 'vitality'))
             .concat(queriedAttributes);
         return [...conditions, {
             attribute: Not(In(bannedAttributes)),
