@@ -22,7 +22,7 @@ export const 太玄经: KungFuMeta = {
     },
     factor: {
         attack: 1.8,
-        crit: 0.42,
+        crit: 0.47,
     },
     override: {
         health: 1.22,
