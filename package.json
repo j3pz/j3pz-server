@@ -86,6 +86,6 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "ts-httpexceptions": "^4.1.0",
-    "typeorm": "^0.2.22"
+    "typeorm": "^0.2.25"
   }
 }
